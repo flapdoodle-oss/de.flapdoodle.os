@@ -1,10 +1,10 @@
-package de.flapdoodle.os.common;
+package de.flapdoodle.os.common.attributes;
 
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Parameter;
 
 @Immutable
-public interface FileExist extends Peculiarity {
+public interface TextFile extends Attribute<String> {
 	@Parameter
-	String fileName();
+	String name();
 }
