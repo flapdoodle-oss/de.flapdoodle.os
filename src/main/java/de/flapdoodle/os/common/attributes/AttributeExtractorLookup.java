@@ -28,4 +28,20 @@ public interface AttributeExtractorLookup {
 			}
 		};
 	}
+
+	static AttributeExtractorLookup failing() {
+		return new AttributeExtractorLookup() {
+			@Override
+			public <T, A extends Attribute<T>> Optional<AttributeExtractor<T, A>> extractor(A attribute) {
+				throw new IllegalArgumentException("no attribute extractor for "+attribute.getClass());
+			}
+		};
+	}
+
+	static AttributeExtractorLookup systemDefault() {
+		return forType(TextFile.class, new TextFileResolver())
+						.join(forType(SystemProperty.class, new SystemPropertyResolver()))
+						.join(forType(MappedTextFile.class, new MappedTextFileResolver()))
+						.join(failing());
+	}
 }

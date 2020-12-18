@@ -1,16 +1,9 @@
 package de.flapdoodle.os;
 
+import de.flapdoodle.os.common.HasPecularities;
+
 import java.util.Optional;
 
-public interface Distribution {
-	OS operationSystem();
-	
-	
-	interface Detector<T extends Distribution> {
-		Optional<T> distribution();
-
-		static <T extends Distribution> Detector<T> noop() {
-			return () -> Optional.empty();
-		}
-	}
+public interface Distribution extends HasPecularities {
+  Optional<Version> version();
 }

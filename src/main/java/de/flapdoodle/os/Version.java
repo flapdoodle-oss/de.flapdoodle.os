@@ -1,12 +1,6 @@
 package de.flapdoodle.os;
 
-import java.util.Optional;
+import de.flapdoodle.os.common.HasPecularities;
 
-public interface Version {
-	Distribution distribution();
-	
-	@FunctionalInterface
-	interface Detector<T extends Version> {
-		Optional<T> detect();
-	}
+public interface Version extends HasPecularities {
 }

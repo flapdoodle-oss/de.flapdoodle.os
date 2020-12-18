@@ -18,7 +18,7 @@ public interface MatcherLookup {
 		};
 	}
 
-	static <T, M extends Match<T>> MatcherLookup forType(Class<M> type, Matcher<T,M> matcher) {
+	static <T, M extends Match<T>> MatcherLookup forType(Class<M> type, Matcher<T, M> matcher) {
 		return new MatcherLookup() {
 			@Override
 			public <_T, _M extends Match<_T>> Optional<Matcher<_T, _M>> matcher(_M match) {
@@ -28,5 +28,20 @@ public interface MatcherLookup {
 				return Optional.empty();
 			}
 		};
+	}
+
+	static MatcherLookup failing() {
+		return new MatcherLookup() {
+			@Override
+			public <T, M extends Match<T>> Optional<Matcher<T, M>> matcher(M match) {
+				throw new IllegalArgumentException("no attribute matcher for " + match.getClass());
+			}
+		};
+	}
+
+	static MatcherLookup systemDefault() {
+		return MatcherLookup.forType(MatchPattern.class, new PatternMatcher())
+						.join(forType(OsReleaseFileMapEntry.class, new OsReleaseFileEntryMatcher()))
+						.join(failing());
 	}
 }

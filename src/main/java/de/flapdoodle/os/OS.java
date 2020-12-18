@@ -1,40 +1,69 @@
 package de.flapdoodle.os;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import de.flapdoodle.os.common.HasPecularities;
+import de.flapdoodle.os.common.Peculiarity;
+import de.flapdoodle.os.common.PeculiarityInspector;
+import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
+import de.flapdoodle.os.common.attributes.Attributes;
+import de.flapdoodle.os.common.matcher.MatcherLookup;
+import de.flapdoodle.os.common.matcher.Matchers;
+import de.flapdoodle.os.freebsd.FreeBSDDistribution;
 import de.flapdoodle.os.linux.*;
+import de.flapdoodle.os.osx.OS_X_Distribution;
+import de.flapdoodle.os.solaris.SolarisDistribution;
+import de.flapdoodle.os.windows.WindowsDistribution;
 
-public enum OS {
-	Linux(new LinuxDistributionDetector()),
-	Windows(Distribution.Detector.noop()),
-	OS_X(Distribution.Detector.noop()),
-	Solaris(Distribution.Detector.noop()),
-	FreeBSD(Distribution.Detector.noop());
-	
-	private Distribution.Detector<?> distributionDetector;
+public enum OS implements HasPecularities {
+	Linux(LinuxDistribution.class, osNameMatches("Linux")),
+	Windows(WindowsDistribution.class, osNameMatches("Windows.*")),
+	OS_X(OS_X_Distribution.class, osNameMatches("Mac OS X")),
+	Solaris(SolarisDistribution.class, osNameMatches(".*SunOS.*")),
+	FreeBSD(FreeBSDDistribution.class, osNameMatches("FreeBSD"));
 
-	OS(Distribution.Detector<?> detectDistribution) {
-		this.distributionDetector  = Objects.requireNonNull(detectDistribution,"detectDistribution is null");
+	private final List<Peculiarity<?>> peculiarities;
+	private final List<Distribution> distributions;
+
+	<T extends Enum<T> & Distribution> OS(
+					Class<T> clazz,
+					Peculiarity<?>... peculiarities
+	) {
+		this.peculiarities  = HasPecularities.asList(peculiarities);
+		this.distributions = Arrays.asList(clazz.getEnumConstants());
 	}
-	
-	public Optional<? extends Distribution> distribution() {
-		return distributionDetector.distribution();
+
+	public Optional<Distribution> distribution() {
+		return distribution(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
 	}
-	
+
+	// VisibleForTesting
+	protected Optional<Distribution> distribution(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
+		List<Distribution> matching = PeculiarityInspector.matching(attributeExtractorLookup, matcherLookup, distributions);
+		return matching.size()==1
+						? Optional.of(matching.get(0))
+						: Optional.empty();
+	}
+
+	@Override
+	public List<Peculiarity<?>> pecularities() {
+		return peculiarities;
+	}
+
+	private static Peculiarity<String> osNameMatches(String pattern) {
+		return Peculiarity.of(Attributes.systemProperty("os.name"), Matchers.matchPattern(pattern));
+	}
+
+	public static OS detect(
+					AttributeExtractorLookup attributeExtractorLookup,
+					MatcherLookup matcherLookup
+	) {
+		return PeculiarityInspector.match(attributeExtractorLookup,matcherLookup, OS.values());
+	}
+
 	public static OS detect() {
-		String osName = System.getProperty("os.name");
-		if (osName.equals("Linux"))
-			return Linux;
-		if (osName.startsWith("Windows", 0))
-			return Windows;
-		if (osName.equals("Mac OS X"))
-			return OS_X;
-		if (osName.contains("SunOS"))
-			return Solaris;
-		if (osName.equals("FreeBSD"))
-			return FreeBSD;
-		throw new IllegalArgumentException("Could not detect Platform: os.name=" + osName);
+		return detect(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
 	}
-
 }

@@ -26,7 +26,8 @@ class PeculiarityInspectorTest {
 	@Test
 	void matchListOfPecularities() {
 		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.forType(TextFile.class, attribute -> Optional.of("fooo"))
-						.join(AttributeExtractorLookup.forType(SystemProperty.class, attribute -> Optional.of("Any Linux OS")));
+						.join(AttributeExtractorLookup.forType(SystemProperty.class, attribute -> Optional.of("Any Linux OS")))
+						.join(AttributeExtractorLookup.failing());
 		
 		MatcherLookup matcherLookup=MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
