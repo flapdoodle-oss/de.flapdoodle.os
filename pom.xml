@@ -157,7 +157,6 @@
                         <lic.year>2020</lic.year>
                         <lic.email>michael@mosmann.de</lic.email>
                         <lic.username>Michael Mosmann</lic.username>
-                        <lic.developers></lic.developers>
                     </properties>
                     <encoding>UTF-8</encoding>
                 </configuration>
