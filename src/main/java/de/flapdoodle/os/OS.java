@@ -35,16 +35,8 @@ public enum OS implements HasPecularities {
 		this.distributions = Arrays.asList(clazz.getEnumConstants());
 	}
 
-	public Optional<Distribution> distribution() {
-		return distribution(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
-	}
-
-	// VisibleForTesting
-	protected Optional<Distribution> distribution(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
-		List<Distribution> matching = PeculiarityInspector.matching(attributeExtractorLookup, matcherLookup, distributions);
-		return matching.size()==1
-						? Optional.of(matching.get(0))
-						: Optional.empty();
+	public List<Distribution> distributions() {
+		return distributions;
 	}
 
 	@Override
@@ -54,16 +46,5 @@ public enum OS implements HasPecularities {
 
 	private static Peculiarity<String> osNameMatches(String pattern) {
 		return Peculiarity.of(Attributes.systemProperty("os.name"), Matchers.matchPattern(pattern));
-	}
-
-	public static OS detect(
-					AttributeExtractorLookup attributeExtractorLookup,
-					MatcherLookup matcherLookup
-	) {
-		return PeculiarityInspector.match(attributeExtractorLookup,matcherLookup, OS.values());
-	}
-
-	public static OS detect() {
-		return detect(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
 	}
 }

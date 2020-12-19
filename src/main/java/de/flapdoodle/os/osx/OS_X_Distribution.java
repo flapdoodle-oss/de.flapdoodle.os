@@ -18,7 +18,7 @@ public enum OS_X_Distribution implements Distribution {
 	}
 
 	@Override
-	public Optional<Version> version() {
-		return Optional.empty();
+	public List<Version> versions() {
+		return Collections.emptyList();
 	}
 }

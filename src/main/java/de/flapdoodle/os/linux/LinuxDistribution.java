@@ -39,6 +39,11 @@ public enum LinuxDistribution implements Distribution {
 		return version(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
 	}
 
+	@Override
+	public List<Version> versions() {
+		return this.versions;
+	}
+
 	// VisibleForTesting
 	protected Optional<Version> version(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
 		List<Version> matching = PeculiarityInspector.matching(attributeExtractorLookup, matcherLookup, versions);

@@ -1,7 +1,6 @@
 package de.flapdoodle.os.solaris;
 
 import de.flapdoodle.os.Distribution;
-import de.flapdoodle.os.OS;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.Peculiarity;
 
@@ -18,7 +17,7 @@ public enum SolarisDistribution implements Distribution {
 	}
 
 	@Override
-	public Optional<Version> version() {
-		return Optional.empty();
+	public List<Version> versions() {
+		return Collections.emptyList();
 	}
 }
