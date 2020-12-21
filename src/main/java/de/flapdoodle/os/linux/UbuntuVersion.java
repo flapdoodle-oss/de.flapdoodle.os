@@ -16,26 +16,35 @@
  */
 package de.flapdoodle.os.linux;
 
+import de.flapdoodle.os.Architecture;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.common.types.OsReleaseFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 public enum UbuntuVersion implements Version {
-  UBUNTU_20_04(osReleaseFileVersionMatches("20.04"));
+  UBUNTU_20_04(CommonArchitecture.class, osReleaseFileVersionMatches("20.04"));
 
   private final List<Peculiarity<?>> peculiarities;
+  private final List<Architecture> architectures;
 
-  UbuntuVersion(Peculiarity ... peculiarities) {
+  <T extends Enum<T> & Architecture> UbuntuVersion(Class<T> architecureClazz, Peculiarity ... peculiarities) {
     this.peculiarities  = HasPecularities.asList(peculiarities);
+    this.architectures = Arrays.asList(architecureClazz.getEnumConstants());
   }
 
   @Override
   public List<Peculiarity<?>> pecularities() {
     return peculiarities;
+  }
+
+  @Override
+  public List<Architecture> architectures() {
+    return architectures;
   }
 
   private static Peculiarity<OsReleaseFile> osReleaseFileVersionMatches(String version) {

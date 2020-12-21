@@ -16,10 +16,7 @@
  */
 package de.flapdoodle.os;
 
-import de.flapdoodle.os.common.HasPecularities;
-
-import java.util.List;
-
-public interface Distribution extends HasPecularities {
-  List<Version> versions();
+public enum CPUType {
+  X86,
+  ARM
 }

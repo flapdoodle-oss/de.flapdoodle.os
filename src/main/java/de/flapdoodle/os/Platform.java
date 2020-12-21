@@ -16,7 +16,6 @@
  */
 package de.flapdoodle.os;
 
-import de.flapdoodle.os.common.PeculiarityInspector;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import org.immutables.value.Value;
@@ -34,14 +33,19 @@ public interface Platform {
 
   Optional<Version> version();
 
+  Optional<Architecture> architecture();
+
   static Platform detect(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
     ImmutablePlatform.Builder builder = ImmutablePlatform.builder();
     OS os = detectOS(attributeExtractorLookup, matcherLookup);
     Optional<Distribution> dist = find(attributeExtractorLookup, matcherLookup, os.distributions());
+    Optional<Version> version = dist.flatMap(d -> find(attributeExtractorLookup, matcherLookup, d.versions()));
+    Optional<Architecture> architecture = version.flatMap(v -> find(attributeExtractorLookup, matcherLookup, v.architectures()));
 
     return builder.operatingSystem(os)
             .distribution(dist)
-            .version(dist.flatMap(d -> find(attributeExtractorLookup,matcherLookup, d.versions())))
+            .version(version)
+            .architecture(architecture)
             .build();
   }
 

@@ -51,6 +51,7 @@ public enum LinuxDistribution implements Distribution {
 		return peculiarities;
 	}
 
+	@Deprecated
 	public Optional<Version> version() {
 		return version(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
 	}
@@ -61,6 +62,7 @@ public enum LinuxDistribution implements Distribution {
 	}
 
 	// VisibleForTesting
+	@Deprecated
 	protected Optional<Version> version(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
 		List<Version> matching = PeculiarityInspector.matching(attributeExtractorLookup, matcherLookup, versions);
 		return matching.size()==1

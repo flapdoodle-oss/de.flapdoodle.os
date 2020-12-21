@@ -18,8 +18,7 @@ package de.flapdoodle.os;
 
 import de.flapdoodle.os.common.HasPecularities;
 
-import java.util.List;
-
-public interface Distribution extends HasPecularities {
-  List<Version> versions();
+public interface Architecture extends HasPecularities {
+  CPUType cpuType();
+  BitSize bitSize();
 }
