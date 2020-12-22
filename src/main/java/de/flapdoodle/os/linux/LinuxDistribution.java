@@ -24,6 +24,7 @@ import de.flapdoodle.os.common.PeculiarityInspector;
 import de.flapdoodle.os.common.attributes.Attribute;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.Attributes;
+import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.common.types.OsReleaseFile;
@@ -43,7 +44,7 @@ public enum LinuxDistribution implements Distribution {
 
 	<T extends Enum<T> & Version> LinuxDistribution(Class<T> versionClazz, Peculiarity<?> ... peculiarities) {
 		this.peculiarities = HasPecularities.asList(peculiarities);
-		this.versions = Arrays.asList(versionClazz.getEnumConstants());
+		this.versions = Immutables.asList(versionClazz.getEnumConstants());
 	}
 
 	@Override
@@ -51,23 +52,9 @@ public enum LinuxDistribution implements Distribution {
 		return peculiarities;
 	}
 
-	@Deprecated
-	public Optional<Version> version() {
-		return version(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
-	}
-
 	@Override
 	public List<Version> versions() {
 		return this.versions;
-	}
-
-	// VisibleForTesting
-	@Deprecated
-	protected Optional<Version> version(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
-		List<Version> matching = PeculiarityInspector.matching(attributeExtractorLookup, matcherLookup, versions);
-		return matching.size()==1
-						? Optional.of(matching.get(0))
-						: Optional.empty();
 	}
 
 	private static Peculiarity<OsReleaseFile> osReleaseFileNameMatches(String name) {
@@ -77,5 +64,4 @@ public enum LinuxDistribution implements Distribution {
 	static Attribute<OsReleaseFile> osReleaseFile() {
 		return Attributes.mappedTextFile("/etc/os-release", OsReleaseFileConverter::convert);
 	}
-
 }

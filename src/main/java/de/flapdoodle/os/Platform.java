@@ -35,12 +35,16 @@ public interface Platform {
 
   Optional<Architecture> architecture();
 
+  static Platform detect() {
+    return detect(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
+  }
+
   static Platform detect(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
     ImmutablePlatform.Builder builder = ImmutablePlatform.builder();
     OS os = detectOS(attributeExtractorLookup, matcherLookup);
-    Optional<Distribution> dist = find(attributeExtractorLookup, matcherLookup, os.distributions());
-    Optional<Version> version = dist.flatMap(d -> find(attributeExtractorLookup, matcherLookup, d.versions()));
-    Optional<Architecture> architecture = version.flatMap(v -> find(attributeExtractorLookup, matcherLookup, v.architectures()));
+    Optional<Distribution> dist = detectDistribution(attributeExtractorLookup, matcherLookup, os);
+    Optional<Version> version = dist.flatMap(d -> detectVersion(attributeExtractorLookup, matcherLookup, d));
+    Optional<Architecture> architecture = version.flatMap(v -> detectArchitecture(attributeExtractorLookup, matcherLookup, v));
 
     return builder.operatingSystem(os)
             .distribution(dist)
@@ -51,5 +55,17 @@ public interface Platform {
 
   static OS detectOS(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
     return match(attributeExtractorLookup, matcherLookup, OS.values());
+  }
+
+  static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, OS os) {
+    return find(attributeExtractorLookup, matcherLookup, os.distributions());
+  }
+
+  static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Distribution distribution) {
+    return find(attributeExtractorLookup, matcherLookup, distribution.versions());
+  }
+
+  static Optional<Architecture> detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Version version) {
+    return find(attributeExtractorLookup, matcherLookup, version.architectures());
   }
 }

@@ -25,6 +25,7 @@ import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.PeculiarityInspector;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.Attributes;
+import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.freebsd.FreeBSDDistribution;
@@ -48,7 +49,7 @@ public enum OS implements HasPecularities {
 					Peculiarity<?>... peculiarities
 	) {
 		this.peculiarities  = HasPecularities.asList(peculiarities);
-		this.distributions = Arrays.asList(clazz.getEnumConstants());
+		this.distributions = Immutables.asList(clazz.getEnumConstants());
 	}
 
 	public List<Distribution> distributions() {

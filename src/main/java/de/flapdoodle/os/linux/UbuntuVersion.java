@@ -20,21 +20,26 @@ import de.flapdoodle.os.Architecture;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
+import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.common.types.OsReleaseFile;
 
-import java.util.Arrays;
 import java.util.List;
 
 public enum UbuntuVersion implements Version {
-  UBUNTU_20_04(CommonArchitecture.class, osReleaseFileVersionMatches("20.04"));
+  UBUNTU_18_04(CommonArchitecture.class, osReleaseFileVersionMatches("18.04")),
+  UBUNTU_18_10(CommonArchitecture.class, osReleaseFileVersionMatches("18.10")),
+  UBUNTU_19_04(CommonArchitecture.class, osReleaseFileVersionMatches("19.04")),
+  UBUNTU_19_10(CommonArchitecture.class, osReleaseFileVersionMatches("10.10")),
+  UBUNTU_20_04(CommonArchitecture.class, osReleaseFileVersionMatches("20.04")),
+  UBUNTU_20_10(CommonArchitecture.class, osReleaseFileVersionMatches("20.10"));
 
   private final List<Peculiarity<?>> peculiarities;
   private final List<Architecture> architectures;
 
   <T extends Enum<T> & Architecture> UbuntuVersion(Class<T> architecureClazz, Peculiarity ... peculiarities) {
     this.peculiarities  = HasPecularities.asList(peculiarities);
-    this.architectures = Arrays.asList(architecureClazz.getEnumConstants());
+    this.architectures = Immutables.asList(architecureClazz.getEnumConstants());
   }
 
   @Override
