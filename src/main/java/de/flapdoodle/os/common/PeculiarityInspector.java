@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2020
  *   Michael Mosmann <michael@mosmann.de>
  *
