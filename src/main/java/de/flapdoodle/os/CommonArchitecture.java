@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.os.linux;
+package de.flapdoodle.os;
 
 import de.flapdoodle.os.Architecture;
 import de.flapdoodle.os.BitSize;

@@ -19,8 +19,6 @@ package de.flapdoodle.os;
 import de.flapdoodle.os.common.attributes.*;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
-import de.flapdoodle.os.common.types.OsReleaseFile;
-import de.flapdoodle.os.linux.CommonArchitecture;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.linux.UbuntuVersion;
 import org.assertj.core.api.Assertions;

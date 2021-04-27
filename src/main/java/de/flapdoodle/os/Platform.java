@@ -20,6 +20,7 @@ import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import org.immutables.value.Value;
 
+import java.util.List;
 import java.util.Optional;
 
 import static de.flapdoodle.os.common.PeculiarityInspector.find;
@@ -42,9 +43,10 @@ public interface Platform {
   static Platform detect(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
     ImmutablePlatform.Builder builder = ImmutablePlatform.builder();
     OS os = detectOS(attributeExtractorLookup, matcherLookup);
+    Optional<Architecture> architecture = detectArchitecture(attributeExtractorLookup, matcherLookup, os.architectures());
+
     Optional<Distribution> dist = detectDistribution(attributeExtractorLookup, matcherLookup, os);
     Optional<Version> version = dist.flatMap(d -> detectVersion(attributeExtractorLookup, matcherLookup, d));
-    Optional<Architecture> architecture = version.flatMap(v -> detectArchitecture(attributeExtractorLookup, matcherLookup, v));
 
     return builder.operatingSystem(os)
             .distribution(dist)
@@ -65,7 +67,7 @@ public interface Platform {
     return find(attributeExtractorLookup, matcherLookup, distribution.versions());
   }
 
-  static Optional<Architecture> detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Version version) {
-    return find(attributeExtractorLookup, matcherLookup, version.architectures());
+  static Optional<Architecture> detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<Architecture> architectures) {
+    return find(attributeExtractorLookup, matcherLookup, architectures);
   }
 }

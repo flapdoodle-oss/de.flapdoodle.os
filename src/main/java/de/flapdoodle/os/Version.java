@@ -18,8 +18,5 @@ package de.flapdoodle.os;
 
 import de.flapdoodle.os.common.HasPecularities;
 
-import java.util.List;
-
 public interface Version extends HasPecularities {
-  List<Architecture> architectures();
 }

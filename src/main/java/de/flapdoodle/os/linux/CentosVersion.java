@@ -16,12 +16,10 @@
  */
 package de.flapdoodle.os.linux;
 
-import de.flapdoodle.os.Architecture;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 
-import java.util.Collections;
 import java.util.List;
 
 public enum CentosVersion implements Version {
@@ -38,8 +36,4 @@ public enum CentosVersion implements Version {
     return peculiarities;
   }
 
-  @Override
-  public List<Architecture> architectures() {
-    return Collections.emptyList();
-  }
 }
