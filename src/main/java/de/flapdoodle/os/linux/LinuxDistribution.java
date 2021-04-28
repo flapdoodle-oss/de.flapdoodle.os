@@ -30,33 +30,35 @@ import de.flapdoodle.os.common.types.OsReleaseFileConverter;
 import java.util.List;
 
 public enum LinuxDistribution implements Distribution {
-	Ubuntu(UbuntuVersion.class, osReleaseFileNameMatches("Ubuntu")),
-	CentOS(CentosVersion.class, osReleaseFileNameMatches("Centos")),
-	;
+  Ubuntu(UbuntuVersion.class, osReleaseFileNameMatches("Ubuntu")),
+  CentOS(CentosVersion.class, osReleaseFileNameMatches("Centos")),
+  ;
 
-	private final List<Peculiarity<?>> peculiarities;
-	private final List<Version> versions;
+  private final List<Peculiarity<?>> peculiarities;
+  private final List<Version> versions;
 
-	<T extends Enum<T> & Version> LinuxDistribution(Class<T> versionClazz, Peculiarity<?> ... peculiarities) {
-		this.peculiarities = HasPecularities.asList(peculiarities);
-		this.versions = Immutables.asList(versionClazz.getEnumConstants());
-	}
+  <T extends Enum<T> & Version> LinuxDistribution(Class<T> versionClazz, Peculiarity<?>... peculiarities) {
+    this.peculiarities = HasPecularities.asList(peculiarities);
+    this.versions = versionClazz.getEnumConstants() != null
+            ? Immutables.asList(versionClazz.getEnumConstants())
+            : Immutables.asList();
+  }
 
-	@Override
-	public List<Peculiarity<?>> pecularities() {
-		return peculiarities;
-	}
+  @Override
+  public List<Peculiarity<?>> pecularities() {
+    return peculiarities;
+  }
 
-	@Override
-	public List<Version> versions() {
-		return this.versions;
-	}
+  @Override
+  public List<Version> versions() {
+    return this.versions;
+  }
 
-	private static Peculiarity<OsReleaseFile> osReleaseFileNameMatches(String name) {
-		return Peculiarity.of(osReleaseFile(), Matchers.osReleaseFileEntry("NAME", ".*" + name + ".*"));
-	}
+  private static Peculiarity<OsReleaseFile> osReleaseFileNameMatches(String name) {
+    return Peculiarity.of(osReleaseFile(), Matchers.osReleaseFileEntry("NAME", ".*" + name + ".*"));
+  }
 
-	static Attribute<OsReleaseFile> osReleaseFile() {
-		return Attributes.mappedTextFile("/etc/os-release", OsReleaseFileConverter::convert);
-	}
+  static Attribute<OsReleaseFile> osReleaseFile() {
+    return Attributes.mappedTextFile("/etc/os-release", OsReleaseFileConverter::convert);
+  }
 }

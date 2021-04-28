@@ -45,7 +45,7 @@ public interface Platform {
     OS os = detectOS(attributeExtractorLookup, matcherLookup);
     Architecture architecture = detectArchitecture(attributeExtractorLookup, matcherLookup, os.architectures());
 
-    Optional<Distribution> dist = detectDistribution(attributeExtractorLookup, matcherLookup, os);
+    Optional<Distribution> dist = detectDistribution(attributeExtractorLookup, matcherLookup, os.distributions());
     Optional<Version> version = dist.flatMap(d -> detectVersion(attributeExtractorLookup, matcherLookup, d));
 
     return builder.operatingSystem(os)
@@ -59,12 +59,16 @@ public interface Platform {
     return match(attributeExtractorLookup, matcherLookup, OS.values());
   }
 
-  static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, OS os) {
-    return find(attributeExtractorLookup, matcherLookup, os.distributions());
+  static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Iterable<Distribution> distributions) {
+    return find(attributeExtractorLookup, matcherLookup, distributions);
   }
 
   static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Distribution distribution) {
-    return find(attributeExtractorLookup, matcherLookup, distribution.versions());
+    return detectVersion(attributeExtractorLookup, matcherLookup, distribution.versions());
+  }
+
+  static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<Version> versions) {
+    return find(attributeExtractorLookup, matcherLookup, versions);
   }
 
   static Architecture detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<Architecture> architectures) {

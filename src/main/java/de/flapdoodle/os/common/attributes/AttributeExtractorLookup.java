@@ -17,6 +17,8 @@
 package de.flapdoodle.os.common.attributes;
 
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @FunctionalInterface
 public interface AttributeExtractorLookup {
@@ -39,6 +41,17 @@ public interface AttributeExtractorLookup {
 			@Override
 			public <_T, _A extends Attribute<_T>> Optional<AttributeExtractor<_T, _A>> extractor(_A attribute) {
 				return attributeType.isInstance(attribute)
+								? Optional.of((AttributeExtractor<_T, _A>) extractor)
+								: Optional.empty();
+			}
+		};
+	}
+
+	static <T, A extends Attribute<T>> AttributeExtractorLookup with(Predicate<? super A> attributeTypeCheck, AttributeExtractor<T, A> extractor) {
+		return new AttributeExtractorLookup() {
+			@Override
+			public <_T, _A extends Attribute<_T>> Optional<AttributeExtractor<_T, _A>> extractor(_A attribute) {
+				return attributeTypeCheck.test((A) attribute)
 								? Optional.of((AttributeExtractor<_T, _A>) extractor)
 								: Optional.empty();
 			}
