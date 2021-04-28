@@ -25,6 +25,14 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <developers>
+        <developer>
+            <name>Michael Mosmann</name>
+            <email>michael@mosmann.de</email>
+            <organization>Flapdoodle OSS</organization>
+            <organizationUrl>http://github.com/flapdoodle-oss</organizationUrl>
+        </developer>
+    </developers>
 
 
     <scm>
