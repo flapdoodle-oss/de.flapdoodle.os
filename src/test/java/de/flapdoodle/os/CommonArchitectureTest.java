@@ -32,18 +32,18 @@ class CommonArchitectureTest {
   @ParameterizedTest
   @ValueSource(strings = {"amd64","ia32e","x64"})
   void detectX86_64IfOsArchMatches(String osArch) {
-    Optional<Architecture> arch = detectArchitecture(osArchIs(osArch), CommonArchitecture.values());
-    assertThat(arch).contains(CommonArchitecture.X86_64);
+    Architecture arch = detectArchitecture(osArchIs(osArch), CommonArchitecture.values());
+    assertThat(arch).isEqualTo(CommonArchitecture.X86_64);
   }
 
   @ParameterizedTest
   @ValueSource(strings = {"aarch64"})
   void detectArm64IfOsArchMatches(String osArch) {
-    Optional<Architecture> arch = detectArchitecture(osArchIs(osArch), CommonArchitecture.values());
-    assertThat(arch).contains(CommonArchitecture.ARM_64);
+    Architecture arch = detectArchitecture(osArchIs(osArch), CommonArchitecture.values());
+    assertThat(arch).isEqualTo(CommonArchitecture.ARM_64);
   }
 
-  private static Optional<Architecture> detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, Architecture ... values) {
+  private static Architecture detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, Architecture ... values) {
     return Platform.detectArchitecture(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.<Architecture>asList(values));
   }
   

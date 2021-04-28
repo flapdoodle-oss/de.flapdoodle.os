@@ -30,7 +30,7 @@ import static de.flapdoodle.os.common.PeculiarityInspector.match;
 public interface Platform {
   OS operatingSystem();
 
-  Optional<Architecture> architecture();
+  Architecture architecture();
 
   Optional<Distribution> distribution();
 
@@ -43,7 +43,7 @@ public interface Platform {
   static Platform detect(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
     ImmutablePlatform.Builder builder = ImmutablePlatform.builder();
     OS os = detectOS(attributeExtractorLookup, matcherLookup);
-    Optional<Architecture> architecture = detectArchitecture(attributeExtractorLookup, matcherLookup, os.architectures());
+    Architecture architecture = detectArchitecture(attributeExtractorLookup, matcherLookup, os.architectures());
 
     Optional<Distribution> dist = detectDistribution(attributeExtractorLookup, matcherLookup, os);
     Optional<Version> version = dist.flatMap(d -> detectVersion(attributeExtractorLookup, matcherLookup, d));
@@ -67,7 +67,7 @@ public interface Platform {
     return find(attributeExtractorLookup, matcherLookup, distribution.versions());
   }
 
-  static Optional<Architecture> detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<Architecture> architectures) {
-    return find(attributeExtractorLookup, matcherLookup, architectures);
+  static Architecture detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<Architecture> architectures) {
+    return match(attributeExtractorLookup, matcherLookup, architectures);
   }
 }

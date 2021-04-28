@@ -72,9 +72,9 @@ class PlatformTest {
   void systemDefaults() {
     Platform result = Platform.detect();
     System.out.println("OS: " + result.operatingSystem());
+    System.out.println("Architecture: " + result.architecture());
 
     result.distribution().ifPresent(distribution -> System.out.println("Distribution: " + distribution));
     result.version().ifPresent(version -> System.out.println("Version: " + version));
-    result.architecture().ifPresent(arch -> System.out.println("Architecture: " + arch));
   }
 }
