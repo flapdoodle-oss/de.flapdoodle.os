@@ -16,9 +16,6 @@
  */
 package de.flapdoodle.os;
 
-import de.flapdoodle.os.Architecture;
-import de.flapdoodle.os.BitSize;
-import de.flapdoodle.os.CPUType;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.attributes.Attribute;

@@ -16,10 +16,9 @@
  */
 package de.flapdoodle.os.common;
 
-import org.immutables.value.Value.Immutable;
-
 import de.flapdoodle.os.common.attributes.Attribute;
 import de.flapdoodle.os.common.matcher.Match;
+import org.immutables.value.Value.Immutable;
 
 @Immutable
 public interface Peculiarity<T> {

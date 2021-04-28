@@ -16,7 +16,6 @@
  */
 package de.flapdoodle.os.common.io;
 
-import de.flapdoodle.os.common.attributes.TextFileResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

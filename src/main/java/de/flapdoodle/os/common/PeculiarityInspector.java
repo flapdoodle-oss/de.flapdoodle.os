@@ -16,19 +16,18 @@
  */
 package de.flapdoodle.os.common;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
 import de.flapdoodle.os.common.attributes.Attribute;
 import de.flapdoodle.os.common.attributes.AttributeExtractor;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.Match;
 import de.flapdoodle.os.common.matcher.Matcher;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 // TODO cache extracted attributes
 public abstract class PeculiarityInspector {

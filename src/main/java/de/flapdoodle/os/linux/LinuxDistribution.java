@@ -20,19 +20,14 @@ import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
-import de.flapdoodle.os.common.PeculiarityInspector;
 import de.flapdoodle.os.common.attributes.Attribute;
-import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.Attributes;
 import de.flapdoodle.os.common.collections.Immutables;
-import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.common.types.OsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFileConverter;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public enum LinuxDistribution implements Distribution {
 	Ubuntu(UbuntuVersion.class, osReleaseFileNameMatches("Ubuntu")),

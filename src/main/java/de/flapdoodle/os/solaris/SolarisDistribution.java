@@ -22,7 +22,6 @@ import de.flapdoodle.os.common.Peculiarity;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public enum SolarisDistribution implements Distribution {
 	;

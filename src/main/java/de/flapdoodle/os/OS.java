@@ -16,18 +16,18 @@
  */
 package de.flapdoodle.os;
 
-import java.util.List;
-
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.attributes.Attributes;
 import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.freebsd.FreeBSDDistribution;
-import de.flapdoodle.os.linux.*;
+import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.osx.OS_X_Distribution;
 import de.flapdoodle.os.solaris.SolarisDistribution;
 import de.flapdoodle.os.windows.WindowsDistribution;
+
+import java.util.List;
 
 public enum OS implements HasPecularities {
 	Linux(CommonArchitecture.class, LinuxDistribution.class, osNameMatches("Linux")),
