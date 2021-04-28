@@ -30,11 +30,11 @@ import static de.flapdoodle.os.common.PeculiarityInspector.match;
 public interface Platform {
   OS operatingSystem();
 
+  Optional<Architecture> architecture();
+
   Optional<Distribution> distribution();
 
   Optional<Version> version();
-
-  Optional<Architecture> architecture();
 
   static Platform detect() {
     return detect(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
