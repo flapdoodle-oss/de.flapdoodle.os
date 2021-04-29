@@ -22,6 +22,7 @@ import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.linux.UbuntuVersion;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -29,6 +30,7 @@ import java.util.Optional;
 class PlatformTest {
 
   @Test
+  @Disabled
   void detectAll() {
     AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
             .forType(SystemProperty.class, prop -> {

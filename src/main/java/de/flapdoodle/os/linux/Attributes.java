@@ -14,12 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.os;
+package de.flapdoodle.os.linux;
 
-import de.flapdoodle.os.common.HasPecularities;
+import de.flapdoodle.os.common.attributes.Attribute;
+import de.flapdoodle.os.common.types.OsReleaseFile;
+import de.flapdoodle.os.common.types.OsReleaseFileConverter;
 
-import java.util.List;
+public abstract class Attributes {
 
-public interface Distribution extends HasPecularities {
-  List<? extends Version> versions();
+  static Attribute<OsReleaseFile> osReleaseFile() {
+    return de.flapdoodle.os.common.attributes.Attributes.mappedTextFile("/etc/os-release", OsReleaseFileConverter::convert);
+  }
 }

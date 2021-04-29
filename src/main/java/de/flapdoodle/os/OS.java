@@ -19,6 +19,7 @@ package de.flapdoodle.os;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.attributes.Attributes;
+import de.flapdoodle.os.common.collections.Enums;
 import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.freebsd.FreeBSDDistribution;
@@ -37,8 +38,8 @@ public enum OS implements HasPecularities {
 	FreeBSD(CommonArchitecture.class, FreeBSDDistribution.class, osNameMatches("FreeBSD"));
 
 	private final List<Peculiarity<?>> peculiarities;
-	private final List<Distribution> distributions;
-	private final List<Architecture> architectures;
+	private final List<? extends Distribution> distributions;
+	private final List<? extends Architecture> architectures;
 
 	<A extends Enum<A> & Architecture, T extends Enum<T> & Distribution> OS(
 					Class<A> architecureClazz,
@@ -46,15 +47,15 @@ public enum OS implements HasPecularities {
 					Peculiarity<?>... peculiarities
 	) {
 		this.peculiarities  = HasPecularities.asList(peculiarities);
-		this.architectures = Immutables.asList(architecureClazz.getEnumConstants());
-		this.distributions = Immutables.asList(clazz.getEnumConstants());
+		this.architectures = Enums.valuesAsList(architecureClazz);
+		this.distributions = Enums.valuesAsList(clazz);
 	}
 
-	public List<Distribution> distributions() {
+	public List<? extends Distribution> distributions() {
 		return distributions;
 	}
 
-	public List<Architecture> architectures() {
+	public List<? extends Architecture> architectures() {
 		return  architectures;
 	}
 

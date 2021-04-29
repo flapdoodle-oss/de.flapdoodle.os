@@ -20,12 +20,10 @@ import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
-import de.flapdoodle.os.common.attributes.Attribute;
-import de.flapdoodle.os.common.attributes.Attributes;
+import de.flapdoodle.os.common.collections.Enums;
 import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.common.types.OsReleaseFile;
-import de.flapdoodle.os.common.types.OsReleaseFileConverter;
 
 import java.util.List;
 
@@ -35,13 +33,11 @@ public enum LinuxDistribution implements Distribution {
   ;
 
   private final List<Peculiarity<?>> peculiarities;
-  private final List<Version> versions;
+  private final List<? extends Version> versions;
 
   <T extends Enum<T> & Version> LinuxDistribution(Class<T> versionClazz, Peculiarity<?>... peculiarities) {
     this.peculiarities = HasPecularities.asList(peculiarities);
-    this.versions = versionClazz.getEnumConstants() != null
-            ? Immutables.asList(versionClazz.getEnumConstants())
-            : Immutables.asList();
+    this.versions = Enums.valuesAsList(versionClazz);
   }
 
   @Override
@@ -50,15 +46,12 @@ public enum LinuxDistribution implements Distribution {
   }
 
   @Override
-  public List<Version> versions() {
+  public List<? extends Version> versions() {
     return this.versions;
   }
 
   private static Peculiarity<OsReleaseFile> osReleaseFileNameMatches(String name) {
-    return Peculiarity.of(osReleaseFile(), Matchers.osReleaseFileEntry("NAME", ".*" + name + ".*"));
+    return Peculiarity.of(de.flapdoodle.os.linux.Attributes.osReleaseFile(), Matchers.osReleaseFileEntry("NAME", ".*" + name + ".*"));
   }
 
-  static Attribute<OsReleaseFile> osReleaseFile() {
-    return Attributes.mappedTextFile("/etc/os-release", OsReleaseFileConverter::convert);
-  }
 }

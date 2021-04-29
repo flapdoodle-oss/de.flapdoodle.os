@@ -59,7 +59,7 @@ public interface Platform {
     return match(attributeExtractorLookup, matcherLookup, OS.values());
   }
 
-  static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Iterable<Distribution> distributions) {
+  static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Iterable<? extends Distribution> distributions) {
     return find(attributeExtractorLookup, matcherLookup, distributions);
   }
 
@@ -67,11 +67,11 @@ public interface Platform {
     return detectVersion(attributeExtractorLookup, matcherLookup, distribution.versions());
   }
 
-  static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<Version> versions) {
+  static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<? extends Version> versions) {
     return find(attributeExtractorLookup, matcherLookup, versions);
   }
 
-  static Architecture detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<Architecture> architectures) {
+  static Architecture detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<? extends Architecture> architectures) {
     return match(attributeExtractorLookup, matcherLookup, architectures);
   }
 }

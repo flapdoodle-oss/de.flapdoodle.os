@@ -16,7 +16,6 @@
  */
 package de.flapdoodle.os.linux;
 
-import de.flapdoodle.os.Architecture;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
@@ -31,11 +30,12 @@ public enum UbuntuVersion implements Version {
   UBUNTU_19_04(osReleaseFileVersionMatches("19.04")),
   UBUNTU_19_10(osReleaseFileVersionMatches("19.10")),
   UBUNTU_20_04(osReleaseFileVersionMatches("20.04")),
-  UBUNTU_20_10(osReleaseFileVersionMatches("20.10"));
+  UBUNTU_20_10(osReleaseFileVersionMatches("20.10"))
+  ;
 
   private final List<Peculiarity<?>> peculiarities;
 
-  <T extends Enum<T> & Architecture> UbuntuVersion(Peculiarity... peculiarities) {
+  UbuntuVersion(Peculiarity... peculiarities) {
     this.peculiarities  = HasPecularities.asList(peculiarities);
   }
 
@@ -45,7 +45,7 @@ public enum UbuntuVersion implements Version {
   }
 
   private static Peculiarity<OsReleaseFile> osReleaseFileVersionMatches(String version) {
-    return Peculiarity.of(LinuxDistribution.osReleaseFile(), Matchers.osReleaseFileEntry("VERSION_ID", ".*" + version + ".*"));
+    return Peculiarity.of(Attributes.osReleaseFile(), Matchers.osReleaseFileEntry("VERSION_ID", ".*" + version + ".*"));
   }
 
 }

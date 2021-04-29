@@ -59,7 +59,7 @@ public abstract class PeculiarityInspector {
   public static <T extends HasPecularities> Optional<T> find(
           AttributeExtractorLookup attributeExtractorLookup,
           MatcherLookup matcherLookup,
-          Iterable<T> items
+          Iterable<? extends T> items
   ) {
     List<T> matching = matching(attributeExtractorLookup, matcherLookup, items);
     return matching.size() == 1
@@ -78,7 +78,7 @@ public abstract class PeculiarityInspector {
   public static <T extends HasPecularities> List<T> matching(
           AttributeExtractorLookup attributeExtractorLookup,
           MatcherLookup matcherLookup,
-          Iterable<T> items
+          Iterable<? extends T> items
   ) {
     return StreamSupport.stream(items.spliterator(), false)
             .filter(it -> matches(attributeExtractorLookup, matcherLookup, it.pecularities()))
