@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CommonArchitectureTest {
 
   @ParameterizedTest
-  @ValueSource(strings = {"amd64","ia32e","x64"})
+  @ValueSource(strings = {"amd64","ia32e","x64","x86_64"})
   void detectX86_64IfOsArchMatches(String osArch) {
     Architecture arch = detectArchitecture(osArchIs(osArch), CommonArchitecture.values());
     assertThat(arch).isEqualTo(CommonArchitecture.X86_64);

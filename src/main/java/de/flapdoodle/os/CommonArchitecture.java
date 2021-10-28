@@ -25,7 +25,7 @@ import de.flapdoodle.os.common.matcher.Matchers;
 import java.util.List;
 
 public enum CommonArchitecture implements Architecture {
-  X86_64(CPUType.X86, BitSize.B64, osArchMatches("^(x8664|amd64|ia32e|em64t|x64)$")),
+  X86_64(CPUType.X86, BitSize.B64, osArchMatches("^(x8664|amd64|ia32e|em64t|x64|x86_64)$")),
   X86_32(CPUType.X86, BitSize.B32, osArchMatches("^(x8632|x86|i[3-6]86|ia32|x32)$")),
   ARM_64(CPUType.ARM, BitSize.B64, osArchMatches("^aarch64$")),
   ARM_32(CPUType.ARM, BitSize.B32, osArchMatches("^(arm|arm32)$"))
