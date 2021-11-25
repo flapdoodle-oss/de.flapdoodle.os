@@ -21,7 +21,6 @@ import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.collections.Enums;
-import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.common.types.OsReleaseFile;
 

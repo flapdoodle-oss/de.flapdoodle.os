@@ -22,4 +22,6 @@ import java.util.List;
 
 public interface Distribution extends HasPecularities {
   List<? extends Version> versions();
+
+  String name();
 }
