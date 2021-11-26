@@ -25,12 +25,12 @@ import de.flapdoodle.os.common.types.OsReleaseFile;
 import java.util.List;
 
 public enum UbuntuVersion implements Version {
-  UBUNTU_18_04(osReleaseFileVersionMatches("18.04")),
-  UBUNTU_18_10(osReleaseFileVersionMatches("18.10")),
-  UBUNTU_19_04(osReleaseFileVersionMatches("19.04")),
-  UBUNTU_19_10(osReleaseFileVersionMatches("19.10")),
-  UBUNTU_20_04(osReleaseFileVersionMatches("20.04")),
-  UBUNTU_20_10(osReleaseFileVersionMatches("20.10"))
+  Ubuntu_18_04(osReleaseFileVersionMatches("18.04")),
+  Ubuntu_18_10(osReleaseFileVersionMatches("18.10")),
+  Ubuntu_19_04(osReleaseFileVersionMatches("19.04")),
+  Ubuntu_19_10(osReleaseFileVersionMatches("19.10")),
+  Ubuntu_20_04(osReleaseFileVersionMatches("20.04")),
+  Ubuntu_20_10(osReleaseFileVersionMatches("20.10"))
   ;
 
   private final List<Peculiarity<?>> peculiarities;

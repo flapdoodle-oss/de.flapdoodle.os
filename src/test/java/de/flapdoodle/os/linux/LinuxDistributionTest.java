@@ -16,14 +16,11 @@
  */
 package de.flapdoodle.os.linux;
 
-import de.flapdoodle.os.Architecture;
-import de.flapdoodle.os.CommonArchitecture;
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Platform;
 import de.flapdoodle.os.common.attributes.AttributeExtractor;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
-import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;

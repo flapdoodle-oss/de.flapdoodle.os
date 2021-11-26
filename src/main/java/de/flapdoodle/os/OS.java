@@ -20,7 +20,6 @@ import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.attributes.Attributes;
 import de.flapdoodle.os.common.collections.Enums;
-import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.freebsd.FreeBSDDistribution;
 import de.flapdoodle.os.linux.LinuxDistribution;

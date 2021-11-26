@@ -61,7 +61,7 @@ class PlatformTest {
             .isEqualTo(ImmutablePlatform.builder()
                     .operatingSystem(OS.Linux)
                     .distribution(LinuxDistribution.Ubuntu)
-                    .version(UbuntuVersion.UBUNTU_18_10)
+                    .version(UbuntuVersion.Ubuntu_18_10)
                     .architecture(CommonArchitecture.X86_32)
                     .build());
   }

@@ -16,14 +16,20 @@
  */
 package de.flapdoodle.os.common;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
+import de.flapdoodle.os.common.attributes.Attributes;
+import de.flapdoodle.os.common.attributes.SystemProperty;
+import de.flapdoodle.os.common.attributes.TextFile;
+import de.flapdoodle.os.common.matcher.MatchPattern;
+import de.flapdoodle.os.common.matcher.MatcherLookup;
+import de.flapdoodle.os.common.matcher.Matchers;
+import de.flapdoodle.os.common.matcher.PatternMatcher;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import de.flapdoodle.os.common.attributes.*;
-import de.flapdoodle.os.common.matcher.*;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PeculiarityInspectorTest {
 
