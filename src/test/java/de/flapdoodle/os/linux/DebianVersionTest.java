@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.os.linux;
 
-import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Platform;
+import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractor;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
@@ -32,39 +32,33 @@ import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LinuxDistributionTest {
+class DebianVersionTest {
 
   @Test
-  public void selectUbuntuIfReleaseFileContainsNameWithUbuntu() {
-    Optional<Distribution> dist = detectDistribution(osReleaseFileNameIs("ignoreThis_Ubuntu_andThat"), LinuxDistribution.values());
-    assertThat(dist).contains(LinuxDistribution.Ubuntu);
+  public void debianVersionIdMustMatchDebianVersion() {
+    assertVersion("9", DebianVersion.DEBIAN_9);
+    assertVersion("10", DebianVersion.DEBIAN_10);
   }
 
-  @Test
-  public void selectCentosIfReleaseFileContainsNameWithUbuntu() {
-    Optional<Distribution> dist = detectDistribution(osReleaseFileNameIs("ignoreThis_Centos_andThat"), LinuxDistribution.values());
-    assertThat(dist).contains(LinuxDistribution.CentOS);
+  private static void assertVersion(String versionIdContent, DebianVersion version) {
+    Optional<Version> detectedVersion = detectVersion(osReleaseFileVersionIdIs(versionIdContent), DebianVersion.values());
+    assertThat(detectedVersion).contains(version);
   }
 
-  @Test
-  public void selectDebianIfReleaseFileContainsNameWithDebian() {
-    Optional<Distribution> dist = detectDistribution(osReleaseFileNameIs("ignoreThis_Debian_andThat"), LinuxDistribution.values());
-    assertThat(dist).contains(LinuxDistribution.Debian);
+  private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, Version... values) {
+    return Platform.detectVersion(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.<Version>asList(values));
   }
 
-  private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
-    return Platform.detectDistribution(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
-  }
-
-  private static AttributeExtractorLookup osReleaseFileNameIs(String content) {
+  private static AttributeExtractorLookup osReleaseFileVersionIdIs(String content) {
 
     return AttributeExtractorLookup.with((Predicate<? super MappedTextFile<?>>) attr -> true, (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
       if (attribute.name().equals("/etc/os-release")) {
         return Optional.of(ImmutableOsReleaseFile.builder()
-                .putAttributes("NAME",content)
+                .putAttributes("VERSION_ID",content)
                 .build());
       }
       return Optional.empty();
     }).join(AttributeExtractorLookup.failing());
   }
+
 }

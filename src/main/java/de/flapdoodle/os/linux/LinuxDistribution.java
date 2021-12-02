@@ -29,6 +29,7 @@ import java.util.List;
 public enum LinuxDistribution implements Distribution {
   Ubuntu(UbuntuVersion.class, osReleaseFileNameMatches("Ubuntu")),
   CentOS(CentosVersion.class, osReleaseFileNameMatches("Centos")),
+  Debian(CentosVersion.class, osReleaseFileNameMatches("Debian")),
   ;
 
   private final List<Peculiarity<?>> peculiarities;
