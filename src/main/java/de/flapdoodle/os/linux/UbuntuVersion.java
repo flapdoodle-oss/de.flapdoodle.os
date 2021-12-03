@@ -19,18 +19,16 @@ package de.flapdoodle.os.linux;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
-import de.flapdoodle.os.common.matcher.Matchers;
-import de.flapdoodle.os.common.types.OsReleaseFile;
 
 import java.util.List;
 
 public enum UbuntuVersion implements Version {
-  Ubuntu_18_04(osReleaseFileVersionMatches("18.04")),
-  Ubuntu_18_10(osReleaseFileVersionMatches("18.10")),
-  Ubuntu_19_04(osReleaseFileVersionMatches("19.04")),
-  Ubuntu_19_10(osReleaseFileVersionMatches("19.10")),
-  Ubuntu_20_04(osReleaseFileVersionMatches("20.04")),
-  Ubuntu_20_10(osReleaseFileVersionMatches("20.10"))
+  Ubuntu_18_04(OsReleaseFiles.osReleaseFileVersionMatches("18.04")),
+  Ubuntu_18_10(OsReleaseFiles.osReleaseFileVersionMatches("18.10")),
+  Ubuntu_19_04(OsReleaseFiles.osReleaseFileVersionMatches("19.04")),
+  Ubuntu_19_10(OsReleaseFiles.osReleaseFileVersionMatches("19.10")),
+  Ubuntu_20_04(OsReleaseFiles.osReleaseFileVersionMatches("20.04")),
+  Ubuntu_20_10(OsReleaseFiles.osReleaseFileVersionMatches("20.10"))
   ;
 
   private final List<Peculiarity<?>> peculiarities;
@@ -42,10 +40,6 @@ public enum UbuntuVersion implements Version {
   @Override
   public List<Peculiarity<?>> pecularities() {
     return peculiarities;
-  }
-
-  private static Peculiarity<OsReleaseFile> osReleaseFileVersionMatches(String version) {
-    return Peculiarity.of(Attributes.osReleaseFile(), Matchers.osReleaseFileEntry("VERSION_ID", ".*" + version + ".*"));
   }
 
 }

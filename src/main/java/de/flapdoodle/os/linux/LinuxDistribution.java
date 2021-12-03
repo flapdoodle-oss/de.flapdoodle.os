@@ -21,14 +21,13 @@ import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.collections.Enums;
-import de.flapdoodle.os.common.matcher.Matchers;
-import de.flapdoodle.os.common.types.OsReleaseFile;
 
 import java.util.List;
 
 public enum LinuxDistribution implements Distribution {
-  Ubuntu(UbuntuVersion.class, osReleaseFileNameMatches("Ubuntu")),
-  CentOS(CentosVersion.class, osReleaseFileNameMatches("Centos")),
+  Ubuntu(UbuntuVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Ubuntu")),
+  CentOS(CentosVersion.class, CentosVersion.centosReleaseFileNameMatches("CentOS")),
+  OpenSUSE(OpenSUSEVersion.class, OsReleaseFiles.osReleaseFileNameMatches("openSUSE")),
   ;
 
   private final List<Peculiarity<?>> peculiarities;
@@ -38,7 +37,6 @@ public enum LinuxDistribution implements Distribution {
     this.peculiarities = HasPecularities.asList(peculiarities);
     this.versions = Enums.valuesAsList(versionClazz);
   }
-
   @Override
   public List<Peculiarity<?>> pecularities() {
     return peculiarities;
@@ -47,10 +45,6 @@ public enum LinuxDistribution implements Distribution {
   @Override
   public List<? extends Version> versions() {
     return this.versions;
-  }
-
-  private static Peculiarity<OsReleaseFile> osReleaseFileNameMatches(String name) {
-    return Peculiarity.of(de.flapdoodle.os.linux.Attributes.osReleaseFile(), Matchers.osReleaseFileEntry("NAME", ".*" + name + ".*"));
   }
 
 }
