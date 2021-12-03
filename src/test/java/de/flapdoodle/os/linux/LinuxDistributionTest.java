@@ -48,7 +48,7 @@ class LinuxDistributionTest {
 
   @Test
   public void selectDebianIfReleaseFileContainsNameWithDebian() {
-    Optional<Distribution> dist = detectDistribution(osReleaseFileNameIs("ignoreThis_Debian_andThat"), LinuxDistribution.values());
+    Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_Debian_andThat"), LinuxDistribution.values());
     assertThat(dist).contains(LinuxDistribution.Debian);
   }
 
