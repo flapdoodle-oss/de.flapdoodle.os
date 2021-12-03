@@ -16,7 +16,7 @@ Stable (Maven Central Repository, Released: 03.12.2021 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.0.8</version>
+		<version>1.0.9</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -24,7 +24,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.0.9-SNAPSHOT</version>
+		<version>1.0.10-SNAPSHOT</version>
 	</dependency>
 
 
