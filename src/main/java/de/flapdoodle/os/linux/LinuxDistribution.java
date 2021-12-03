@@ -28,6 +28,7 @@ public enum LinuxDistribution implements Distribution {
   Ubuntu(UbuntuVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Ubuntu")),
   CentOS(CentosVersion.class, CentosVersion.centosReleaseFileNameMatches("CentOS")),
   OpenSUSE(OpenSUSEVersion.class, OsReleaseFiles.osReleaseFileNameMatches("openSUSE")),
+  Debian(CentosVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Debian")),
   ;
 
   private final List<Peculiarity<?>> peculiarities;

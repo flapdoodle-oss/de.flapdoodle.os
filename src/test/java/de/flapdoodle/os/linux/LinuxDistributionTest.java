@@ -47,6 +47,12 @@ class LinuxDistributionTest {
   }
 
   @Test
+  public void selectDebianIfReleaseFileContainsNameWithDebian() {
+    Optional<Distribution> dist = detectDistribution(osReleaseFileNameIs("ignoreThis_Debian_andThat"), LinuxDistribution.values());
+    assertThat(dist).contains(LinuxDistribution.Debian);
+  }
+
+  @Test
   public void selectOpenSUSEIfReleaseFileContainsNameWithOpenSUSE() {
     Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_openSUSE_andThat"), LinuxDistribution.values());
     assertThat(dist).contains(LinuxDistribution.OpenSUSE);
