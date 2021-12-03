@@ -13,7 +13,7 @@
     <groupId>de.flapdoodle</groupId>
     <artifactId>de.flapdoodle.os</artifactId>
     <name>Flapdoodle OS Detection Library</name>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.9-SNAPSHOT</version>
 
     <description>os detection library ...</description>
     <url>http://github.com/flapdoodle-oss/de.flapdoodle.os</url>

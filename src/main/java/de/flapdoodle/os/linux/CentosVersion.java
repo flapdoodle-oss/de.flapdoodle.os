@@ -19,11 +19,18 @@ package de.flapdoodle.os.linux;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
+import de.flapdoodle.os.common.attributes.Attribute;
+import de.flapdoodle.os.common.types.OsReleaseFile;
 
 import java.util.List;
 
 public enum CentosVersion implements Version {
+  CentOS_6(OsReleaseFiles.versionMatches(centosReleaseFile(),"6")),
+  CentOS_7(OsReleaseFiles.versionMatches(centosReleaseFile(),"7")),
+  CentOS_8(OsReleaseFiles.versionMatches(centosReleaseFile(),"8")),
   ;
+
+  public static final String RELEASE_FILE_NAME="/etc/centos-release";
 
   private final List<Peculiarity<?>> peculiarities;
 
@@ -36,4 +43,11 @@ public enum CentosVersion implements Version {
     return peculiarities;
   }
 
+  static Peculiarity<OsReleaseFile> centosReleaseFileNameMatches(String version) {
+    return OsReleaseFiles.nameMatches(centosReleaseFile(), version);
+  }
+
+  private static Attribute<OsReleaseFile> centosReleaseFile() {
+    return OsReleaseFiles.releaseFile(RELEASE_FILE_NAME);
+  }
 }

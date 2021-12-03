@@ -27,26 +27,20 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UbuntuVersionTest {
+class OpenSUSEVersionTest {
 
-  @Test
-  public void ubuntuVersionIdMustMatchUbuntuVersion() {
-    assertVersion("18.04", UbuntuVersion.Ubuntu_18_04);
-    assertVersion("18.10", UbuntuVersion.Ubuntu_18_10);
-    assertVersion("19.04", UbuntuVersion.Ubuntu_19_04);
-    assertVersion("19.10", UbuntuVersion.Ubuntu_19_10);
-    assertVersion("20.04", UbuntuVersion.Ubuntu_20_04);
-    assertVersion("20.10", UbuntuVersion.Ubuntu_20_10);
-  }
+	@Test
+	public void openSUSEVersionIdMustMatchUbuntuVersion() {
+		assertVersion("20211127", OpenSUSEVersion.Tumbleweed);
+	}
 
-  private static void assertVersion(String versionIdContent, UbuntuVersion version) {
-    Optional<Version> detectedVersion = detectVersion(LinuxDistributionTest.osReleaseFile_VersionIdIs(versionIdContent), UbuntuVersion.values());
-    assertThat(detectedVersion).contains(version);
+	private static void assertVersion(String versionIdContent, OpenSUSEVersion version) {
+		Optional<Version> detectedVersion = detectVersion(LinuxDistributionTest.osReleaseFile_VersionIdIs(versionIdContent), OpenSUSEVersion.values());
+		assertThat(detectedVersion).contains(version);
+	}
 
-  }
-
-  private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, Version... values) {
-    return Platform.detectVersion(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.<Version>asList(values));
-  }
+	private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, Version... values) {
+		return Platform.detectVersion(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.<Version>asList(values));
+	}
 
 }

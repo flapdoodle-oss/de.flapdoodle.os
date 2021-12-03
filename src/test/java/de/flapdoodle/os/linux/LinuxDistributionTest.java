@@ -36,13 +36,13 @@ class LinuxDistributionTest {
 
   @Test
   public void selectUbuntuIfReleaseFileContainsNameWithUbuntu() {
-    Optional<Distribution> dist = detectDistribution(osReleaseFileNameIs("ignoreThis_Ubuntu_andThat"), LinuxDistribution.values());
+    Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_Ubuntu_andThat"), LinuxDistribution.values());
     assertThat(dist).contains(LinuxDistribution.Ubuntu);
   }
 
   @Test
   public void selectCentosIfReleaseFileContainsNameWithUbuntu() {
-    Optional<Distribution> dist = detectDistribution(osReleaseFileNameIs("ignoreThis_Centos_andThat"), LinuxDistribution.values());
+    Optional<Distribution> dist = detectDistribution(centosReleaseFile_NameIs("ignoreThis_CentOS_andThat"), LinuxDistribution.values());
     assertThat(dist).contains(LinuxDistribution.CentOS);
   }
 
@@ -52,17 +52,47 @@ class LinuxDistributionTest {
     assertThat(dist).contains(LinuxDistribution.Debian);
   }
 
+  @Test
+  public void selectOpenSUSEIfReleaseFileContainsNameWithOpenSUSE() {
+    Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_openSUSE_andThat"), LinuxDistribution.values());
+    assertThat(dist).contains(LinuxDistribution.OpenSUSE);
+  }
+
   private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
     return Platform.detectDistribution(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
   }
 
-  private static AttributeExtractorLookup osReleaseFileNameIs(String content) {
+  private static AttributeExtractorLookup osReleaseFile_NameIs(String content) {
+    return releaseFile_NameIs("/etc/os-release", content);
+  }
+
+  private static AttributeExtractorLookup centosReleaseFile_NameIs(String content) {
+    return releaseFile_NameIs(CentosVersion.RELEASE_FILE_NAME, content);
+  }
+
+  private static AttributeExtractorLookup releaseFile_NameIs(String releaseFileName, String content) {
 
     return AttributeExtractorLookup.with((Predicate<? super MappedTextFile<?>>) attr -> true, (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
-      if (attribute.name().equals("/etc/os-release")) {
+      if (attribute.name().equals(releaseFileName)) {
         return Optional.of(ImmutableOsReleaseFile.builder()
-                .putAttributes("NAME",content)
-                .build());
+          .putAttributes("NAME",content)
+          .build());
+      }
+      return Optional.empty();
+    }).join(AttributeExtractorLookup.failing());
+  }
+
+  static AttributeExtractorLookup osReleaseFile_VersionIdIs(String content) {
+    return releaseFile_VersionIdIs("/etc/os-release", content);
+  }
+
+  static AttributeExtractorLookup releaseFile_VersionIdIs(String releaseFileName, String content) {
+
+    return AttributeExtractorLookup.with((Predicate<? super MappedTextFile<?>>) attr -> true, (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
+      if (attribute.name().equals(releaseFileName)) {
+        return Optional.of(ImmutableOsReleaseFile.builder()
+          .putAttributes("VERSION_ID",content)
+          .build());
       }
       return Optional.empty();
     }).join(AttributeExtractorLookup.failing());

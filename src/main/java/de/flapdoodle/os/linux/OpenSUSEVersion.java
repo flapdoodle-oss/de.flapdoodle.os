@@ -22,24 +22,30 @@ import de.flapdoodle.os.common.Peculiarity;
 
 import java.util.List;
 
-public enum UbuntuVersion implements Version {
-  Ubuntu_18_04(OsReleaseFiles.osReleaseFileVersionMatches("18.04")),
-  Ubuntu_18_10(OsReleaseFiles.osReleaseFileVersionMatches("18.10")),
-  Ubuntu_19_04(OsReleaseFiles.osReleaseFileVersionMatches("19.04")),
-  Ubuntu_19_10(OsReleaseFiles.osReleaseFileVersionMatches("19.10")),
-  Ubuntu_20_04(OsReleaseFiles.osReleaseFileVersionMatches("20.04")),
-  Ubuntu_20_10(OsReleaseFiles.osReleaseFileVersionMatches("20.10"))
-  ;
+/**
+ NAME="openSUSE Tumbleweed"
+ # VERSION="20211127"
+ ID="opensuse-tumbleweed"
+ ID_LIKE="opensuse suse"
+ VERSION_ID="20211127"
+ PRETTY_NAME="openSUSE Tumbleweed"
+ ANSI_COLOR="0;32"
+ CPE_NAME="cpe:/o:opensuse:tumbleweed:20211127"
+ BUG_REPORT_URL="https://bugs.opensuse.org"
+ HOME_URL="https://www.opensuse.org/"
+ DOCUMENTATION_URL="https://en.opensuse.org/Portal:Tumbleweed"
+ LOGO="distributor-logo-Tumbleweed"
+ */
+public enum OpenSUSEVersion implements Version {
+	Tumbleweed(OsReleaseFiles.osReleaseFileVersionMatches("20211127"));
 
-  private final List<Peculiarity<?>> peculiarities;
+	private final List<Peculiarity<?>> peculiarities;
+	
+	OpenSUSEVersion(Peculiarity ... peculiarities) {
+		this.peculiarities  = HasPecularities.asList(peculiarities);
+	}
 
-  UbuntuVersion(Peculiarity... peculiarities) {
-    this.peculiarities  = HasPecularities.asList(peculiarities);
-  }
-
-  @Override
-  public List<Peculiarity<?>> pecularities() {
-    return peculiarities;
-  }
-
+	@Override public List<Peculiarity<?>> pecularities() {
+		return peculiarities;
+	}
 }
