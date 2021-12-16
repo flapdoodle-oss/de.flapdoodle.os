@@ -18,12 +18,14 @@ package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Platform;
+import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractor;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -38,18 +40,24 @@ class LinuxDistributionTest {
   public void selectUbuntuIfReleaseFileContainsNameWithUbuntu() {
     Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_Ubuntu_andThat"), LinuxDistribution.values());
     assertThat(dist).contains(LinuxDistribution.Ubuntu);
+    Assertions.<Version>assertThat(dist.get().versions())
+      .containsExactlyInAnyOrder(UbuntuVersion.values());
   }
 
   @Test
   public void selectCentosIfReleaseFileContainsNameWithUbuntu() {
     Optional<Distribution> dist = detectDistribution(centosReleaseFile_NameIs("ignoreThis_CentOS_andThat"), LinuxDistribution.values());
     assertThat(dist).contains(LinuxDistribution.CentOS);
+    Assertions.<Version>assertThat(dist.get().versions())
+      .containsExactlyInAnyOrder(CentosVersion.values());
   }
 
   @Test
   public void selectDebianIfReleaseFileContainsNameWithDebian() {
     Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_Debian_andThat"), LinuxDistribution.values());
     assertThat(dist).contains(LinuxDistribution.Debian);
+    Assertions.<Version>assertThat(dist.get().versions())
+      .containsExactlyInAnyOrder(DebianVersion.values());
   }
 
   @Test
@@ -57,6 +65,23 @@ class LinuxDistributionTest {
     Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_openSUSE_andThat"), LinuxDistribution.values());
     assertThat(dist).contains(LinuxDistribution.OpenSUSE);
   }
+
+
+  @Test
+  public void expectCentosVersionFromSample() {
+    // TODO handle centos or os release file
+    Optional<Distribution> dist = detectDistribution(centosReleaseFile_NameIs("CentOS Linux"), LinuxDistribution.values());
+    assertThat(dist).contains(LinuxDistribution.CentOS);
+
+//    cat /etc/os-release
+//		NAME="CentOS Linux"
+//		VERSION="7 (Core)"
+//		ID="centos"
+//		ID_LIKE="rhel fedora"
+//		VERSION_ID="7"
+
+  }
+
 
   private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
     return Platform.detectDistribution(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));

@@ -16,22 +16,25 @@
  */
 package de.flapdoodle.os.common.types;
 
-public abstract class OsReleaseFileConverter {
+import org.junit.jupiter.api.Test;
 
-  public static OsReleaseFile convert(String content) {
-    String[] lines = content.split("[\n\r]+");
-    ImmutableOsReleaseFile.Builder builder = ImmutableOsReleaseFile.builder();
-    for (String line : lines) {
-      int idx = line.indexOf("=");
-      if (idx!=-1) {
-        String key = line.substring(0, idx).trim();
-        String value = line.substring(idx + 1).trim();
-        if (value.charAt(0)=='\"' && value.charAt(value.length()-1)=='\"') {
-          value=value.substring(1,value.length()-1);
-        }
-        builder.putAttributes(key, value);
-      }
-    }
-    return builder.build();
-  }
+import static org.assertj.core.api.Assertions.assertThat;
+
+class OsReleaseFileConverterTest {
+
+	@Test
+	public void sampleCentosReleaseFile() {
+		String sample="NAME=\"CentOS Linux\"\n"
+			+ "VERSION=\"7 (Core)\"\n\r"
+			+ "ID=\"centos\"\r"
+			+ "ID_LIKE=\"rhel fedora\"\n"
+			+ "VERSION_ID=\"7\"";
+		
+		OsReleaseFile result = OsReleaseFileConverter.convert(sample);
+
+		assertThat(result.attributes())
+			.containsEntry("NAME","CentOS Linux")
+			.containsEntry("VERSION_ID","7")
+			.hasSize(5);
+	}
 }

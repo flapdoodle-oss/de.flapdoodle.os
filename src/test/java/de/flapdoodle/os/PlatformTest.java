@@ -19,6 +19,7 @@ package de.flapdoodle.os;
 import de.flapdoodle.os.common.attributes.*;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
+import de.flapdoodle.os.common.types.OsReleaseFile;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.linux.UbuntuVersion;
 import org.assertj.core.api.Assertions;
@@ -30,8 +31,7 @@ import java.util.Optional;
 class PlatformTest {
 
   @Test
-  @Disabled
-  void detectAll() {
+  void platformDetectShouldGiveUbuntu1810() {
     AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
             .forType(SystemProperty.class, prop -> {
               switch (prop.name()) {
@@ -42,15 +42,17 @@ class PlatformTest {
               }
               return Optional.empty();
             })
-            .join(AttributeExtractorLookup.forType(MappedTextFile.class, new MockMappedTextFile() {
-              @Override
-              public Optional extract(Attribute attribute) {
-                return Optional.of(ImmutableOsReleaseFile.builder()
-                        .putAttributes("NAME","Ubuntu")
-                        .putAttributes("VERSION_ID","18.10")
-                        .build());
-              }
-            }))
+            .join(AttributeExtractorLookup.with((MappedTextFile<OsReleaseFile> it) -> {
+              return it instanceof MappedTextFile && it.name().equals("/etc/centos-release");
+            },it -> Optional.empty()))
+            .join(AttributeExtractorLookup.with(
+              (MappedTextFile<OsReleaseFile> it) -> {
+                return it instanceof MappedTextFile && it.name().equals("/etc/os-release");
+              },
+              attribute -> Optional.of(ImmutableOsReleaseFile.builder()
+                .putAttributes("NAME","Ubuntu")
+                .putAttributes("VERSION_ID","18.10")
+                .build())))
             .join(AttributeExtractorLookup.failing());
     
     MatcherLookup matcherLookup = MatcherLookup.systemDefault();
@@ -66,7 +68,7 @@ class PlatformTest {
                     .build());
   }
 
-  interface MockMappedTextFile<T> extends AttributeExtractor<T, MappedTextFile<T>> {
+  interface MockMappedTextFile<T, A extends Attribute<T>> extends AttributeExtractor<T, A> {
 
   }
 

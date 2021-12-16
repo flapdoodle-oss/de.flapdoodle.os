@@ -35,6 +35,7 @@ public interface AttributeExtractorLookup {
 		};
 	}
 
+	@Deprecated
 	static <T, A extends Attribute<T>> AttributeExtractorLookup forType(Class<A> attributeType, AttributeExtractor<T, A> extractor) {
 		return new AttributeExtractorLookup() {
 			@Override
@@ -61,7 +62,7 @@ public interface AttributeExtractorLookup {
 		return new AttributeExtractorLookup() {
 			@Override
 			public <T, A extends Attribute<T>> Optional<AttributeExtractor<T, A>> extractor(A attribute) {
-				throw new IllegalArgumentException("no attribute extractor for "+attribute.getClass());
+				throw new IllegalArgumentException("no attribute extractor for "+attribute+"("+attribute.getClass()+")");
 			}
 		};
 	}
