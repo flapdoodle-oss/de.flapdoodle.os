@@ -16,17 +16,13 @@
  */
 package de.flapdoodle.os.common;
 
-import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
-import de.flapdoodle.os.common.attributes.Attributes;
-import de.flapdoodle.os.common.attributes.SystemProperty;
-import de.flapdoodle.os.common.attributes.TextFile;
+import de.flapdoodle.os.common.attributes.*;
 import de.flapdoodle.os.common.matcher.MatchPattern;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.matcher.Matchers;
 import de.flapdoodle.os.common.matcher.PatternMatcher;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,28 +31,44 @@ class PeculiarityInspectorTest {
 
 	@Test
 	void matchSinglePecularity() {
-		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.forType(TextFile.class, attribute -> Optional.of("fooo"));
-		MatcherLookup matcherLookup=MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.<String, TextFile>with(TypeCheckPredicate.of(TextFile.class,textFile -> textFile.name().equals("foo")),
+			attribute -> Optional.of("fooo"));
+		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
 		Peculiarity<String> peculiarity = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[a-z]+$"));
 
 		boolean matches = PeculiarityInspector.matches(attributeExtractorLookup, matcherLookup, peculiarity);
-		
+
+		assertThat(matches).isTrue();
+	}
+
+	@Test
+	void matchAnyPecularity() {
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.<String, TextFile>with(TypeCheckPredicate.of(TextFile.class, textFile -> textFile.name().equals("bar")),
+			attribute -> Optional.of("bar"));
+		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
+
+		Peculiarity<String> foo = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[0-9]+$"));
+		Peculiarity<String> bar = Peculiarity.of(Attributes.textFile("bar"), Matchers.matchPattern("^[a-z]+$"));
+		Any any = Any.of(foo, bar);
+
+		boolean matches = PeculiarityInspector.matches(attributeExtractorLookup, matcherLookup, any);
+
 		assertThat(matches).isTrue();
 	}
 
 	@Test
 	void matchListOfPecularities() {
-		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.forType(TextFile.class, attribute -> Optional.of("fooo"))
-						.join(AttributeExtractorLookup.forType(SystemProperty.class, attribute -> Optional.of("Any Linux OS")))
-						.join(AttributeExtractorLookup.failing());
-		
-		MatcherLookup matcherLookup=MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.<String, TextFile>with(TypeCheckPredicate.of(TextFile.class, textFile -> textFile.name().equals("foo")), attribute -> Optional.of("fooo"))
+			.join(AttributeExtractorLookup.<String, SystemProperty>with(TypeCheckPredicate.of(SystemProperty.class, systemProperty -> true), attribute -> Optional.of("Any Linux OS")))
+			.join(AttributeExtractorLookup.failing());
+
+		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
 		Peculiarity<String> textfile = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[a-z]+$"));
 		Peculiarity<String> osName = Peculiarity.of(Attributes.systemProperty("os.name"), Matchers.matchPattern("(inux)"));
 
-		boolean matches = PeculiarityInspector.matches(attributeExtractorLookup, matcherLookup, Arrays.asList(textfile, osName));
+		boolean matches = PeculiarityInspector.matches(attributeExtractorLookup, matcherLookup, HasPecularities.asList(textfile, osName));
 
 		assertThat(matches).isTrue();
 	}

@@ -17,14 +17,17 @@
 package de.flapdoodle.os.common;
 
 import de.flapdoodle.os.common.collections.Immutables;
+import de.flapdoodle.os.common.types.Either;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @FunctionalInterface
 public interface HasPecularities {
-  List<Peculiarity<?>> pecularities();
+  List<Either<Peculiarity<?>, Any>> pecularities();
 
-  static List<Peculiarity<?>> asList(Peculiarity<?> ... peculiarities) {
-    return Immutables.asNonEmptyList(peculiarities);
+  static List<Either<Peculiarity<?>, Any>> asList(Peculiarity<?> ... peculiarities) {
+    return Stream.of(peculiarities).map(it -> Either.<Peculiarity<?>,Any>left(it)).collect(Collectors.toList());
   }
 }

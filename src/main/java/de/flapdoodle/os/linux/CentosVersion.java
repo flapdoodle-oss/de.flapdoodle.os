@@ -17,9 +17,11 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
+import de.flapdoodle.os.common.Any;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.attributes.Attribute;
+import de.flapdoodle.os.common.types.Either;
 import de.flapdoodle.os.common.types.OsReleaseFile;
 
 import java.util.List;
@@ -32,14 +34,14 @@ public enum CentosVersion implements Version {
 
   public static final String RELEASE_FILE_NAME="/etc/centos-release";
 
-  private final List<Peculiarity<?>> peculiarities;
+  private final List<Either<Peculiarity<?>, Any>> peculiarities;
 
   CentosVersion(Peculiarity ... peculiarities) {
     this.peculiarities  = HasPecularities.asList(peculiarities);
   }
 
   @Override
-  public List<Peculiarity<?>> pecularities() {
+  public List<Either<Peculiarity<?>, Any>> pecularities() {
     return peculiarities;
   }
 

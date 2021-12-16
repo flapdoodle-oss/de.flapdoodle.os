@@ -14,27 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.os.freebsd;
+package de.flapdoodle.os.common.attributes;
 
-import de.flapdoodle.os.Distribution;
-import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.Any;
-import de.flapdoodle.os.common.Peculiarity;
-import de.flapdoodle.os.common.types.Either;
+import org.immutables.value.Value;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.function.Predicate;
 
-public enum FreeBSDDistribution implements Distribution {
-	;
+@Value.Immutable
+public abstract class TypeCheckPredicate<T> implements Predicate<T> {
+	@Value.Parameter
+	protected abstract Class<T> typeClass();
+
+	@Value.Parameter
+	protected abstract Predicate<T> check();
 
 	@Override
-	public List<Either<Peculiarity<?>, Any>> pecularities() {
-		return Collections.emptyList();
+	public boolean test(T t) {
+		if (typeClass().isInstance(t)) {
+			return check().test(t);
+		}
+		return false;
 	}
 
-	@Override
-	public List<Version> versions() {
-		return Collections.emptyList();
+	public static <T> TypeCheckPredicate<T> of(Class<T> type, Predicate<T> check) {
+		return ImmutableTypeCheckPredicate.of(type, check);
 	}
 }

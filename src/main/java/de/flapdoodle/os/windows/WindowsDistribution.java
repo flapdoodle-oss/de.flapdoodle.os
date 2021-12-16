@@ -18,7 +18,9 @@ package de.flapdoodle.os.windows;
 
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Version;
+import de.flapdoodle.os.common.Any;
 import de.flapdoodle.os.common.Peculiarity;
+import de.flapdoodle.os.common.types.Either;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +29,7 @@ public enum WindowsDistribution implements Distribution {
 	;
 
 	@Override
-	public List<Peculiarity<?>> pecularities() {
+	public List<Either<Peculiarity<?>, Any>> pecularities() {
 		return Collections.emptyList();
 	}
 

@@ -14,27 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.os.freebsd;
+package de.flapdoodle.os.common;
 
-import de.flapdoodle.os.Distribution;
-import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.Any;
-import de.flapdoodle.os.common.Peculiarity;
-import de.flapdoodle.os.common.types.Either;
+import de.flapdoodle.os.common.collections.Immutables;
+import org.immutables.value.Value;
 
-import java.util.Collections;
 import java.util.List;
 
-public enum FreeBSDDistribution implements Distribution {
-	;
+@FunctionalInterface
+@Value.Immutable
+public interface Any {
+	@Value.Parameter
+	List<Peculiarity<?>> pecularities();
 
-	@Override
-	public List<Either<Peculiarity<?>, Any>> pecularities() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public List<Version> versions() {
-		return Collections.emptyList();
+	static Any of(Peculiarity<?> ... peculiarities) {
+		return ImmutableAny.of(Immutables.asNonEmptyList(peculiarities));
 	}
 }

@@ -17,8 +17,10 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
+import de.flapdoodle.os.common.Any;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
+import de.flapdoodle.os.common.types.Either;
 
 import java.util.List;
 
@@ -39,13 +41,13 @@ import java.util.List;
 public enum OpenSUSEVersion implements Version {
 	Tumbleweed(OsReleaseFiles.osReleaseFileVersionMatches("20211127"));
 
-	private final List<Peculiarity<?>> peculiarities;
+	private final List<Either<Peculiarity<?>, Any>> peculiarities;
 	
 	OpenSUSEVersion(Peculiarity ... peculiarities) {
 		this.peculiarities  = HasPecularities.asList(peculiarities);
 	}
 
-	@Override public List<Peculiarity<?>> pecularities() {
+	@Override public List<Either<Peculiarity<?>, Any>> pecularities() {
 		return peculiarities;
 	}
 }

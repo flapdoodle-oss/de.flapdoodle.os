@@ -22,6 +22,7 @@ import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractor;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
+import de.flapdoodle.os.common.attributes.TypeCheckPredicate;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
@@ -97,7 +98,7 @@ class LinuxDistributionTest {
 
   private static AttributeExtractorLookup releaseFile_NameIs(String releaseFileName, String content) {
 
-    return AttributeExtractorLookup.with((Predicate<? super MappedTextFile<?>>) attr -> true, (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
+    return AttributeExtractorLookup.with(TypeCheckPredicate.of(MappedTextFile.class, attr -> true), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
       if (attribute.name().equals(releaseFileName)) {
         return Optional.of(ImmutableOsReleaseFile.builder()
           .putAttributes("NAME",content)
@@ -113,7 +114,7 @@ class LinuxDistributionTest {
 
   static AttributeExtractorLookup releaseFile_VersionIdIs(String releaseFileName, String content) {
 
-    return AttributeExtractorLookup.with((Predicate<? super MappedTextFile<?>>) attr -> true, (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
+    return AttributeExtractorLookup.with(TypeCheckPredicate.of(MappedTextFile.class, attr -> true), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
       if (attribute.name().equals(releaseFileName)) {
         return Optional.of(ImmutableOsReleaseFile.builder()
           .putAttributes("VERSION_ID",content)

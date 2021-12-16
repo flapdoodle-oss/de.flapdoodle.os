@@ -22,6 +22,7 @@ import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.Match;
 import de.flapdoodle.os.common.matcher.Matcher;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
+import de.flapdoodle.os.common.types.Either;
 
 import java.util.Arrays;
 import java.util.List;
@@ -90,14 +91,30 @@ public abstract class PeculiarityInspector {
   public static boolean matches(
           AttributeExtractorLookup attributeExtractorLookup,
           MatcherLookup matcherLookup,
-          Iterable<? extends Peculiarity<?>> peculiarities
+          Iterable<? extends Either<Peculiarity<?>, Any>> peculiarities
   ) {
-    for (Peculiarity<?> it : peculiarities) {
-      if (!matches(attributeExtractorLookup, matcherLookup, it)) {
-        return false;
+    for (Either<Peculiarity<?>,Any> it : peculiarities) {
+      if (it.isLeft()) {
+        if (!matches(attributeExtractorLookup, matcherLookup, it.left())) {
+          return false;
+        }
+      } else {
+        return matches(attributeExtractorLookup, matcherLookup, it.right());
       }
     }
     return true;
+  }
+
+  public static boolean matches(
+    AttributeExtractorLookup attributeExtractorLookup,
+    MatcherLookup matcherLookup,
+    Any any) {
+    for (Peculiarity<?> it : any.pecularities()) {
+      if (matches(attributeExtractorLookup, matcherLookup, it)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // TODO cache extracted attributes

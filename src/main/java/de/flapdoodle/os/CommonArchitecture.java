@@ -16,11 +16,13 @@
  */
 package de.flapdoodle.os;
 
+import de.flapdoodle.os.common.Any;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.attributes.Attribute;
 import de.flapdoodle.os.common.attributes.Attributes;
 import de.flapdoodle.os.common.matcher.Matchers;
+import de.flapdoodle.os.common.types.Either;
 
 import java.util.List;
 
@@ -33,7 +35,7 @@ public enum CommonArchitecture implements Architecture {
 
   private final CPUType cpuType;
   private final BitSize bitSize;
-  private final List<Peculiarity<?>> peculiarities;
+  private final List<Either<Peculiarity<?>, Any>> peculiarities;
 
   CommonArchitecture(CPUType cpuType, BitSize bitSize, Peculiarity<?>... peculiarities) {
     this.cpuType = cpuType;
@@ -52,7 +54,7 @@ public enum CommonArchitecture implements Architecture {
   }
 
   @Override
-  public List<Peculiarity<?>> pecularities() {
+  public List<Either<Peculiarity<?>, Any>> pecularities() {
     return peculiarities;
   }
 

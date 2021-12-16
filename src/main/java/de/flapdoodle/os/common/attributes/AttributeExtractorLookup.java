@@ -47,7 +47,7 @@ public interface AttributeExtractorLookup {
 		};
 	}
 
-	static <T, A extends Attribute<T>> AttributeExtractorLookup with(Predicate<? super A> attributeTypeCheck, AttributeExtractor<T, A> extractor) {
+	static <T, A extends Attribute<T>> AttributeExtractorLookup with(TypeCheckPredicate<? super A> attributeTypeCheck, AttributeExtractor<T, A> extractor) {
 		return new AttributeExtractorLookup() {
 			@Override
 			public <_T, _A extends Attribute<_T>> Optional<AttributeExtractor<_T, _A>> extractor(_A attribute) {

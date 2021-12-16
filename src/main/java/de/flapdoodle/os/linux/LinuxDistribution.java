@@ -18,9 +18,11 @@ package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Version;
+import de.flapdoodle.os.common.Any;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.collections.Enums;
+import de.flapdoodle.os.common.types.Either;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public enum LinuxDistribution implements Distribution {
   Debian(DebianVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Debian")),
   ;
 
-  private final List<Peculiarity<?>> peculiarities;
+  private final List<Either<Peculiarity<?>, Any>> peculiarities;
   private final List<? extends Version> versions;
 
   <T extends Enum<T> & Version> LinuxDistribution(Class<T> versionClazz, Peculiarity<?>... peculiarities) {
@@ -39,7 +41,7 @@ public enum LinuxDistribution implements Distribution {
     this.versions = Enums.valuesAsList(versionClazz);
   }
   @Override
-  public List<Peculiarity<?>> pecularities() {
+  public List<Either<Peculiarity<?>, Any>> pecularities() {
     return peculiarities;
   }
 
