@@ -31,7 +31,7 @@ public enum OS_X_Distribution implements Distribution {
 
 	@Override
 	public List<Either<Peculiarity<?>, Any>> pecularities() {
-		return HasPecularities.asList();
+		return HasPecularities.empty();
 	}
 
 	@Override

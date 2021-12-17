@@ -98,14 +98,13 @@ class LinuxDistributionTest {
 
   private static AttributeExtractorLookup releaseFile_NameIs(String releaseFileName, String content) {
 
-    return AttributeExtractorLookup.with(TypeCheckPredicate.of(MappedTextFile.class, attr -> true), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
-      if (attribute.name().equals(releaseFileName)) {
-        return Optional.of(ImmutableOsReleaseFile.builder()
-          .putAttributes("NAME",content)
-          .build());
-      }
-      return Optional.empty();
-    }).join(AttributeExtractorLookup.failing());
+    return AttributeExtractorLookup.with(MappedTextFile.nameIs(releaseFileName), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
+      return Optional.of(ImmutableOsReleaseFile.builder()
+        .putAttributes("NAME",content)
+        .build());
+    })
+      .join(AttributeExtractorLookup.with(TypeCheckPredicate.of(MappedTextFile.class, it -> true), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) it -> Optional.empty()))
+      .join(AttributeExtractorLookup.failing());
   }
 
   static AttributeExtractorLookup osReleaseFile_VersionIdIs(String content) {
@@ -114,13 +113,12 @@ class LinuxDistributionTest {
 
   static AttributeExtractorLookup releaseFile_VersionIdIs(String releaseFileName, String content) {
 
-    return AttributeExtractorLookup.with(TypeCheckPredicate.of(MappedTextFile.class, attr -> true), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
-      if (attribute.name().equals(releaseFileName)) {
-        return Optional.of(ImmutableOsReleaseFile.builder()
-          .putAttributes("VERSION_ID",content)
-          .build());
-      }
-      return Optional.empty();
-    }).join(AttributeExtractorLookup.failing());
+    return AttributeExtractorLookup.with(MappedTextFile.nameIs(releaseFileName), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
+      return Optional.of(ImmutableOsReleaseFile.builder()
+        .putAttributes("VERSION_ID",content)
+        .build());
+    })
+      .join(AttributeExtractorLookup.with(TypeCheckPredicate.of(MappedTextFile.class, it -> true), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) it -> Optional.empty()))
+      .join(AttributeExtractorLookup.failing());
   }
 }

@@ -42,9 +42,8 @@ class PlatformTest {
               }
               return Optional.empty();
             })
-            .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(TypeCheckPredicate.of(MappedTextFile.class,it -> it.name().equals("/etc/centos-release")),it -> Optional.empty()))
-            .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(TypeCheckPredicate.of(MappedTextFile.class,it -> it.name().equals("/etc/os-release")),
-              attribute -> Optional.of(ImmutableOsReleaseFile.builder()
+            .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.nameIs("/etc/centos-release"),it -> Optional.empty()))
+            .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.nameIs("/etc/os-release"), attribute -> Optional.of(ImmutableOsReleaseFile.builder()
                 .putAttributes("NAME","Ubuntu")
                 .putAttributes("VERSION_ID","18.10")
                 .build())))

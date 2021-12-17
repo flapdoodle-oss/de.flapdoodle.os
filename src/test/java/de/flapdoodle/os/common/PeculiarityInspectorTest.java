@@ -31,7 +31,7 @@ class PeculiarityInspectorTest {
 
 	@Test
 	void matchSinglePecularity() {
-		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.<String, TextFile>with(TypeCheckPredicate.of(TextFile.class,textFile -> textFile.name().equals("foo")),
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(TextFile.nameIs("foo"),
 			attribute -> Optional.of("fooo"));
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
@@ -44,8 +44,7 @@ class PeculiarityInspectorTest {
 
 	@Test
 	void matchAnyPecularity() {
-		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.<String, TextFile>with(TypeCheckPredicate.of(TextFile.class, textFile -> textFile.name().equals("bar")),
-			attribute -> Optional.of("bar"));
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(TextFile.nameIs("bar"), attribute -> Optional.of("bar"));
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
 		Peculiarity<String> foo = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[0-9]+$"));
@@ -59,8 +58,8 @@ class PeculiarityInspectorTest {
 
 	@Test
 	void matchListOfPecularities() {
-		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.<String, TextFile>with(TypeCheckPredicate.of(TextFile.class, textFile -> textFile.name().equals("foo")), attribute -> Optional.of("fooo"))
-			.join(AttributeExtractorLookup.<String, SystemProperty>with(TypeCheckPredicate.of(SystemProperty.class, systemProperty -> true), attribute -> Optional.of("Any Linux OS")))
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(TextFile.nameIs("foo"), attribute -> Optional.of("fooo"))
+			.join(AttributeExtractorLookup.with(SystemProperty.nameIs("os.name"), attribute -> Optional.of("Any Linux OS")))
 			.join(AttributeExtractorLookup.failing());
 
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());

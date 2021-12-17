@@ -33,4 +33,8 @@ public interface MappedTextFile<T> extends Attribute<T> {
   default Charset charset() {
     return Charset.defaultCharset();
   }
+
+  static TypeCheckPredicate<MappedTextFile> nameIs(String name) {
+    return TypeCheckPredicate.of(MappedTextFile.class, it -> it.name().equals(name));
+  }
 }

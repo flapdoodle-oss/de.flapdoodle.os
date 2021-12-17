@@ -52,7 +52,7 @@ class DebianVersionTest {
 
   private static AttributeExtractorLookup osReleaseFileVersionIdIs(String content) {
 
-    return AttributeExtractorLookup.with(TypeCheckPredicate.of(MappedTextFile.class, attr -> true), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
+    return AttributeExtractorLookup.with(MappedTextFile.nameIs("/etc/os-release"), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
       if (attribute.name().equals("/etc/os-release")) {
         return Optional.of(ImmutableOsReleaseFile.builder()
                 .putAttributes("VERSION_ID",content)

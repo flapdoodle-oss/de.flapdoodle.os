@@ -16,18 +16,22 @@
  */
 package de.flapdoodle.os.common;
 
-import de.flapdoodle.os.common.collections.Immutables;
 import org.immutables.value.Value;
 
+import java.util.Arrays;
 import java.util.List;
 
-@FunctionalInterface
 @Value.Immutable
-public interface Any {
+public abstract class Any {
 	@Value.Parameter
-	List<Peculiarity<?>> pecularities();
+	public abstract List<Peculiarity<?>> pecularities();
 
-	static Any of(Peculiarity<?> ... peculiarities) {
-		return ImmutableAny.of(Immutables.asNonEmptyList(peculiarities));
+	@Value.Check
+	protected void check() {
+		if (pecularities().isEmpty()) throw new IllegalArgumentException("is empty");
+	}
+
+	public static Any of(Peculiarity<?>... peculiarities) {
+		return ImmutableAny.of(Arrays.asList(peculiarities));
 	}
 }

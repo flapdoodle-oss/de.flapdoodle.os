@@ -28,6 +28,16 @@ public interface HasPecularities {
   List<Either<Peculiarity<?>, Any>> pecularities();
 
   static List<Either<Peculiarity<?>, Any>> asList(Peculiarity<?> ... peculiarities) {
-    return Stream.of(peculiarities).map(it -> Either.<Peculiarity<?>,Any>left(it)).collect(Collectors.toList());
+    if (peculiarities.length==0) throw new IllegalArgumentException("is empty");
+    return Stream.of(peculiarities).map(Either::<Peculiarity<?>, Any>left).collect(Collectors.toList());
+  }
+
+  static List<Either<Peculiarity<?>, Any>> asList(Any ... any) {
+    if (any.length==0) throw new IllegalArgumentException("is empty");
+    return Stream.of(any).map(Either::<Peculiarity<?>, Any>right).collect(Collectors.toList());
+  }
+
+  static List<Either<Peculiarity<?>, Any>> empty() {
+    return Immutables.asList();
   }
 }

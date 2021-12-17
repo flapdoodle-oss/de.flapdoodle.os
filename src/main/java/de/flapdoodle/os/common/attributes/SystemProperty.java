@@ -22,4 +22,8 @@ import org.immutables.value.Value;
 public interface SystemProperty extends Attribute<String> {
   @Value.Parameter
   String name();
+
+  static TypeCheckPredicate<SystemProperty> nameIs(String name) {
+    return TypeCheckPredicate.of(SystemProperty.class, it -> it.name().equals(name));
+  }
 }

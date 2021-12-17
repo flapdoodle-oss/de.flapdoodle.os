@@ -31,4 +31,8 @@ public interface TextFile extends Attribute<String> {
 	default Charset charset() {
 		return Charset.defaultCharset();
 	}
+
+	static TypeCheckPredicate<TextFile> nameIs(String name) {
+		return TypeCheckPredicate.of(TextFile.class, it -> it.name().equals(name));
+	}
 }
