@@ -23,7 +23,6 @@ import de.flapdoodle.os.common.types.OsReleaseFile;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.linux.UbuntuVersion;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -32,16 +31,8 @@ class PlatformTest {
 
   @Test
   void platformDetectShouldGiveUbuntu1810() {
-    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
-            .forType(SystemProperty.class, prop -> {
-              switch (prop.name()) {
-                case "os.name":
-                  return Optional.of("Linux");
-                case "os.arch":
-                  return Optional.of("x86");
-              }
-              return Optional.empty();
-            })
+    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(SystemProperty.nameIs("os.name"), it -> Optional.of("Linux"))
+            .join(AttributeExtractorLookup.with(SystemProperty.nameIs("os.arch"), it -> Optional.of("x86")))
             .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.nameIs("/etc/centos-release"),it -> Optional.empty()))
             .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.nameIs("/etc/os-release"), attribute -> Optional.of(ImmutableOsReleaseFile.builder()
                 .putAttributes("NAME","Ubuntu")

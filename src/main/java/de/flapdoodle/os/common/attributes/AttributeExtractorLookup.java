@@ -35,18 +35,6 @@ public interface AttributeExtractorLookup {
 		};
 	}
 
-	@Deprecated
-	static <T, A extends Attribute<T>> AttributeExtractorLookup forType(Class<A> attributeType, AttributeExtractor<T, A> extractor) {
-		return new AttributeExtractorLookup() {
-			@Override
-			public <_T, _A extends Attribute<_T>> Optional<AttributeExtractor<_T, _A>> extractor(_A attribute) {
-				return attributeType.isInstance(attribute)
-								? Optional.of((AttributeExtractor<_T, _A>) extractor)
-								: Optional.empty();
-			}
-		};
-	}
-
 	static <T, A extends Attribute<T>> AttributeExtractorLookup with(TypeCheckPredicate<? super A> attributeTypeCheck, AttributeExtractor<T, A> extractor) {
 		return new AttributeExtractorLookup() {
 			@Override
@@ -68,9 +56,9 @@ public interface AttributeExtractorLookup {
 	}
 
 	static AttributeExtractorLookup systemDefault() {
-		return forType(TextFile.class, new TextFileResolver())
-						.join(forType(SystemProperty.class, new SystemPropertyResolver()))
-						.join(forType(MappedTextFile.class, new MappedTextFileResolver()))
+		return with(TextFile.any(), new TextFileResolver())
+						.join(with(SystemProperty.any(), new SystemPropertyResolver()))
+						.join(with(MappedTextFile.any(), new MappedTextFileResolver()))
 						.join(failing());
 	}
 }

@@ -37,4 +37,8 @@ public interface MappedTextFile<T> extends Attribute<T> {
   static <T> TypeCheckPredicate<MappedTextFile<T>> nameIs(String name) {
     return TypeCheckPredicate.of((Class) MappedTextFile.class, (MappedTextFile<T> it) -> it.name().equals(name));
   }
+
+  static <T> TypeCheckPredicate<MappedTextFile<T>> any() {
+    return TypeCheckPredicate.of((Class) MappedTextFile.class, it -> true);
+  }
 }

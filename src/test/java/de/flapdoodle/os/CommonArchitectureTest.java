@@ -48,12 +48,8 @@ class CommonArchitectureTest {
   }
   
   private static AttributeExtractorLookup osArchIs(String content) {
-    return AttributeExtractorLookup.forType(SystemProperty.class, attribute -> {
-      if (attribute.name().equals("os.arch")) {
-        return Optional.of(content);
-      }
-      return Optional.empty();
-    }).join(AttributeExtractorLookup.failing());
+    return AttributeExtractorLookup.with(SystemProperty.nameIs("os.arch"), attribute -> Optional.of(content))
+      .join(AttributeExtractorLookup.failing());
   }
 
 }

@@ -26,4 +26,8 @@ public interface SystemProperty extends Attribute<String> {
   static TypeCheckPredicate<SystemProperty> nameIs(String name) {
     return TypeCheckPredicate.of(SystemProperty.class, it -> it.name().equals(name));
   }
+
+  static TypeCheckPredicate<SystemProperty> any() {
+    return TypeCheckPredicate.of(SystemProperty.class, it -> true);
+  }
 }

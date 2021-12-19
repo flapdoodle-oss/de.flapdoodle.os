@@ -35,4 +35,8 @@ public interface TextFile extends Attribute<String> {
 	static TypeCheckPredicate<TextFile> nameIs(String name) {
 		return TypeCheckPredicate.of(TextFile.class, it -> it.name().equals(name));
 	}
+
+	static TypeCheckPredicate<TextFile> any() {
+		return TypeCheckPredicate.of(TextFile.class, it -> true);
+	}
 }
