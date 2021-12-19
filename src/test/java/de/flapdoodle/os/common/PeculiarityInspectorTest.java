@@ -16,7 +16,10 @@
  */
 package de.flapdoodle.os.common;
 
-import de.flapdoodle.os.common.attributes.*;
+import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
+import de.flapdoodle.os.common.attributes.Attributes;
+import de.flapdoodle.os.common.attributes.SystemProperty;
+import de.flapdoodle.os.common.attributes.TextFile;
 import de.flapdoodle.os.common.matcher.MatchPattern;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.matcher.Matchers;
@@ -31,8 +34,8 @@ class PeculiarityInspectorTest {
 
 	@Test
 	void matchSinglePecularity() {
-		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(TextFile.nameIs("foo"),
-			attribute -> Optional.of("fooo"));
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(
+			TextFile.any(), attribute -> attribute.name().equals("foo") ? Optional.of("fooo") : Optional.empty());
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
 		Peculiarity<String> peculiarity = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[a-z]+$"));
@@ -44,7 +47,8 @@ class PeculiarityInspectorTest {
 
 	@Test
 	void matchAnyPecularity() {
-		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(TextFile.nameIs("bar"), attribute -> Optional.of("bar"));
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(
+			TextFile.any(), attribute -> attribute.name().equals("bar") ? Optional.of("bar") : Optional.empty());
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
 		Peculiarity<String> foo = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[0-9]+$"));
@@ -58,8 +62,10 @@ class PeculiarityInspectorTest {
 
 	@Test
 	void matchListOfPecularities() {
-		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(TextFile.nameIs("foo"), attribute -> Optional.of("fooo"))
-			.join(AttributeExtractorLookup.with(SystemProperty.nameIs("os.name"), attribute -> Optional.of("Any Linux OS")))
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(
+				TextFile.any(), attribute -> attribute.name().equals("foo") ? Optional.of("fooo") : Optional.empty())
+			.join(AttributeExtractorLookup.with(
+				SystemProperty.any(), attribute -> attribute.name().equals("os.name") ? Optional.of("Any Linux OS") : Optional.empty()))
 			.join(AttributeExtractorLookup.failing());
 
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());

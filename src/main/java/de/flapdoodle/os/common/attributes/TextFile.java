@@ -32,10 +32,6 @@ public interface TextFile extends Attribute<String> {
 		return Charset.defaultCharset();
 	}
 
-	static TypeCheckPredicate<TextFile> nameIs(String name) {
-		return TypeCheckPredicate.of(TextFile.class, it -> it.name().equals(name));
-	}
-
 	static TypeCheckPredicate<TextFile> any() {
 		return TypeCheckPredicate.isInstanceOf(TextFile.class);
 	}

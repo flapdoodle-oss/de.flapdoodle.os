@@ -34,6 +34,8 @@ public interface MappedTextFile<T> extends Attribute<T> {
     return Charset.defaultCharset();
   }
 
+  @Deprecated
+  // TODO remove me
   static <T> TypeCheckPredicate<MappedTextFile<T>> nameIs(String name) {
     return TypeCheckPredicate.of((Class) MappedTextFile.class, (MappedTextFile<T> it) -> it.name().equals(name));
   }

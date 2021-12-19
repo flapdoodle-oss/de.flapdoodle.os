@@ -31,8 +31,16 @@ class PlatformTest {
 
   @Test
   void platformDetectShouldGiveUbuntu1810() {
-    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.with(SystemProperty.nameIs("os.name"), it -> Optional.of("Linux"))
-            .join(AttributeExtractorLookup.with(SystemProperty.nameIs("os.arch"), it -> Optional.of("x86")))
+    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
+      .with(SystemProperty.any(),  it -> {
+        if (it.name().equals("os.name")) {
+          return Optional.of("Linux");
+        }
+        if (it.name().equals("os.arch")) {
+          return Optional.of("x86");
+        }
+        return Optional.empty();
+      })
             .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.nameIs("/etc/centos-release"),it -> Optional.empty()))
             .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.nameIs("/etc/os-release"), attribute -> Optional.of(ImmutableOsReleaseFile.builder()
                 .putAttributes("NAME","Ubuntu")
@@ -51,10 +59,6 @@ class PlatformTest {
                     .version(UbuntuVersion.Ubuntu_18_10)
                     .architecture(CommonArchitecture.X86_32)
                     .build());
-  }
-
-  interface MockMappedTextFile<T, A extends Attribute<T>> extends AttributeExtractor<T, A> {
-
   }
 
   @Test

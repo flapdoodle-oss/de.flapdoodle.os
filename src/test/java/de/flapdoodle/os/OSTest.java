@@ -74,7 +74,8 @@ class OSTest {
   }
 
   private static AttributeExtractorLookup osNameIs(String osName) {
-    return AttributeExtractorLookup.with(SystemProperty.nameIs("os.name"), attribute -> Optional.of(osName))
+    return AttributeExtractorLookup.with(
+      SystemProperty.any(), attribute -> attribute.name().equals("os.name") ? Optional.of(osName) : Optional.empty())
       .join(AttributeExtractorLookup.failing());
   }
 }
