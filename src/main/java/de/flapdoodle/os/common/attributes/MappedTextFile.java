@@ -39,6 +39,6 @@ public interface MappedTextFile<T> extends Attribute<T> {
   }
 
   static <T> TypeCheckPredicate<MappedTextFile<T>> any() {
-    return TypeCheckPredicate.of((Class) MappedTextFile.class, it -> true);
+    return TypeCheckPredicate.isInstanceOf((Class) MappedTextFile.class);
   }
 }

@@ -28,6 +28,6 @@ public interface SystemProperty extends Attribute<String> {
   }
 
   static TypeCheckPredicate<SystemProperty> any() {
-    return TypeCheckPredicate.of(SystemProperty.class, it -> true);
+    return TypeCheckPredicate.isInstanceOf(SystemProperty.class);
   }
 }

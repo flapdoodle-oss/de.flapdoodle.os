@@ -18,6 +18,7 @@ package de.flapdoodle.os.common.attributes;
 
 import org.immutables.value.Value;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 @Value.Immutable
@@ -38,5 +39,9 @@ public abstract class TypeCheckPredicate<T> implements Predicate<T> {
 
 	public static <T> TypeCheckPredicate<T> of(Class<T> type, Predicate<T> check) {
 		return ImmutableTypeCheckPredicate.of(type, check);
+	}
+
+	public static <T> TypeCheckPredicate<T> isInstanceOf(Class<T> type) {
+		return of(type, it -> true);
 	}
 }

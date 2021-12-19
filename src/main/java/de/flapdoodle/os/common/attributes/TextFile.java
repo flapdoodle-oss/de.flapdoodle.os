@@ -37,6 +37,6 @@ public interface TextFile extends Attribute<String> {
 	}
 
 	static TypeCheckPredicate<TextFile> any() {
-		return TypeCheckPredicate.of(TextFile.class, it -> true);
+		return TypeCheckPredicate.isInstanceOf(TextFile.class);
 	}
 }
