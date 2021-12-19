@@ -17,10 +17,9 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.Any;
+import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
-import de.flapdoodle.os.common.types.Either;
 
 import java.util.List;
 
@@ -28,14 +27,14 @@ public enum DebianVersion implements Version {
     DEBIAN_10(OsReleaseFiles.osReleaseFileVersionMatches("10")),
     DEBIAN_9(OsReleaseFiles.osReleaseFileVersionMatches("9"));
 
-    private final List<Either<Peculiarity<?>, Any>> peculiarities;
+    private final List<Peculiarity> peculiarities;
 
-    DebianVersion(final Peculiarity<?>... peculiarities) {
+    DebianVersion(final DistinctPeculiarity<?>... peculiarities) {
         this.peculiarities = HasPecularities.asList(peculiarities);
     }
 
     @Override
-    public List<Either<Peculiarity<?>, Any>> pecularities() {
+    public List<Peculiarity> pecularities() {
         return peculiarities;
     }
 }

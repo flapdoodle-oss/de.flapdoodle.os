@@ -22,7 +22,6 @@ import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.Match;
 import de.flapdoodle.os.common.matcher.Matcher;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
-import de.flapdoodle.os.common.types.Either;
 
 import java.util.Arrays;
 import java.util.List;
@@ -91,16 +90,16 @@ public abstract class PeculiarityInspector {
   public static boolean matches(
           AttributeExtractorLookup attributeExtractorLookup,
           MatcherLookup matcherLookup,
-          Iterable<? extends Either<Peculiarity<?>, Any>> peculiarities
+          Iterable<? extends Peculiarity> peculiarities
   ) {
-    for (Either<Peculiarity<?>,Any> it : peculiarities) {
-      if (it.isLeft()) {
-        if (!matches(attributeExtractorLookup, matcherLookup, it.left())) {
-          return false;
-        }
-      } else {
-        return matches(attributeExtractorLookup, matcherLookup, it.right());
+    for (Peculiarity it : peculiarities) {
+      if (it instanceof DistinctPeculiarity) {
+        return matches(attributeExtractorLookup, matcherLookup, (DistinctPeculiarity<?>) it);
       }
+      if (it instanceof OneOf) {
+        return matches(attributeExtractorLookup, matcherLookup, (OneOf) it);
+      }
+      throw new IllegalArgumentException("unknown peculiarity: "+it);
     }
     return true;
   }
@@ -108,8 +107,8 @@ public abstract class PeculiarityInspector {
   public static boolean matches(
     AttributeExtractorLookup attributeExtractorLookup,
     MatcherLookup matcherLookup,
-    Any any) {
-    for (Peculiarity<?> it : any.pecularities()) {
+    OneOf oneOf) {
+    for (DistinctPeculiarity<?> it : oneOf.pecularities()) {
       if (matches(attributeExtractorLookup, matcherLookup, it)) {
         return true;
       }
@@ -121,7 +120,7 @@ public abstract class PeculiarityInspector {
   public static <T> boolean matches(
           AttributeExtractorLookup attributeExtractorLookup,
           MatcherLookup matcherLookup,
-          Peculiarity<T> peculiarity
+          DistinctPeculiarity<T> peculiarity
   ) {
 
     Attribute<T> attribute = peculiarity.attribute();

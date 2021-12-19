@@ -16,13 +16,12 @@
  */
 package de.flapdoodle.os;
 
-import de.flapdoodle.os.common.Any;
+import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.attributes.Attribute;
 import de.flapdoodle.os.common.attributes.Attributes;
 import de.flapdoodle.os.common.matcher.Matchers;
-import de.flapdoodle.os.common.types.Either;
 
 import java.util.List;
 
@@ -35,9 +34,9 @@ public enum CommonArchitecture implements Architecture {
 
   private final CPUType cpuType;
   private final BitSize bitSize;
-  private final List<Either<Peculiarity<?>, Any>> peculiarities;
+  private final List<Peculiarity> peculiarities;
 
-  CommonArchitecture(CPUType cpuType, BitSize bitSize, Peculiarity<?>... peculiarities) {
+  CommonArchitecture(CPUType cpuType, BitSize bitSize, DistinctPeculiarity<?>... peculiarities) {
     this.cpuType = cpuType;
     this.bitSize = bitSize;
     this.peculiarities = HasPecularities.asList(peculiarities);
@@ -54,12 +53,12 @@ public enum CommonArchitecture implements Architecture {
   }
 
   @Override
-  public List<Either<Peculiarity<?>, Any>> pecularities() {
+  public List<Peculiarity> pecularities() {
     return peculiarities;
   }
 
-  private static Peculiarity<String> osArchMatches(String name) {
-    return Peculiarity.of(osArchProperty(), Matchers.matchPattern(name));
+  private static DistinctPeculiarity<String> osArchMatches(String name) {
+    return DistinctPeculiarity.of(osArchProperty(), Matchers.matchPattern(name));
   }
 
   static Attribute<String> osArchProperty() {

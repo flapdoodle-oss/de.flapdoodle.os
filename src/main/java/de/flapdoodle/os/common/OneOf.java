@@ -14,27 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.os.common.attributes;
+package de.flapdoodle.os.common;
 
 import org.immutables.value.Value;
 
-import java.nio.charset.Charset;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.List;
 
 @Value.Immutable
-public interface MappedTextFile<T> extends Attribute<T> {
-  @Value.Parameter
-  String name();
+public abstract class OneOf implements Peculiarity {
+	@Value.Parameter
+	public abstract List<DistinctPeculiarity<?>> pecularities();
 
-  @Value.Parameter
-  Function<String, T> converter();
+	@Value.Check
+	protected void check() {
+		if (pecularities().isEmpty()) throw new IllegalArgumentException("is empty");
+	}
 
-  @Value.Default
-  default Charset charset() {
-    return Charset.defaultCharset();
-  }
-
-  static <T> TypeCheckPredicate<MappedTextFile<T>> any() {
-    return TypeCheckPredicate.isInstanceOf((Class) MappedTextFile.class);
-  }
+	public static OneOf of(DistinctPeculiarity<?>... peculiarities) {
+		return ImmutableOneOf.of(Arrays.asList(peculiarities));
+	}
 }

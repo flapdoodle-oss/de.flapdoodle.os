@@ -18,7 +18,6 @@ package de.flapdoodle.os.common.attributes;
 
 import org.immutables.value.Value;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 
 @Value.Immutable

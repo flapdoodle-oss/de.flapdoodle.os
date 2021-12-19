@@ -17,27 +17,18 @@
 package de.flapdoodle.os.common;
 
 import de.flapdoodle.os.common.collections.Immutables;
-import de.flapdoodle.os.common.types.Either;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @FunctionalInterface
 public interface HasPecularities {
-  List<Either<Peculiarity<?>, Any>> pecularities();
+  List<Peculiarity> pecularities();
 
-  static List<Either<Peculiarity<?>, Any>> asList(Peculiarity<?> ... peculiarities) {
-    if (peculiarities.length==0) throw new IllegalArgumentException("is empty");
-    return Stream.of(peculiarities).map(Either::<Peculiarity<?>, Any>left).collect(Collectors.toList());
+  static List<Peculiarity> asList(Peculiarity... peculiarities) {
+    return Immutables.asNonEmptyList(peculiarities);
   }
 
-  static List<Either<Peculiarity<?>, Any>> asList(Any ... any) {
-    if (any.length==0) throw new IllegalArgumentException("is empty");
-    return Stream.of(any).map(Either::<Peculiarity<?>, Any>right).collect(Collectors.toList());
-  }
-
-  static List<Either<Peculiarity<?>, Any>> empty() {
+  static List<Peculiarity> empty() {
     return Immutables.asList();
   }
 }

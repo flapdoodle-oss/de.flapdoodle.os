@@ -18,18 +18,14 @@ package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Platform;
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.attributes.AttributeExtractor;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
-import de.flapdoodle.os.common.attributes.TypeCheckPredicate;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
-import de.flapdoodle.os.common.types.OsReleaseFile;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,7 +48,7 @@ class DebianVersionTest {
 
   private static AttributeExtractorLookup osReleaseFileVersionIdIs(String content) {
 
-    return AttributeExtractorLookup.with(MappedTextFile.nameIs("/etc/os-release"), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> {
+    return AttributeExtractorLookup.with(MappedTextFile.any(), attribute -> {
       if (attribute.name().equals("/etc/os-release")) {
         return Optional.of(ImmutableOsReleaseFile.builder()
                 .putAttributes("VERSION_ID",content)

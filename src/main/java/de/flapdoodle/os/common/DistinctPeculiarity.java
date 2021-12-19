@@ -16,22 +16,23 @@
  */
 package de.flapdoodle.os.common;
 
-import org.immutables.value.Value;
+import de.flapdoodle.os.common.attributes.Attribute;
+import de.flapdoodle.os.common.matcher.Match;
+import org.immutables.value.Value.Immutable;
 
-import java.util.Arrays;
-import java.util.List;
+@Immutable
+public interface DistinctPeculiarity<T> extends Peculiarity {
+	Attribute<T> attribute();
+	Match<T> match();
 
-@Value.Immutable
-public abstract class Any {
-	@Value.Parameter
-	public abstract List<Peculiarity<?>> pecularities();
-
-	@Value.Check
-	protected void check() {
-		if (pecularities().isEmpty()) throw new IllegalArgumentException("is empty");
+	static <T> DistinctPeculiarity<T> of(Attribute<T> attribute, Match<T> match) {
+		return DistinctPeculiarity.<T>builder()
+						.attribute(attribute)
+						.match(match)
+						.build();
 	}
 
-	public static Any of(Peculiarity<?>... peculiarities) {
-		return ImmutableAny.of(Arrays.asList(peculiarities));
+	static <T> ImmutableDistinctPeculiarity.Builder<T> builder() {
+		return ImmutableDistinctPeculiarity.builder();
 	}
 }

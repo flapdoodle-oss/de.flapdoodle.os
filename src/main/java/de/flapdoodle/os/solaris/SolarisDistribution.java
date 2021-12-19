@@ -18,10 +18,8 @@ package de.flapdoodle.os.solaris;
 
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.Any;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
-import de.flapdoodle.os.common.types.Either;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +28,7 @@ public enum SolarisDistribution implements Distribution {
 	;
 
 	@Override
-	public List<Either<Peculiarity<?>, Any>> pecularities() {
+	public List<Peculiarity> pecularities() {
 		return HasPecularities.empty();
 	}
 
