@@ -38,7 +38,7 @@ class PeculiarityInspectorTest {
 			TextFile.any(), attribute -> attribute.name().equals("foo") ? Optional.of("fooo") : Optional.empty());
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
-		Peculiarity<String> peculiarity = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[a-z]+$"));
+		DistinctPeculiarity<String> peculiarity = DistinctPeculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[a-z]+$"));
 
 		boolean matches = PeculiarityInspector.matches(attributeExtractorLookup, matcherLookup, peculiarity);
 
@@ -51,9 +51,9 @@ class PeculiarityInspectorTest {
 			TextFile.any(), attribute -> attribute.name().equals("bar") ? Optional.of("bar") : Optional.empty());
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
-		Peculiarity<String> foo = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[0-9]+$"));
-		Peculiarity<String> bar = Peculiarity.of(Attributes.textFile("bar"), Matchers.matchPattern("^[a-z]+$"));
-		Any any = Any.of(foo, bar);
+		DistinctPeculiarity<String> foo = DistinctPeculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[0-9]+$"));
+		DistinctPeculiarity<String> bar = DistinctPeculiarity.of(Attributes.textFile("bar"), Matchers.matchPattern("^[a-z]+$"));
+		OneOf any = OneOf.of(foo, bar);
 
 		boolean matches = PeculiarityInspector.matches(attributeExtractorLookup, matcherLookup, any);
 
@@ -70,8 +70,8 @@ class PeculiarityInspectorTest {
 
 		MatcherLookup matcherLookup = MatcherLookup.forType(MatchPattern.class, new PatternMatcher());
 
-		Peculiarity<String> textfile = Peculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[a-z]+$"));
-		Peculiarity<String> osName = Peculiarity.of(Attributes.systemProperty("os.name"), Matchers.matchPattern("(inux)"));
+		DistinctPeculiarity<String> textfile = DistinctPeculiarity.of(Attributes.textFile("foo"), Matchers.matchPattern("^[a-z]+$"));
+		DistinctPeculiarity<String> osName = DistinctPeculiarity.of(Attributes.systemProperty("os.name"), Matchers.matchPattern("(inux)"));
 
 		boolean matches = PeculiarityInspector.matches(attributeExtractorLookup, matcherLookup, HasPecularities.asList(textfile, osName));
 

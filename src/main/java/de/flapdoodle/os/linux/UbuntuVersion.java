@@ -17,10 +17,9 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.Any;
+import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
-import de.flapdoodle.os.common.types.Either;
 
 import java.util.List;
 
@@ -33,14 +32,14 @@ public enum UbuntuVersion implements Version {
   Ubuntu_20_10(OsReleaseFiles.osReleaseFileVersionMatches("20.10"))
   ;
 
-  private final List<Either<Peculiarity<?>, Any>> peculiarities;
+  private final List<Peculiarity> peculiarities;
 
-  UbuntuVersion(Peculiarity... peculiarities) {
+  UbuntuVersion(DistinctPeculiarity... peculiarities) {
     this.peculiarities  = HasPecularities.asList(peculiarities);
   }
 
   @Override
-  public List<Either<Peculiarity<?>, Any>> pecularities() {
+  public List<Peculiarity> pecularities() {
     return peculiarities;
   }
 

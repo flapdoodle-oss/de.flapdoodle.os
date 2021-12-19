@@ -17,7 +17,6 @@
 package de.flapdoodle.os.common.attributes;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @FunctionalInterface
 public interface AttributeExtractorLookup {

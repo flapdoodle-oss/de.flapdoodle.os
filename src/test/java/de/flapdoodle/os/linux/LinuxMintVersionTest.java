@@ -19,9 +19,7 @@ package de.flapdoodle.os.linux;
 import de.flapdoodle.os.Platform;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
-import de.flapdoodle.os.common.attributes.MappedTextFile;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
-import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -29,33 +27,28 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DebianVersionTest {
+class LinuxMintVersionTest {
 
   @Test
-  public void debianVersionIdMustMatchDebianVersion() {
-    assertVersion("9", DebianVersion.DEBIAN_9);
-    assertVersion("10", DebianVersion.DEBIAN_10);
+  public void linuxMintVersionIdMustMatchUbuntuVersion() {
+    assertVersion("19", LinuxMintVersion.LINUX_MINT_19_0, UbuntuVersion.Ubuntu_18_04);
+    assertVersion("19.1", LinuxMintVersion.LINUX_MINT_19_1, UbuntuVersion.Ubuntu_18_04);
+    assertVersion("19.2", LinuxMintVersion.LINUX_MINT_19_2, UbuntuVersion.Ubuntu_18_04);
+    assertVersion("19.3", LinuxMintVersion.LINUX_MINT_19_3, UbuntuVersion.Ubuntu_18_04);
+    assertVersion("20", LinuxMintVersion.LINUX_MINT_20_0, UbuntuVersion.Ubuntu_20_04);
+    assertVersion("20.1", LinuxMintVersion.LINUX_MINT_20_1, UbuntuVersion.Ubuntu_20_04);
+    assertVersion("20.2", LinuxMintVersion.LINUX_MINT_20_2, UbuntuVersion.Ubuntu_20_04);
+    assertVersion("20.3", LinuxMintVersion.LINUX_MINT_20_3, UbuntuVersion.Ubuntu_20_04);
   }
 
-  private static void assertVersion(String versionIdContent, DebianVersion version) {
-    Optional<Version> detectedVersion = detectVersion(osReleaseFileVersionIdIs(versionIdContent), DebianVersion.values());
+  private static void assertVersion(String versionIdContent, LinuxMintVersion version, UbuntuVersion matchingUbuntuVersion) {
+    Optional<Version> detectedVersion = detectVersion(LinuxDistributionTest.osReleaseFile_VersionIdIs(versionIdContent), LinuxMintVersion.values());
     assertThat(detectedVersion).contains(version);
+    assertThat(((LinuxMintVersion) detectedVersion.get()).matchingUbuntuVersion()).isEqualTo(matchingUbuntuVersion);
   }
 
   private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, Version... values) {
     return Platform.detectVersion(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.<Version>asList(values));
-  }
-
-  private static AttributeExtractorLookup osReleaseFileVersionIdIs(String content) {
-
-    return AttributeExtractorLookup.with(MappedTextFile.any(), attribute -> {
-      if (attribute.name().equals("/etc/os-release")) {
-        return Optional.of(ImmutableOsReleaseFile.builder()
-                .putAttributes("VERSION_ID",content)
-                .build());
-      }
-      return Optional.empty();
-    }).join(AttributeExtractorLookup.failing());
   }
 
 }

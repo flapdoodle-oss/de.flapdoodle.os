@@ -16,7 +16,9 @@
  */
 package de.flapdoodle.os;
 
-import de.flapdoodle.os.common.attributes.*;
+import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
+import de.flapdoodle.os.common.attributes.MappedTextFile;
+import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
@@ -41,11 +43,10 @@ class PlatformTest {
         }
         return Optional.empty();
       })
-            .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.nameIs("/etc/centos-release"),it -> Optional.empty()))
-            .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.nameIs("/etc/os-release"), attribute -> Optional.of(ImmutableOsReleaseFile.builder()
-                .putAttributes("NAME","Ubuntu")
-                .putAttributes("VERSION_ID","18.10")
-                .build())))
+            .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.any(), attribute -> attribute.name().equals("/etc/os-release") ? Optional.of(ImmutableOsReleaseFile.builder()
+                .putAttributes("NAME", "Ubuntu")
+                .putAttributes("VERSION_ID", "18.10")
+                .build()) : Optional.empty()))
             .join(AttributeExtractorLookup.failing());
     
     MatcherLookup matcherLookup = MatcherLookup.systemDefault();

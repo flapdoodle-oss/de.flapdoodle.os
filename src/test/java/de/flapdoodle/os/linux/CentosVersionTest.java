@@ -42,8 +42,10 @@ class CentosVersionTest {
 	}
 
 	private static void assertVersion(String versionIdContent, CentosVersion version) {
-		Optional<Version> detectedVersion = detectVersion(LinuxDistributionTest.releaseFile_VersionIdIs(CentosVersion.RELEASE_FILE_NAME, versionIdContent), CentosVersion.values());
-		assertThat(detectedVersion).contains(version);
+		Optional<Version> detectedCentosVersion = detectVersion(LinuxDistributionTest.releaseFile_VersionIdIs(CentosVersion.RELEASE_FILE_NAME, versionIdContent), CentosVersion.values());
+		Optional<Version> detectedOsReleaseVersion = detectVersion(LinuxDistributionTest.releaseFile_VersionIdIs(OsReleaseFiles.RELEASE_FILE_NAME, versionIdContent), CentosVersion.values());
+		assertThat(detectedCentosVersion).contains(version);
+		assertThat(detectedOsReleaseVersion).contains(version);
 	}
 
 	private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, Version... values) {

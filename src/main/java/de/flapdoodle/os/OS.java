@@ -16,13 +16,12 @@
  */
 package de.flapdoodle.os;
 
-import de.flapdoodle.os.common.Any;
+import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.attributes.Attributes;
 import de.flapdoodle.os.common.collections.Enums;
 import de.flapdoodle.os.common.matcher.Matchers;
-import de.flapdoodle.os.common.types.Either;
 import de.flapdoodle.os.freebsd.FreeBSDDistribution;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.osx.OS_X_Distribution;
@@ -38,14 +37,14 @@ public enum OS implements HasPecularities {
 	Solaris(CommonArchitecture.class, SolarisDistribution.class, osNameMatches(".*SunOS.*")),
 	FreeBSD(CommonArchitecture.class, FreeBSDDistribution.class, osNameMatches("FreeBSD"));
 
-	private final List<Either<Peculiarity<?>, Any>> peculiarities;
+	private final List<Peculiarity> peculiarities;
 	private final List<? extends Distribution> distributions;
 	private final List<? extends Architecture> architectures;
 
 	<A extends Enum<A> & Architecture, T extends Enum<T> & Distribution> OS(
 					Class<A> architecureClazz,
 					Class<T> clazz,
-					Peculiarity<?>... peculiarities
+					DistinctPeculiarity<?>... peculiarities
 	) {
 		this.peculiarities  = HasPecularities.asList(peculiarities);
 		this.architectures = Enums.valuesAsList(architecureClazz);
@@ -61,11 +60,11 @@ public enum OS implements HasPecularities {
 	}
 
 	@Override
-	public List<Either<Peculiarity<?>, Any>> pecularities() {
+	public List<Peculiarity> pecularities() {
 		return peculiarities;
 	}
 
-	private static Peculiarity<String> osNameMatches(String pattern) {
-		return Peculiarity.of(Attributes.systemProperty("os.name"), Matchers.matchPattern(pattern));
+	private static DistinctPeculiarity<String> osNameMatches(String pattern) {
+		return DistinctPeculiarity.of(Attributes.systemProperty("os.name"), Matchers.matchPattern(pattern));
 	}
 }
