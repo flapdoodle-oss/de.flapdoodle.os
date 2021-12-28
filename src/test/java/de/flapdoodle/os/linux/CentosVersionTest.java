@@ -35,7 +35,7 @@ class CentosVersionTest {
 	}
 
 	@Test
-	public void centosVersionIdMustMatchUbuntuVersion() {
+	public void centosVersionIdMustMatchVersion() {
 		assertVersion("6", CentosVersion.CentOS_6);
 		assertVersion("7", CentosVersion.CentOS_7);
 		assertVersion("8", CentosVersion.CentOS_8);

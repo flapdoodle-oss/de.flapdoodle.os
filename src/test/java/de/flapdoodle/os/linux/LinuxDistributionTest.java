@@ -19,10 +19,7 @@ package de.flapdoodle.os.linux;
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Platform;
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.attributes.AttributeExtractor;
-import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
-import de.flapdoodle.os.common.attributes.MappedTextFile;
-import de.flapdoodle.os.common.attributes.TypeCheckPredicate;
+import de.flapdoodle.os.common.attributes.*;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
@@ -74,21 +71,20 @@ class LinuxDistributionTest {
 			.containsExactlyInAnyOrder(LinuxMintVersion.values());
 	}
 
-
-
 	@Test
-	public void expectCentosVersionFromSample() {
-		// TODO handle centos or os release file
+	public void selectCentosIfReleaseFileContainsNameWithCentos() {
 		Optional<Distribution> dist = detectDistribution(centosReleaseFile_NameIs("CentOS Linux"), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.CentOS);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(CentosVersion.values());
+	}
 
-//    cat /etc/os-release
-//		NAME="CentOS Linux"
-//		VERSION="7 (Core)"
-//		ID="centos"
-//		ID_LIKE="rhel fedora"
-//		VERSION_ID="7"
-
+	@Test
+	public void selectAmazonIfOsVersionContainsAmzn() {
+		Optional<Distribution> dist = detectDistribution(osVersion_Is("4.9.76-3.78.amzn1.x86_64"), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Amazon);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(AmazonVersion.values());
 	}
 
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
@@ -103,6 +99,14 @@ class LinuxDistributionTest {
 		return releaseFile_NameIs(CentosVersion.RELEASE_FILE_NAME, content);
 	}
 
+	private static AttributeExtractorLookup osVersion_Is(String content) {
+		return AttributeExtractorLookup.with(
+				SystemProperty.any(), attribute -> attribute.name().equals("os.version") ? Optional.of(content) : Optional.empty())
+			.join(AttributeExtractorLookup.with(MappedTextFile.any(),
+					(AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> Optional.empty()))
+			.join(AttributeExtractorLookup.failing());
+	}
+
 	private static AttributeExtractorLookup releaseFile_NameIs(String releaseFileName, String content) {
 
 		return AttributeExtractorLookup.with(MappedTextFile.any(),
@@ -111,8 +115,7 @@ class LinuxDistributionTest {
 					.putAttributes("NAME", content)
 					.build())
 					: Optional.empty())
-			.join(AttributeExtractorLookup.with(TypeCheckPredicate.of(MappedTextFile.class, it -> true),
-				(AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) it -> Optional.empty()))
+			.join(AttributeExtractorLookup.with(SystemProperty.any(), it -> Optional.empty()))
 			.join(AttributeExtractorLookup.failing());
 	}
 

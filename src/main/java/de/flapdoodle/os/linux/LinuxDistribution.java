@@ -31,6 +31,7 @@ public enum LinuxDistribution implements Distribution {
   OpenSUSE(OpenSUSEVersion.class, OsReleaseFiles.osReleaseFileNameMatches("openSUSE")),
   LinuxMint(LinuxMintVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Linux Mint")),
   Debian(DebianVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Debian")),
+  Amazon(AmazonVersion.class, AmazonVersion.osVersionMatches(".*amzn.*"))
   ;
 
   private final List<Peculiarity> peculiarities;
