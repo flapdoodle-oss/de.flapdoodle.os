@@ -23,4 +23,8 @@ public class SystemPropertyResolver implements AttributeExtractor<String, System
   public Optional<String> extract(SystemProperty attribute) {
     return Optional.ofNullable(System.getProperty(attribute.name()));
   }
+
+  @Override public String toString() {
+    return getClass().getSimpleName();
+  }
 }

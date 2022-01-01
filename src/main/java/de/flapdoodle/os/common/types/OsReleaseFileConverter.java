@@ -16,7 +16,20 @@
  */
 package de.flapdoodle.os.common.types;
 
-public abstract class OsReleaseFileConverter {
+import java.util.function.Function;
+
+public class OsReleaseFileConverter implements Function<String, OsReleaseFile> {
+
+  @Override
+  public OsReleaseFile apply(String s) {
+    return convert(s);
+  }
+
+  @Override public String toString() {
+    return getClass().getSimpleName();
+  }
+  
+  public static final OsReleaseFileConverter INSTANCE=new OsReleaseFileConverter();
 
   public static OsReleaseFile convert(String content) {
     String[] lines = content.split("[\n\r]+");

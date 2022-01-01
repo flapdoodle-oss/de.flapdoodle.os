@@ -17,6 +17,7 @@
 package de.flapdoodle.os;
 
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
+import de.flapdoodle.os.common.attributes.LoggingWrapper;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import org.immutables.value.Value;
 
@@ -37,7 +38,15 @@ public interface Platform {
   Optional<Version> version();
 
   static Platform detect() {
-    return detect(AttributeExtractorLookup.systemDefault(), MatcherLookup.systemDefault());
+    boolean explain = "true".equals(System.getProperty("de.flapdoodle.os.explain"));
+
+    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.systemDefault();
+    MatcherLookup matcherLookup = MatcherLookup.systemDefault();
+    if (explain) {
+      attributeExtractorLookup= LoggingWrapper.wrap(attributeExtractorLookup);
+      matcherLookup = LoggingWrapper.wrap(matcherLookup);
+    }
+    return detect(attributeExtractorLookup, matcherLookup);
   }
 
   static Platform detect(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {

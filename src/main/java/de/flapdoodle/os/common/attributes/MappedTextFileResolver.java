@@ -28,4 +28,8 @@ public class MappedTextFileResolver<T> implements AttributeExtractor<T, MappedTe
     return IO.readString(Paths.get(attribute.name()), attribute.charset())
             .map(attribute.converter());
   }
+
+  @Override public String toString() {
+    return getClass().getSimpleName();
+  }
 }

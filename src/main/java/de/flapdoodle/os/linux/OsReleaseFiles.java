@@ -32,7 +32,7 @@ public class OsReleaseFiles {
 	}
 
 	static Attribute<OsReleaseFile> releaseFile(String path) {
-		return de.flapdoodle.os.common.attributes.Attributes.mappedTextFile(path, OsReleaseFileConverter::convert);
+		return de.flapdoodle.os.common.attributes.Attributes.mappedTextFile(path, OsReleaseFileConverter.INSTANCE);
 	}
 
 	static DistinctPeculiarity<OsReleaseFile> nameMatches(Attribute<OsReleaseFile> osReleaseFile, String name) {

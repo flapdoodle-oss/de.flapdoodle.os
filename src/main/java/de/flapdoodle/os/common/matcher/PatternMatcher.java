@@ -25,4 +25,8 @@ public class PatternMatcher implements Matcher<String, MatchPattern> {
 		return value.map(it -> match.pattern().matcher(it).find())
 				.orElse(false);
 	}
+
+	@Override public String toString() {
+		return getClass().getSimpleName();
+	}
 }
