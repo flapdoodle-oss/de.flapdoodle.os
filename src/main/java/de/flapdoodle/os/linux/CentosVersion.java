@@ -47,8 +47,8 @@ public enum CentosVersion implements Version {
     return peculiarities;
   }
 
-  static DistinctPeculiarity<OsReleaseFile> centosReleaseFileNameMatches(String name) {
-    return OsReleaseFiles.nameMatches(centosReleaseFile(), name);
+  static Peculiarity centosReleaseFileNameMatches(String name) {
+    return OneOf.of(OsReleaseFiles.nameMatches(centosReleaseFile(), name), OsReleaseFiles.nameMatches(OsReleaseFiles.osReleaseFile(), name));
   }
 
   private static Attribute<OsReleaseFile> centosReleaseFile() {

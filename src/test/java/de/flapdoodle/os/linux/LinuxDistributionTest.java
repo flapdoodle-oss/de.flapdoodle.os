@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,15 +36,23 @@ class LinuxDistributionTest {
 
 	@Test
 	public void selectUbuntuIfReleaseFileContainsNameWithUbuntu() {
-		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_Ubuntu_andThat"), LinuxDistribution.values());
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Ubuntu")), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.Ubuntu);
 		Assertions.<Version>assertThat(dist.get().versions())
 			.containsExactlyInAnyOrder(UbuntuVersion.values());
 	}
 
 	@Test
-	public void selectCentosIfReleaseFileContainsNameWithUbuntu() {
-		Optional<Distribution> dist = detectDistribution(centosReleaseFile_NameIs("ignoreThis_CentOS_andThat"), LinuxDistribution.values());
+	public void selectCentosIfReleaseFileContainsNameWithCentos() {
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("CentOS")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.CentOS);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(CentosVersion.values());
+	}
+
+	@Test
+	public void selectCentosIfCentosReleaseFileContainsNameWithCentos() {
+		Optional<Distribution> dist = detectDistribution(centosReleaseFile_NameIs(wrapWithRandomString("CentOS")), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.CentOS);
 		Assertions.<Version>assertThat(dist.get().versions())
 			.containsExactlyInAnyOrder(CentosVersion.values());
@@ -51,7 +60,7 @@ class LinuxDistributionTest {
 
 	@Test
 	public void selectDebianIfReleaseFileContainsNameWithDebian() {
-		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_Debian_andThat"), LinuxDistribution.values());
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Debian")), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.Debian);
 		Assertions.<Version>assertThat(dist.get().versions())
 			.containsExactlyInAnyOrder(DebianVersion.values());
@@ -59,24 +68,16 @@ class LinuxDistributionTest {
 
 	@Test
 	public void selectOpenSUSEIfReleaseFileContainsNameWithOpenSUSE() {
-		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_openSUSE_andThat"), LinuxDistribution.values());
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("openSUSE")), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.OpenSUSE);
 	}
 
 	@Test
 	public void selectLinuxMintIfReleaseFileContainsNameWithLinuxMint() {
-		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs("ignoreThis_Linux Mint_andThat"), LinuxDistribution.values());
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Linux Mint")), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.LinuxMint);
 		Assertions.<Version>assertThat(dist.get().versions())
 			.containsExactlyInAnyOrder(LinuxMintVersion.values());
-	}
-
-	@Test
-	public void selectCentosIfReleaseFileContainsNameWithCentos() {
-		Optional<Distribution> dist = detectDistribution(centosReleaseFile_NameIs("CentOS Linux"), LinuxDistribution.values());
-		assertThat(dist).contains(LinuxDistribution.CentOS);
-		Assertions.<Version>assertThat(dist.get().versions())
-			.containsExactlyInAnyOrder(CentosVersion.values());
 	}
 
 	@Test
@@ -132,5 +133,23 @@ class LinuxDistributionTest {
 					.build())
 					: Optional.empty())
 			.join(AttributeExtractorLookup.failing());
+	}
+
+	private static final String sampleChars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_+";
+
+	private static String randomString() {
+		int len = ThreadLocalRandom.current().nextInt() % 3 == 0
+			? 0
+			: ThreadLocalRandom.current().nextInt(0, 7);
+
+		char[] chars=new char[len];
+		for (int i=0;i<chars.length;i++) {
+			chars[i]=sampleChars.charAt(ThreadLocalRandom.current().nextInt(0,sampleChars.length()));
+		}
+		
+		return new String(chars);
+	}
+	private static String wrapWithRandomString(String match) {
+		return randomString() + match + randomString();
 	}
 }

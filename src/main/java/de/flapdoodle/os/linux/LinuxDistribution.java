@@ -37,7 +37,7 @@ public enum LinuxDistribution implements Distribution {
   private final List<Peculiarity> peculiarities;
   private final List<? extends Version> versions;
 
-  <T extends Enum<T> & Version> LinuxDistribution(Class<T> versionClazz, DistinctPeculiarity<?>... peculiarities) {
+  <T extends Enum<T> & Version> LinuxDistribution(Class<T> versionClazz, Peculiarity... peculiarities) {
     this.peculiarities = HasPecularities.asList(peculiarities);
     this.versions = Enums.valuesAsList(versionClazz);
   }
