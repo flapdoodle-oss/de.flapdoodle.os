@@ -27,4 +27,8 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 		<version>1.1.2-SNAPSHOT</version>
 	</dependency>
 
+### Run
+
+You can set system property `de.flapdoodle.os.explain=true` and enable logging for
+package `de.flapdoodle.os.common.attributes` to get some debugging output.
 
