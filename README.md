@@ -11,12 +11,12 @@ We are now a github organisation. You are invited to participate.
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 01.01.2022 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 11.01.2022 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.1.2</version>
+		<version>1.1.3</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -24,11 +24,18 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.1.3-SNAPSHOT</version>
+		<version>1.1.4-SNAPSHOT</version>
 	</dependency>
 
 ### Run
 
 You can set system property `de.flapdoodle.os.explain=true` and enable logging for
 package `de.flapdoodle.os.common.attributes` to get some debugging output.
+
+### Changelog
+
+#### Version 1.1.3
+
+- detect redhat 6,7,8
+- detect oracle 6,7,8
 
