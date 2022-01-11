@@ -18,7 +18,6 @@ package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.collections.Enums;
@@ -28,6 +27,8 @@ import java.util.List;
 public enum LinuxDistribution implements Distribution {
   Ubuntu(UbuntuVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Ubuntu")),
   CentOS(CentosVersion.class, CentosVersion.centosReleaseFileNameMatches("CentOS")),
+  Redhat(RedhatVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Red Hat")),
+  Oracle(OracleVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Oracle")),
   OpenSUSE(OpenSUSEVersion.class, OsReleaseFiles.osReleaseFileNameMatches("openSUSE")),
   LinuxMint(LinuxMintVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Linux Mint")),
   Debian(DebianVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Debian")),

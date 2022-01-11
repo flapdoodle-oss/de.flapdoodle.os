@@ -40,7 +40,7 @@ public class OsReleaseFiles {
 	}
 
 	static DistinctPeculiarity<OsReleaseFile> versionMatches(Attribute<OsReleaseFile> osReleaseFile, String version) {
-		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry("VERSION_ID", ".*" + Pattern.quote(version) + ".*"));
+		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry("VERSION_ID", Pattern.quote(version) + ".*"));
 	}
 
 	static DistinctPeculiarity<OsReleaseFile> versionIs(Attribute<OsReleaseFile> osReleaseFile, String version) {

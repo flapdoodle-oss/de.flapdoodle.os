@@ -51,6 +51,22 @@ class LinuxDistributionTest {
 	}
 
 	@Test
+	public void selectRedhatIfReleaseFileContainsNameWithRedHat() {
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Red Hat")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Redhat);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(RedhatVersion.values());
+	}
+
+	@Test
+	public void selectOracleIfReleaseFileContainsNameWithOracle() {
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Oracle")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Oracle);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(OracleVersion.values());
+	}
+
+	@Test
 	public void selectCentosIfCentosReleaseFileContainsNameWithCentos() {
 		Optional<Distribution> dist = detectDistribution(centosReleaseFile_NameIs(wrapWithRandomString("CentOS")), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.CentOS);
