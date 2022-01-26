@@ -16,7 +16,7 @@ Stable (Maven Central Repository, Released: 11.01.2022 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.1.3</version>
+		<version>1.1.4</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -24,7 +24,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.1.4-SNAPSHOT</version>
+		<version>1.1.5-SNAPSHOT</version>
 	</dependency>
 
 ### Run
@@ -33,6 +33,10 @@ You can set system property `de.flapdoodle.os.explain=true` and enable logging f
 package `de.flapdoodle.os.common.attributes` to get some debugging output.
 
 ### Changelog
+
+#### Version 1.1.4
+
+- detect ubuntu 21.10
 
 #### Version 1.1.3
 
