@@ -24,6 +24,7 @@ import de.flapdoodle.os.common.Peculiarity;
 import java.util.List;
 
 public enum DebianVersion implements Version {
+    DEBIAN_11(OsReleaseFiles.osReleaseFileVersionMatches("11")),
     DEBIAN_10(OsReleaseFiles.osReleaseFileVersionMatches("10")),
     DEBIAN_9(OsReleaseFiles.osReleaseFileVersionMatches("9"));
 

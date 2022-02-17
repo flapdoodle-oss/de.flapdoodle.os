@@ -35,6 +35,7 @@ class DebianVersionTest {
   public void debianVersionIdMustMatchDebianVersion() {
     assertVersion("9", DebianVersion.DEBIAN_9);
     assertVersion("10", DebianVersion.DEBIAN_10);
+    assertVersion("11", DebianVersion.DEBIAN_11);
   }
 
   private static void assertVersion(String versionIdContent, DebianVersion version) {
