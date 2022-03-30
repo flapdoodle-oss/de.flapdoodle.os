@@ -104,6 +104,14 @@ class LinuxDistributionTest {
 			.containsExactlyInAnyOrder(AmazonVersion.values());
 	}
 
+	@Test
+	public void selectAmazon2IfOsVersionContainsAmzn() {
+		Optional<Distribution> dist = detectDistribution(osVersion_Is("4.14.256-197.484.amzn2.x86_64"), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Amazon);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(AmazonVersion.values());
+	}
+
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
 		return Platform.detectDistribution(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
 	}
