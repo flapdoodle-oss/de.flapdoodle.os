@@ -20,6 +20,8 @@ import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.LoggingWrapper;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import org.immutables.value.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +39,8 @@ public interface Platform {
 
   Optional<Version> version();
 
+  static Logger logger = LoggerFactory.getLogger(Platform.class);
+
   static Platform detect() {
     boolean explain = "true".equals(System.getProperty("de.flapdoodle.os.explain"));
 
@@ -46,7 +50,11 @@ public interface Platform {
       attributeExtractorLookup= LoggingWrapper.wrap(attributeExtractorLookup);
       matcherLookup = LoggingWrapper.wrap(matcherLookup);
     }
-    return detect(attributeExtractorLookup, matcherLookup);
+    Platform result = detect(attributeExtractorLookup, matcherLookup);
+    if (explain) {
+      logger.info("Platform.detect() -> "+result);
+    }
+    return result;
   }
 
   static Platform detect(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
