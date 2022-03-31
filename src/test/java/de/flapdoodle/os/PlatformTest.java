@@ -17,11 +17,14 @@
 package de.flapdoodle.os;
 
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
+import de.flapdoodle.os.common.attributes.LoggingWrapper;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
 import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
+import de.flapdoodle.os.linux.AmazonVersion;
+import de.flapdoodle.os.linux.CentosVersion;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.linux.UbuntuVersion;
 import org.assertj.core.api.Assertions;
@@ -60,6 +63,38 @@ class PlatformTest {
                     .version(UbuntuVersion.Ubuntu_18_10)
                     .architecture(CommonArchitecture.X86_32)
                     .build());
+  }
+
+  @Test
+  void failToDetectLinuxDistIfMoreThanOneMatchPossible() {
+    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
+      .with(SystemProperty.any(),  it -> {
+        if (it.name().equals("os.name")) {
+          return Optional.of("Linux");
+        }
+        if (it.name().equals("os.arch")) {
+          return Optional.of("amd64");
+        }
+        if (it.name().equals("os.version")) {
+          return Optional.of("4.14.256-197.484.amzn2.x86_64");
+        }
+        return Optional.empty();
+      })
+      .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.any(), attribute -> attribute.name().equals("/etc/os-release") ? Optional.of(ImmutableOsReleaseFile.builder()
+        .putAttributes("NAME", "CentOS")
+        .putAttributes("VERSION_ID", "7")
+        .build()) : Optional.empty()))
+      .join(AttributeExtractorLookup.failing());
+
+    MatcherLookup matcherLookup = MatcherLookup.systemDefault();
+    
+    Platform result = Platform.detect(attributeExtractorLookup, matcherLookup);
+
+    Assertions.assertThat(result)
+      .isEqualTo(ImmutablePlatform.builder()
+        .operatingSystem(OS.Linux)
+        .architecture(CommonArchitecture.X86_64)
+        .build());
   }
 
   @Test

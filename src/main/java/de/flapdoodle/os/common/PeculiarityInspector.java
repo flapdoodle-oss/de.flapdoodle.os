@@ -16,12 +16,15 @@
  */
 package de.flapdoodle.os.common;
 
+import de.flapdoodle.os.Platform;
 import de.flapdoodle.os.common.attributes.Attribute;
 import de.flapdoodle.os.common.attributes.AttributeExtractor;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.Match;
 import de.flapdoodle.os.common.matcher.Matcher;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +35,7 @@ import java.util.stream.StreamSupport;
 // TODO cache extracted attributes
 public abstract class PeculiarityInspector {
 
+  private static Logger logger = LoggerFactory.getLogger(PeculiarityInspector.class);
 
   public static <T extends HasPecularities> T match(
           AttributeExtractorLookup attributeExtractorLookup,
@@ -62,6 +66,9 @@ public abstract class PeculiarityInspector {
           Iterable<? extends T> items
   ) {
     List<T> matching = matching(attributeExtractorLookup, matcherLookup, items);
+    if (matching.size()>1) {
+      logger.warn("more than one match: "+matching);
+    }
     return matching.size() == 1
             ? Optional.of(matching.get(0))
             : Optional.empty();

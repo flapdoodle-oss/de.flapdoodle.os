@@ -39,7 +39,7 @@ public interface Platform {
 
   Optional<Version> version();
 
-  static Logger logger = LoggerFactory.getLogger(Platform.class);
+  Logger logger = LoggerFactory.getLogger(Platform.class);
 
   static Platform detect() {
     boolean explain = "true".equals(System.getProperty("de.flapdoodle.os.explain"));
