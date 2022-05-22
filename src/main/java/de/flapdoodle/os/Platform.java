@@ -23,8 +23,11 @@ import org.immutables.value.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static de.flapdoodle.os.common.PeculiarityInspector.find;
 import static de.flapdoodle.os.common.PeculiarityInspector.match;
@@ -44,6 +47,12 @@ public interface Platform {
   static Platform detect() {
     boolean explain = "true".equals(System.getProperty("de.flapdoodle.os.explain"));
 
+    String override = System.getProperty("de.flapdoodle.os.override");
+    if (override!=null && !override.trim().isEmpty()) {
+      logger.info("try to override Platform.detect() with "+override);
+      return parseOverride(override);
+    }
+
     AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.systemDefault();
     MatcherLookup matcherLookup = MatcherLookup.systemDefault();
     if (explain) {
@@ -55,6 +64,68 @@ public interface Platform {
       logger.info("Platform.detect() -> "+result);
     }
     return result;
+  }
+
+  static Platform parseOverride(String override) {
+    ImmutablePlatform.Builder builder = ImmutablePlatform.builder();
+    List<String> parts = Arrays.asList(override.split("\\|"));
+    if (parts.size()==0) throw new IllegalArgumentException("could not parse: "+override);
+
+    try {
+      OS os = OS.valueOf(parts.get(0));
+      builder.operatingSystem(os);
+      if (parts.size() > 1) {
+        builder.architecture(CommonArchitecture.valueOf(parts.get(1)));
+      }
+      if (parts.size() > 3) {
+        String dist = parts.get(2);
+        String version = parts.get(3);
+
+        List<? extends Distribution> matchingDists = os.distributions().stream()
+          .filter(d -> d.name().equals(dist))
+          .collect(Collectors.toList());
+
+        if (matchingDists.size() != 1) {
+          throw new IllegalArgumentException("could not match " + dist + " to " + os.distributions());
+        }
+
+        Distribution distribution = matchingDists.get(0);
+        builder.distribution(distribution);
+
+        List<? extends Version> matchingVersions = distribution.versions().stream()
+          .filter(v -> v.name().equals(version))
+          .collect(Collectors.toList());
+
+        if (matchingVersions.size() != 1) {
+          throw new IllegalArgumentException("could not match " + version + " to " + distribution.versions());
+        }
+
+        builder.version(matchingVersions.get(0));
+      }
+      return builder.build();
+    } catch (RuntimeException rx) {
+      StringBuilder sb=new StringBuilder();
+      String nl = System.lineSeparator();
+
+      sb.append("---").append(nl);
+      sb.append("something went wrong, some minor hints to guide you a little bit:").append(nl);
+      sb.append("  format:       '<OS>|<Architecture>' or '<OS>|<Architecture>|<Dist>|<Version>'").append(nl);
+      sb.append("  you provided: '").append(override).append("'").append(nl);
+      sb.append("you should choose from:").append(nl);
+      sb.append("  OS: ").append(nl)
+        .append("    ").append(Stream.of(OS.values()).map(OS::name).collect(Collectors.joining(", "))).append(nl);
+      sb.append("  Architecture: ").append(nl)
+        .append("    ").append(Stream.of(CommonArchitecture.values()).map(CommonArchitecture::name).collect(Collectors.joining(", "))).append(nl);
+
+      for (OS os : OS.values()) {
+        os.distributions().forEach(dist -> {
+          sb.append("  Dist and Version: ").append(nl)
+            .append("    ").append(dist.name()).append(" and ").append(dist.versions().stream().map(Version::name).collect(Collectors.joining(", "))).append(nl);
+        });
+      }
+
+      throw new RuntimeException(sb.toString(), rx);
+    }
   }
 
   static Platform detect(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {

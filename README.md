@@ -32,6 +32,10 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 You can set system property `de.flapdoodle.os.explain=true` and enable logging for
 package `de.flapdoodle.os.common.attributes` to get some debugging output.
 
+You can override platform detection with system property `de.flapdoodle.os.override=<platform>` where
+`platform` contains the os, architecture, distribution and version (optional).
+Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `Linux|X86_32|CentOS|CentOS_7`.
+
 ### Changelog
 
 #### Version 1.1.8

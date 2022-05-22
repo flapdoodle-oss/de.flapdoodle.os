@@ -17,13 +17,11 @@
 package de.flapdoodle.os;
 
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
-import de.flapdoodle.os.common.attributes.LoggingWrapper;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
 import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
-import de.flapdoodle.os.linux.AmazonVersion;
 import de.flapdoodle.os.linux.CentosVersion;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.linux.UbuntuVersion;
@@ -32,78 +30,129 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class PlatformTest {
 
-  @Test
-  void platformDetectShouldGiveUbuntu1810() {
-    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
-      .with(SystemProperty.any(),  it -> {
-        if (it.name().equals("os.name")) {
-          return Optional.of("Linux");
-        }
-        if (it.name().equals("os.arch")) {
-          return Optional.of("x86");
-        }
-        return Optional.empty();
-      })
-            .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.any(), attribute -> attribute.name().equals("/etc/os-release") ? Optional.of(ImmutableOsReleaseFile.builder()
-                .putAttributes("NAME", "Ubuntu")
-                .putAttributes("VERSION_ID", "18.10")
-                .build()) : Optional.empty()))
-            .join(AttributeExtractorLookup.failing());
-    
-    MatcherLookup matcherLookup = MatcherLookup.systemDefault();
+	@Test
+	void platformDetectShouldGiveUbuntu1810() {
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
+			.with(SystemProperty.any(), it -> {
+				if (it.name().equals("os.name")) {
+					return Optional.of("Linux");
+				}
+				if (it.name().equals("os.arch")) {
+					return Optional.of("x86");
+				}
+				return Optional.empty();
+			})
+			.join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.any(),
+				attribute -> attribute.name().equals("/etc/os-release") ? Optional.of(ImmutableOsReleaseFile.builder()
+					.putAttributes("NAME", "Ubuntu")
+					.putAttributes("VERSION_ID", "18.10")
+					.build()) : Optional.empty()))
+			.join(AttributeExtractorLookup.failing());
 
-    Platform result = Platform.detect(attributeExtractorLookup, matcherLookup);
+		MatcherLookup matcherLookup = MatcherLookup.systemDefault();
 
-    Assertions.assertThat(result)
-            .isEqualTo(ImmutablePlatform.builder()
-                    .operatingSystem(OS.Linux)
-                    .distribution(LinuxDistribution.Ubuntu)
-                    .version(UbuntuVersion.Ubuntu_18_10)
-                    .architecture(CommonArchitecture.X86_32)
-                    .build());
-  }
+		Platform result = Platform.detect(attributeExtractorLookup, matcherLookup);
 
-  @Test
-  void failToDetectLinuxDistIfMoreThanOneMatchPossible() {
-    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
-      .with(SystemProperty.any(),  it -> {
-        if (it.name().equals("os.name")) {
-          return Optional.of("Linux");
-        }
-        if (it.name().equals("os.arch")) {
-          return Optional.of("amd64");
-        }
-        if (it.name().equals("os.version")) {
-          return Optional.of("4.14.256-197.484.amzn2.x86_64");
-        }
-        return Optional.empty();
-      })
-      .join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.any(), attribute -> attribute.name().equals("/etc/os-release") ? Optional.of(ImmutableOsReleaseFile.builder()
-        .putAttributes("NAME", "CentOS")
-        .putAttributes("VERSION_ID", "7")
-        .build()) : Optional.empty()))
-      .join(AttributeExtractorLookup.failing());
+		assertThat(result)
+			.isEqualTo(ImmutablePlatform.builder()
+				.operatingSystem(OS.Linux)
+				.distribution(LinuxDistribution.Ubuntu)
+				.version(UbuntuVersion.Ubuntu_18_10)
+				.architecture(CommonArchitecture.X86_32)
+				.build());
+	}
 
-    MatcherLookup matcherLookup = MatcherLookup.systemDefault();
-    
-    Platform result = Platform.detect(attributeExtractorLookup, matcherLookup);
+	@Test
+	void failToDetectLinuxDistIfMoreThanOneMatchPossible() {
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
+			.with(SystemProperty.any(), it -> {
+				if (it.name().equals("os.name")) {
+					return Optional.of("Linux");
+				}
+				if (it.name().equals("os.arch")) {
+					return Optional.of("amd64");
+				}
+				if (it.name().equals("os.version")) {
+					return Optional.of("4.14.256-197.484.amzn2.x86_64");
+				}
+				return Optional.empty();
+			})
+			.join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.any(),
+				attribute -> attribute.name().equals("/etc/os-release") ? Optional.of(ImmutableOsReleaseFile.builder()
+					.putAttributes("NAME", "CentOS")
+					.putAttributes("VERSION_ID", "7")
+					.build()) : Optional.empty()))
+			.join(AttributeExtractorLookup.failing());
 
-    Assertions.assertThat(result)
-      .isEqualTo(ImmutablePlatform.builder()
-        .operatingSystem(OS.Linux)
-        .architecture(CommonArchitecture.X86_64)
-        .build());
-  }
+		MatcherLookup matcherLookup = MatcherLookup.systemDefault();
 
-  @Test
-  void systemDefaults() {
-    Platform result = Platform.detect();
-    System.out.println("OS: " + result.operatingSystem());
-    System.out.println("Architecture: " + result.architecture());
+		Platform result = Platform.detect(attributeExtractorLookup, matcherLookup);
 
-    result.distribution().ifPresent(distribution -> System.out.println("Distribution: " + distribution));
-    result.version().ifPresent(version -> System.out.println("Version: " + version));
-  }
+		assertThat(result)
+			.isEqualTo(ImmutablePlatform.builder()
+				.operatingSystem(OS.Linux)
+				.architecture(CommonArchitecture.X86_64)
+				.build());
+	}
+
+	@Test
+	void systemDefaults() {
+		Platform result = Platform.detect();
+		System.out.println("OS: " + result.operatingSystem());
+		System.out.println("Architecture: " + result.architecture());
+
+		result.distribution().ifPresent(distribution -> System.out.println("Distribution: " + distribution));
+		result.version().ifPresent(version -> System.out.println("Version: " + version));
+	}
+
+	@Test
+	void parseOverrideWithOnlyOsAndArchitecture() {
+		String override = OS.OS_X.name() + "|" + CommonArchitecture.X86_64;
+
+		Platform result = Platform.parseOverride(override);
+
+		assertThat(override).isEqualTo("OS_X|X86_64");
+		
+		assertThat(result)
+			.isEqualTo(ImmutablePlatform.builder()
+				.operatingSystem(OS.OS_X)
+				.architecture(CommonArchitecture.X86_64)
+				.build());
+	}
+
+	@Test
+	void parseOverrideWithDistAndVersion() {
+		String override = OS.Linux.name() +
+			"|" + CommonArchitecture.X86_32 +
+			"|" + LinuxDistribution.CentOS +
+			"|" + CentosVersion.CentOS_7;
+
+		Platform result = Platform.parseOverride(override);
+
+		assertThat(override).isEqualTo("Linux|X86_32|CentOS|CentOS_7");
+		
+		assertThat(result)
+			.isEqualTo(ImmutablePlatform.builder()
+				.operatingSystem(OS.Linux)
+				.architecture(CommonArchitecture.X86_32)
+        .distribution(LinuxDistribution.CentOS)
+        .version(CentosVersion.CentOS_7)
+				.build());
+	}
+
+	@Test
+	void parseOverrideShouldExplainIfFailing() {
+		String override = OS.Linux.name() +
+			"|" + CommonArchitecture.X86_32 +
+			"|" + "Foo" +
+			"|" + CentosVersion.CentOS_7;
+
+		Assertions.assertThatThrownBy(() -> Platform.parseOverride(override))
+			.isInstanceOf(RuntimeException.class)
+			.hasMessageContaining("something went wrong");
+	}
 }
