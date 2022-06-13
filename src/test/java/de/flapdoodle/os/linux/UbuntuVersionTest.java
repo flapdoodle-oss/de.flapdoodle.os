@@ -31,6 +31,8 @@ class UbuntuVersionTest {
 
   @Test
   public void ubuntuVersionIdMustMatchUbuntuVersion() {
+    assertVersion("16.04", UbuntuVersion.Ubuntu_16_04);
+    assertVersion("16.10", UbuntuVersion.Ubuntu_16_10);
     assertVersion("18.04", UbuntuVersion.Ubuntu_18_04);
     assertVersion("18.10", UbuntuVersion.Ubuntu_18_10);
     assertVersion("19.04", UbuntuVersion.Ubuntu_19_04);

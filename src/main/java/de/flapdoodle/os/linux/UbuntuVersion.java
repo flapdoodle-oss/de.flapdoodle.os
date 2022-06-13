@@ -24,6 +24,8 @@ import de.flapdoodle.os.common.Peculiarity;
 import java.util.List;
 
 public enum UbuntuVersion implements Version {
+  Ubuntu_16_04(OsReleaseFiles.osReleaseFileVersionMatches("16.04")),
+  Ubuntu_16_10(OsReleaseFiles.osReleaseFileVersionMatches("16.10")),
   Ubuntu_18_04(OsReleaseFiles.osReleaseFileVersionMatches("18.04")),
   Ubuntu_18_10(OsReleaseFiles.osReleaseFileVersionMatches("18.10")),
   Ubuntu_19_04(OsReleaseFiles.osReleaseFileVersionMatches("19.04")),
