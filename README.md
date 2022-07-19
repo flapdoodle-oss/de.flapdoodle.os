@@ -11,12 +11,12 @@ We are now a github organisation. You are invited to participate.
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 13.06.2022 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 19.07.2022 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.1.10</version>
+		<version>1.1.11</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -24,7 +24,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.1.11-SNAPSHOT</version>
+		<version>1.1.12-SNAPSHOT</version>
 	</dependency>
 
 ### Run
