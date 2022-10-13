@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,28 +33,25 @@ import java.util.stream.Stream;
 import static de.flapdoodle.os.common.PeculiarityInspector.*;
 
 @Value.Immutable
-public interface Platform {
-  OS operatingSystem();
+public abstract class Platform {
+  public abstract OS operatingSystem();
 
-  Architecture architecture();
+  public abstract Architecture architecture();
 
-  Optional<Distribution> distribution();
+  public abstract Optional<Distribution> distribution();
 
-  Optional<Version> version();
+  public abstract Optional<Version> version();
 
-  Logger logger = LoggerFactory.getLogger(Platform.class);
+  public static final Logger logger = LoggerFactory.getLogger(Platform.class);
 
-  static Platform detect() {
-    boolean explain = "true".equals(System.getProperty("de.flapdoodle.os.explain"));
-
-    String override = System.getProperty("de.flapdoodle.os.override");
-    if (override!=null && !override.trim().isEmpty()) {
-      logger.info("try to override Platform.detect() with "+override);
-      return parseOverride(override);
-    }
+  public static Platform detect() {
+    Optional<Platform> override = override();
+    if (override.isPresent()) return override.get();
 
     AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.systemDefault();
     MatcherLookup matcherLookup = MatcherLookup.systemDefault();
+
+    boolean explain = explain();
     if (explain) {
       attributeExtractorLookup= LoggingWrapper.wrap(attributeExtractorLookup);
       matcherLookup = LoggingWrapper.wrap(matcherLookup);
@@ -65,6 +61,38 @@ public interface Platform {
       logger.info("Platform.detect() -> "+result);
     }
     return result;
+  }
+
+  public static List<Platform> guess() {
+    Optional<Platform> override = override();
+    if (override.isPresent()) return Immutables.asList(override.get());
+
+    AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup.systemDefault();
+    MatcherLookup matcherLookup = MatcherLookup.systemDefault();
+
+    boolean explain = explain();
+    if (explain) {
+      attributeExtractorLookup= LoggingWrapper.wrap(attributeExtractorLookup);
+      matcherLookup = LoggingWrapper.wrap(matcherLookup);
+    }
+    List<Platform> result = guess(attributeExtractorLookup, matcherLookup);
+    if (explain) {
+      logger.info("Platform.detect() -> "+result);
+    }
+    return result;
+  }
+
+  private static boolean explain() {
+    return "true".equals(System.getProperty("de.flapdoodle.os.explain"));
+  }
+
+  private static Optional<Platform> override() {
+    String override = System.getProperty("de.flapdoodle.os.override");
+    if (override!=null && !override.trim().isEmpty()) {
+      logger.info("try to override Platform.detect() with "+override);
+      return Optional.of(parseOverride(override));
+    }
+    return Optional.empty();
   }
 
   static Platform parseOverride(String override) {
@@ -130,14 +158,14 @@ public interface Platform {
   }
 
   static Platform detect(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
-    ImmutablePlatform.Builder builder = ImmutablePlatform.builder();
-    OS os = detectOS(attributeExtractorLookup, matcherLookup);
-    Architecture architecture = detectArchitecture(attributeExtractorLookup, matcherLookup, os.architectures());
+    OS os = match(attributeExtractorLookup, matcherLookup, OS.values());
+    Architecture architecture = match(attributeExtractorLookup, matcherLookup, os.architectures());
 
-    Optional<Distribution> dist = detectDistribution(attributeExtractorLookup, matcherLookup, os.distributions());
-    Optional<Version> version = dist.flatMap(d -> detectVersion(attributeExtractorLookup, matcherLookup, d));
+    Optional<Distribution> dist = find(attributeExtractorLookup, matcherLookup, os.distributions());
+    Optional<Version> version = dist.flatMap(d -> find(attributeExtractorLookup, matcherLookup, d.versions()));
 
-    return builder.operatingSystem(os)
+    return ImmutablePlatform.builder()
+            .operatingSystem(os)
             .distribution(dist)
             .version(version)
             .architecture(architecture)
@@ -145,8 +173,8 @@ public interface Platform {
   }
 
   static List<Platform> guess(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
-    OS os = detectOS(attributeExtractorLookup, matcherLookup);
-    Architecture architecture = detectArchitecture(attributeExtractorLookup, matcherLookup, os.architectures());
+    OS os = match(attributeExtractorLookup, matcherLookup, OS.values());
+    Architecture architecture = match(attributeExtractorLookup, matcherLookup, os.architectures());
 
     List<? extends Distribution> dists = matching(attributeExtractorLookup, matcherLookup, os.distributions());
 
@@ -180,25 +208,5 @@ public interface Platform {
       .build());
 
     return VersionWithPriority.sorteByPriority(matches);
-  }
-
-  static OS detectOS(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
-    return match(attributeExtractorLookup, matcherLookup, OS.values());
-  }
-
-  static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Iterable<? extends Distribution> distributions) {
-    return find(attributeExtractorLookup, matcherLookup, distributions);
-  }
-
-  static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, Distribution distribution) {
-    return detectVersion(attributeExtractorLookup, matcherLookup, distribution.versions());
-  }
-
-  static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<? extends Version> versions) {
-    return find(attributeExtractorLookup, matcherLookup, versions);
-  }
-
-  static Architecture detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup, List<? extends Architecture> architectures) {
-    return match(attributeExtractorLookup, matcherLookup, architectures);
   }
 }

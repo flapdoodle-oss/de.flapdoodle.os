@@ -17,7 +17,6 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Distribution;
-import de.flapdoodle.os.Platform;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.*;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
@@ -30,6 +29,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static de.flapdoodle.os.common.PeculiarityInspector.find;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class LinuxDistributionTest {
@@ -113,7 +113,7 @@ class LinuxDistributionTest {
 	}
 
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
-		return Platform.detectDistribution(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
+		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
 	}
 
 	private static AttributeExtractorLookup osReleaseFile_NameIs(String content) {

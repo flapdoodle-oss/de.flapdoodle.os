@@ -23,8 +23,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import static de.flapdoodle.os.common.PeculiarityInspector.match;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CommonArchitectureTest {
@@ -44,8 +46,8 @@ class CommonArchitectureTest {
   }
 
   private static Architecture detectArchitecture(AttributeExtractorLookup attributeExtractorLookup, Architecture ... values) {
-    return Platform.detectArchitecture(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.<Architecture>asList(values));
-  }
+		return match(attributeExtractorLookup, MatcherLookup.systemDefault(), (List<? extends Architecture>) Arrays.<Architecture>asList(values));
+	}
   
   private static AttributeExtractorLookup osArchIs(String content) {
     return AttributeExtractorLookup.with(
