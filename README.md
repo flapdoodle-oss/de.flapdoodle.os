@@ -38,6 +38,10 @@ Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `
 
 ### Changelog
 
+#### Version 1.2.1
+
+- api change
+
 #### Version 1.2.0
 
 - return best version if more than one match
