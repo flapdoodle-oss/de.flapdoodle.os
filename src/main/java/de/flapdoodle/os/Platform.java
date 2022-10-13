@@ -18,19 +18,20 @@ package de.flapdoodle.os;
 
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.LoggingWrapper;
+import de.flapdoodle.os.common.collections.Immutables;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import org.immutables.value.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static de.flapdoodle.os.common.PeculiarityInspector.find;
-import static de.flapdoodle.os.common.PeculiarityInspector.match;
+import static de.flapdoodle.os.common.PeculiarityInspector.*;
 
 @Value.Immutable
 public interface Platform {
@@ -141,6 +142,44 @@ public interface Platform {
             .version(version)
             .architecture(architecture)
             .build();
+  }
+
+  static List<Platform> guess(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {
+    OS os = detectOS(attributeExtractorLookup, matcherLookup);
+    Architecture architecture = detectArchitecture(attributeExtractorLookup, matcherLookup, os.architectures());
+
+    List<? extends Distribution> dists = matching(attributeExtractorLookup, matcherLookup, os.distributions());
+
+    List<Platform> platforms = dists.stream()
+      .flatMap(dist -> {
+        List<? extends Version> versions = matching(attributeExtractorLookup, matcherLookup, dist.versions());
+
+        return !versions.isEmpty()
+          ? versions
+            .stream()
+            .map(version -> ImmutablePlatform.builder()
+              .operatingSystem(os)
+              .distribution(dist)
+              .architecture(architecture)
+              .version(version)
+              .build())
+          : Stream.of(ImmutablePlatform.builder()
+            .operatingSystem(os)
+            .distribution(dist)
+            .architecture(architecture)
+            .build());
+        }
+      )
+      .collect(Collectors.toList());
+
+    List<? extends Platform> matches = !platforms.isEmpty()
+      ? platforms
+      : Immutables.asNonEmptyList(ImmutablePlatform.builder()
+      .operatingSystem(os)
+      .architecture(architecture)
+      .build());
+
+    return VersionWithPriority.sorteByPriority(matches);
   }
 
   static OS detectOS(AttributeExtractorLookup attributeExtractorLookup, MatcherLookup matcherLookup) {

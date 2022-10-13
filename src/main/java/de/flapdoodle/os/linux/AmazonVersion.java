@@ -17,6 +17,7 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
+import de.flapdoodle.os.VersionWithPriority;
 import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
@@ -26,7 +27,7 @@ import de.flapdoodle.os.common.matcher.Matchers;
 
 import java.util.List;
 
-public enum AmazonVersion implements Version {
+public enum AmazonVersion implements VersionWithPriority {
 	// amzn2
 	// os.version=4.9.76-3.78.amzn1.x86_64
 	AmazonLinux(osVersionMatches(".*amzn1.*")),
@@ -41,6 +42,15 @@ public enum AmazonVersion implements Version {
 	@Override
 	public List<Peculiarity> pecularities() {
 		return peculiarities;
+	}
+
+	/**
+	 * as we rely on 'os.version' only, this detection is pretty weak
+	 * it should have a lower priority than others
+	 */
+	@Override
+	public int priority() {
+		return -1;
 	}
 
 	static DistinctPeculiarity<String> osVersionMatches(String name) {

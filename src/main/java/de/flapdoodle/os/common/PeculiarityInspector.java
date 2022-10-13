@@ -48,7 +48,7 @@ public abstract class PeculiarityInspector {
   public static <T extends HasPecularities> T match(
           AttributeExtractorLookup attributeExtractorLookup,
           MatcherLookup matcherLookup,
-          Iterable<T> items
+          Iterable<? extends T> items
   ) {
     List<T> matching = matching(attributeExtractorLookup, matcherLookup, items);
     if (matching.isEmpty()) {

@@ -22,12 +22,14 @@ import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
+import de.flapdoodle.os.linux.AmazonVersion;
 import de.flapdoodle.os.linux.CentosVersion;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.linux.UbuntuVersion;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -97,6 +99,50 @@ class PlatformTest {
 				.operatingSystem(OS.Linux)
 				.architecture(CommonArchitecture.X86_64)
 				.build());
+	}
+
+	@Test
+	void guessDoesNotFailIfMoreThanOneMatchPossible() {
+		AttributeExtractorLookup attributeExtractorLookup = AttributeExtractorLookup
+			.with(SystemProperty.any(), it -> {
+				if (it.name().equals("os.name")) {
+					return Optional.of("Linux");
+				}
+				if (it.name().equals("os.arch")) {
+					return Optional.of("amd64");
+				}
+				if (it.name().equals("os.version")) {
+					return Optional.of("4.14.256-197.484.amzn2.x86_64");
+				}
+				return Optional.empty();
+			})
+			.join(AttributeExtractorLookup.<OsReleaseFile, MappedTextFile<OsReleaseFile>>with(MappedTextFile.any(),
+				attribute -> attribute.name().equals("/etc/os-release") ? Optional.of(ImmutableOsReleaseFile.builder()
+					.putAttributes("NAME", "CentOS")
+					.putAttributes("VERSION_ID", "7")
+					.build()) : Optional.empty()))
+			.join(AttributeExtractorLookup.failing());
+
+		MatcherLookup matcherLookup = MatcherLookup.systemDefault();
+
+		List<Platform> result = Platform.guess(attributeExtractorLookup, matcherLookup);
+
+		assertThat(result)
+			.hasSize(2)
+			.containsExactlyInAnyOrder(
+				ImmutablePlatform.builder()
+					.operatingSystem(OS.Linux)
+					.architecture(CommonArchitecture.X86_64)
+					.distribution(LinuxDistribution.CentOS)
+					.version(CentosVersion.CentOS_7)
+					.build(),
+				ImmutablePlatform.builder()
+					.operatingSystem(OS.Linux)
+					.architecture(CommonArchitecture.X86_64)
+					.distribution(LinuxDistribution.Amazon)
+					.version(AmazonVersion.AmazonLinux2)
+					.build()
+				);
 	}
 
 	@Test
