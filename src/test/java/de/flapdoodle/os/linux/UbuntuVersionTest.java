@@ -39,6 +39,7 @@ class UbuntuVersionTest {
     assertVersion("19.10", UbuntuVersion.Ubuntu_19_10);
     assertVersion("20.04", UbuntuVersion.Ubuntu_20_04);
     assertVersion("20.10", UbuntuVersion.Ubuntu_20_10);
+    assertVersion("21.04", UbuntuVersion.Ubuntu_21_04);
     assertVersion("21.10", UbuntuVersion.Ubuntu_21_10);
     assertVersion("22.04", UbuntuVersion.Ubuntu_22_04);
     assertVersion("22.10", UbuntuVersion.Ubuntu_22_10);
