@@ -16,7 +16,7 @@ Stable (Maven Central Repository, Released: 01.11.2022 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.2.2</version>
+		<version>1.2.3</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -24,7 +24,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.2.3-SNAPSHOT</version>
+		<version>1.2.4-SNAPSHOT</version>
 	</dependency>
 
 ### Run
@@ -38,9 +38,9 @@ Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `
 
 ### Changelog
 
-#### Version 1.2.2
+#### Version 1.2.3
 
-- detect ubuntu 22.10 
+- detect ubuntu 22.10, bugfix 
 
 #### Version 1.2.1
 
