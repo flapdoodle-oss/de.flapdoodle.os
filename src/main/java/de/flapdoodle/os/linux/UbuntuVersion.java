@@ -34,6 +34,7 @@ public enum UbuntuVersion implements Version {
   Ubuntu_20_10(OsReleaseFiles.osReleaseFileVersionMatches("20.10")),
   Ubuntu_21_10(OsReleaseFiles.osReleaseFileVersionMatches("21.10")),
   Ubuntu_22_04(OsReleaseFiles.osReleaseFileVersionMatches("22.04")),
+  Ubuntu_22_10(OsReleaseFiles.osReleaseFileVersionMatches("22.10")),
   ;
 
   private final List<Peculiarity> peculiarities;
