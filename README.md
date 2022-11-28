@@ -16,7 +16,7 @@ Stable (Maven Central Repository, Released: 01.11.2022 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.2.3</version>
+		<version>1.2.4</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -24,7 +24,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.2.4-SNAPSHOT</version>
+		<version>1.2.5-SNAPSHOT</version>
 	</dependency>
 
 ### Run
@@ -37,6 +37,10 @@ You can override platform detection with system property `de.flapdoodle.os.overr
 Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `Linux|X86_32|CentOS|CentOS_7`.
 
 ### Changelog
+
+#### Version 1.2.4
+
+- detect oracle9, centos9
 
 #### Version 1.2.3
 
