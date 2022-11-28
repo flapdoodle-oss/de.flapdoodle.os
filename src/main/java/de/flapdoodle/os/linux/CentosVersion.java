@@ -17,7 +17,6 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.OneOf;
 import de.flapdoodle.os.common.Peculiarity;
@@ -32,6 +31,7 @@ public enum CentosVersion implements Version {
   CentOS_6(OneOf.of(versionMatches(centosReleaseFile(),"6"), versionMatches(OsReleaseFiles.osReleaseFile(),"6"))),
   CentOS_7(OneOf.of(versionMatches(centosReleaseFile(),"7"), versionMatches(OsReleaseFiles.osReleaseFile(),"7"))),
   CentOS_8(OneOf.of(versionMatches(centosReleaseFile(),"8"), versionMatches(OsReleaseFiles.osReleaseFile(),"8"))),
+  CentOS_9(OneOf.of(versionMatches(centosReleaseFile(),"9"), versionMatches(OsReleaseFiles.osReleaseFile(),"9"))),
   ;
 
   public static final String RELEASE_FILE_NAME="/etc/centos-release";
