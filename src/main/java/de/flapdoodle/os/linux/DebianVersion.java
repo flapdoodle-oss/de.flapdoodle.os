@@ -17,20 +17,24 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
+import de.flapdoodle.os.common.OneOf;
 import de.flapdoodle.os.common.Peculiarity;
 
 import java.util.List;
 
 public enum DebianVersion implements Version {
+    DEBIAN_12(OneOf.of(
+      OsReleaseFiles.osReleaseFileVersionMatches("12"),
+      OsReleaseFiles.osReleaseFileVersionCodeNameIs("bookwork")
+    )),
     DEBIAN_11(OsReleaseFiles.osReleaseFileVersionMatches("11")),
     DEBIAN_10(OsReleaseFiles.osReleaseFileVersionMatches("10")),
     DEBIAN_9(OsReleaseFiles.osReleaseFileVersionMatches("9"));
 
     private final List<Peculiarity> peculiarities;
 
-    DebianVersion(final DistinctPeculiarity<?>... peculiarities) {
+    DebianVersion(final Peculiarity... peculiarities) {
         this.peculiarities = HasPecularities.asList(peculiarities);
     }
 

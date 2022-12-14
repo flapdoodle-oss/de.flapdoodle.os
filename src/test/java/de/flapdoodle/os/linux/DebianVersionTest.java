@@ -16,9 +16,9 @@
  */
 package de.flapdoodle.os.linux;
 
+import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
-import de.flapdoodle.os.common.attributes.MappedTextFile;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import org.junit.jupiter.api.Test;
@@ -26,6 +26,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static de.flapdoodle.os.AttributeExtractorLookups.osReleaseFile;
+import static de.flapdoodle.os.AttributeExtractorLookups.osReleaseFileVersionIdIs;
 import static de.flapdoodle.os.common.PeculiarityInspector.find;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,6 +38,15 @@ class DebianVersionTest {
     assertVersion("9", DebianVersion.DEBIAN_9);
     assertVersion("10", DebianVersion.DEBIAN_10);
     assertVersion("11", DebianVersion.DEBIAN_11);
+    assertVersion("12", DebianVersion.DEBIAN_12);
+  }
+
+  @Test
+  public void debian12_testingMatchCodeName() {
+    Optional<Version> detectedVersion = detectVersion(osReleaseFile(ImmutableOsReleaseFile.builder()
+      .putAttributes(OsReleaseFiles.VERSION_CODENAME, "bookwork")
+      .build()), DebianVersion.values());
+    assertThat(detectedVersion).contains(DebianVersion.DEBIAN_12);
   }
 
   private static void assertVersion(String versionIdContent, DebianVersion version) {
@@ -46,17 +57,4 @@ class DebianVersionTest {
   private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, Version... values) {
     return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.<Version>asList(values));
   }
-
-  private static AttributeExtractorLookup osReleaseFileVersionIdIs(String content) {
-
-    return AttributeExtractorLookup.with(MappedTextFile.any(), attribute -> {
-      if (attribute.name().equals("/etc/os-release")) {
-        return Optional.of(ImmutableOsReleaseFile.builder()
-                .putAttributes("VERSION_ID",content)
-                .build());
-      }
-      return Optional.empty();
-    }).join(AttributeExtractorLookup.failing());
-  }
-
 }

@@ -16,6 +16,7 @@
  */
 package de.flapdoodle.os.linux;
 
+import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
@@ -43,7 +44,7 @@ class LinuxMintVersionTest {
   }
 
   private static void assertVersion(String versionIdContent, LinuxMintVersion version, UbuntuVersion matchingUbuntuVersion) {
-    Optional<Version> detectedVersion = detectVersion(LinuxDistributionTest.osReleaseFile_VersionIdIs(versionIdContent), LinuxMintVersion.values());
+		Optional<Version> detectedVersion = detectVersion(AttributeExtractorLookups.osReleaseFileVersionIdIs(versionIdContent), LinuxMintVersion.values());
     assertThat(detectedVersion).contains(version);
     assertThat(((LinuxMintVersion) detectedVersion.get()).matchingUbuntuVersion()).isEqualTo(matchingUbuntuVersion);
   }

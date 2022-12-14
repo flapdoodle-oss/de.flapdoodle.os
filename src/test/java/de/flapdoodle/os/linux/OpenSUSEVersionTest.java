@@ -16,6 +16,7 @@
  */
 package de.flapdoodle.os.linux;
 
+import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
@@ -35,7 +36,7 @@ class OpenSUSEVersionTest {
 	}
 
 	private static void assertVersion(String versionIdContent, OpenSUSEVersion version) {
-		Optional<Version> detectedVersion = detectVersion(LinuxDistributionTest.osReleaseFile_VersionIdIs(versionIdContent), OpenSUSEVersion.values());
+		Optional<Version> detectedVersion = detectVersion(AttributeExtractorLookups.osReleaseFileVersionIdIs(versionIdContent), OpenSUSEVersion.values());
 		assertThat(detectedVersion).contains(version);
 	}
 

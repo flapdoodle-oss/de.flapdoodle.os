@@ -16,9 +16,13 @@
  */
 package de.flapdoodle.os.linux;
 
+import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.attributes.*;
+import de.flapdoodle.os.common.attributes.AttributeExtractor;
+import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
+import de.flapdoodle.os.common.attributes.MappedTextFile;
+import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
@@ -117,11 +121,15 @@ class LinuxDistributionTest {
 	}
 
 	private static AttributeExtractorLookup osReleaseFile_NameIs(String content) {
-		return releaseFile_NameIs("/etc/os-release", content);
+		return AttributeExtractorLookups.releaseFile(OsReleaseFiles.RELEASE_FILE_NAME, ImmutableOsReleaseFile.builder()
+			.putAttributes(OsReleaseFiles.NAME, content)
+			.build());
 	}
 
 	private static AttributeExtractorLookup centosReleaseFile_NameIs(String content) {
-		return releaseFile_NameIs(CentosVersion.RELEASE_FILE_NAME, content);
+		return AttributeExtractorLookups.releaseFile(CentosVersion.RELEASE_FILE_NAME, ImmutableOsReleaseFile.builder()
+			.putAttributes(OsReleaseFiles.NAME, content)
+			.build());
 	}
 
 	private static AttributeExtractorLookup osVersion_Is(String content) {
@@ -129,33 +137,6 @@ class LinuxDistributionTest {
 				SystemProperty.any(), attribute -> attribute.name().equals("os.version") ? Optional.of(content) : Optional.empty())
 			.join(AttributeExtractorLookup.with(MappedTextFile.any(),
 					(AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> Optional.empty()))
-			.join(AttributeExtractorLookup.failing());
-	}
-
-	private static AttributeExtractorLookup releaseFile_NameIs(String releaseFileName, String content) {
-
-		return AttributeExtractorLookup.with(MappedTextFile.any(),
-				(AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute -> attribute.name().equals(releaseFileName)
-					? Optional.of(ImmutableOsReleaseFile.builder()
-					.putAttributes("NAME", content)
-					.build())
-					: Optional.empty())
-			.join(AttributeExtractorLookup.with(SystemProperty.any(), it -> Optional.empty()))
-			.join(AttributeExtractorLookup.failing());
-	}
-
-	static AttributeExtractorLookup osReleaseFile_VersionIdIs(String content) {
-		return releaseFile_VersionIdIs(OsReleaseFiles.RELEASE_FILE_NAME, content);
-	}
-
-	static AttributeExtractorLookup releaseFile_VersionIdIs(String releaseFileName, String content) {
-
-		return AttributeExtractorLookup.with(MappedTextFile.any(), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute ->
-				attribute.name().equals(releaseFileName)
-					? Optional.of(ImmutableOsReleaseFile.builder()
-					.putAttributes("VERSION_ID", content)
-					.build())
-					: Optional.empty())
 			.join(AttributeExtractorLookup.failing());
 	}
 

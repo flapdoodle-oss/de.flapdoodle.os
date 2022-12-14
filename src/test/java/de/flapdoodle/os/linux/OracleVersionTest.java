@@ -16,9 +16,11 @@
  */
 package de.flapdoodle.os.linux;
 
+import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
+import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -39,7 +41,11 @@ class OracleVersionTest {
 	}
 
 	private static void assertVersion(String versionIdContent, OracleVersion version) {
-		Optional<Version> detectedOsReleaseVersion = detectVersion(LinuxDistributionTest.releaseFile_VersionIdIs(OsReleaseFiles.RELEASE_FILE_NAME, versionIdContent), OracleVersion.values());
+
+		Optional<Version> detectedOsReleaseVersion = detectVersion(
+			AttributeExtractorLookups.releaseFile(OsReleaseFiles.RELEASE_FILE_NAME, ImmutableOsReleaseFile.builder()
+				.putAttributes(OsReleaseFiles.VERSION_ID, versionIdContent)
+				.build()), OracleVersion.values());
 		assertThat(detectedOsReleaseVersion).contains(version);
 	}
 

@@ -26,6 +26,9 @@ import java.util.regex.Pattern;
 
 public class OsReleaseFiles {
 	public static String RELEASE_FILE_NAME = "/etc/os-release";
+	public static String NAME="NAME";
+	public static String VERSION_ID="VERSION_ID";
+	public static String VERSION_CODENAME="VERSION_CODENAME";
 
 	static Attribute<OsReleaseFile> osReleaseFile() {
 		return releaseFile(RELEASE_FILE_NAME);
@@ -36,15 +39,19 @@ public class OsReleaseFiles {
 	}
 
 	static DistinctPeculiarity<OsReleaseFile> nameMatches(Attribute<OsReleaseFile> osReleaseFile, String name) {
-		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry("NAME", ".*" + name + ".*"));
+		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry(NAME, ".*" + name + ".*"));
 	}
 
 	static DistinctPeculiarity<OsReleaseFile> versionMatches(Attribute<OsReleaseFile> osReleaseFile, String version) {
-		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry("VERSION_ID", Pattern.quote(version) + ".*"));
+		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry(VERSION_ID, Pattern.quote(version) + ".*"));
 	}
 
 	static DistinctPeculiarity<OsReleaseFile> versionIs(Attribute<OsReleaseFile> osReleaseFile, String version) {
-		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry("VERSION_ID", Pattern.quote(version)));
+		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry(VERSION_ID, Pattern.quote(version)));
+	}
+
+	static DistinctPeculiarity<OsReleaseFile> versionCodeNameIs(Attribute<OsReleaseFile> osReleaseFile, String version) {
+		return DistinctPeculiarity.of(osReleaseFile, Matchers.osReleaseFileEntry(VERSION_CODENAME, Pattern.quote(version)));
 	}
 
 	static DistinctPeculiarity<OsReleaseFile> osReleaseFileNameMatches(String name) {
@@ -57,5 +64,9 @@ public class OsReleaseFiles {
 
 	static DistinctPeculiarity<OsReleaseFile> osReleaseFileVersionIs(String version) {
 		return versionIs(osReleaseFile(), version);
+	}
+
+	static DistinctPeculiarity<OsReleaseFile> osReleaseFileVersionCodeNameIs(String version) {
+		return versionCodeNameIs(osReleaseFile(), version);
 	}
 }

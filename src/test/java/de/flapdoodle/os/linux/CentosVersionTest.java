@@ -16,9 +16,11 @@
  */
 package de.flapdoodle.os.linux;
 
+import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
+import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -43,8 +45,16 @@ class CentosVersionTest {
 	}
 
 	private static void assertVersion(String versionIdContent, CentosVersion version) {
-		Optional<Version> detectedCentosVersion = detectVersion(LinuxDistributionTest.releaseFile_VersionIdIs(CentosVersion.RELEASE_FILE_NAME, versionIdContent), CentosVersion.values());
-		Optional<Version> detectedOsReleaseVersion = detectVersion(LinuxDistributionTest.releaseFile_VersionIdIs(OsReleaseFiles.RELEASE_FILE_NAME, versionIdContent), CentosVersion.values());
+
+		Optional<Version> detectedCentosVersion = detectVersion(
+			AttributeExtractorLookups.releaseFile(CentosVersion.RELEASE_FILE_NAME, ImmutableOsReleaseFile.builder()
+				.putAttributes(OsReleaseFiles.VERSION_ID, versionIdContent)
+				.build()), CentosVersion.values());
+
+		Optional<Version> detectedOsReleaseVersion = detectVersion(
+			AttributeExtractorLookups.releaseFile(OsReleaseFiles.RELEASE_FILE_NAME, ImmutableOsReleaseFile.builder()
+				.putAttributes(OsReleaseFiles.VERSION_ID, versionIdContent)
+				.build()), CentosVersion.values());
 		assertThat(detectedCentosVersion).contains(version);
 		assertThat(detectedOsReleaseVersion).contains(version);
 	}
