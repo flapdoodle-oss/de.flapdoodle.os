@@ -26,7 +26,7 @@ import java.util.List;
 public enum DebianVersion implements Version {
     DEBIAN_12(OneOf.of(
       OsReleaseFiles.osReleaseFileVersionMatches("12"),
-      OsReleaseFiles.osReleaseFileVersionCodeNameIs("bookwork")
+      OsReleaseFiles.osReleaseFileVersionCodeNameIs("bookworm")
     )),
     DEBIAN_11(OsReleaseFiles.osReleaseFileVersionMatches("11")),
     DEBIAN_10(OsReleaseFiles.osReleaseFileVersionMatches("10")),

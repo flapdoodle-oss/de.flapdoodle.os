@@ -44,7 +44,7 @@ class DebianVersionTest {
   @Test
   public void debian12_testingMatchCodeName() {
     Optional<Version> detectedVersion = detectVersion(osReleaseFile(ImmutableOsReleaseFile.builder()
-      .putAttributes(OsReleaseFiles.VERSION_CODENAME, "bookwork")
+      .putAttributes(OsReleaseFiles.VERSION_CODENAME, "bookworm")
       .build()), DebianVersion.values());
     assertThat(detectedVersion).contains(DebianVersion.DEBIAN_12);
   }
