@@ -32,8 +32,9 @@ public enum LinuxMintVersion implements Version {
     LINUX_MINT_20_1(UbuntuVersion.Ubuntu_20_04, OsReleaseFiles.osReleaseFileVersionIs("20.1")),
     LINUX_MINT_20_2(UbuntuVersion.Ubuntu_20_04, OsReleaseFiles.osReleaseFileVersionIs("20.2")),
     LINUX_MINT_20_3(UbuntuVersion.Ubuntu_20_04, OsReleaseFiles.osReleaseFileVersionIs("20.3")),
-    LINUX_MINT_21_0(UbuntuVersion.Ubuntu_22_04, OsReleaseFiles.osReleaseFileVersionIs("21"));
-    
+    LINUX_MINT_21_0(UbuntuVersion.Ubuntu_22_04, OsReleaseFiles.osReleaseFileVersionIs("21")),
+    LINUX_MINT_21_1(UbuntuVersion.Ubuntu_22_04, OsReleaseFiles.osReleaseFileVersionIs("21.1"));
+
     private final UbuntuVersion matchingUbuntuVersion;
     private final List<Peculiarity> peculiarities;
 
@@ -45,7 +46,7 @@ public enum LinuxMintVersion implements Version {
     public UbuntuVersion matchingUbuntuVersion() {
         return matchingUbuntuVersion;
     }
-    
+
     @Override
     public List<Peculiarity> pecularities() {
         return peculiarities;
