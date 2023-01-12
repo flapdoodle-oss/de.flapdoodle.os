@@ -16,7 +16,7 @@ Stable (Maven Central Repository, Released: 16.12.2022 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.2.6</version>
+		<version>1.2.7</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -31,6 +31,10 @@ You can override platform detection with system property `de.flapdoodle.os.overr
 Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `Linux|X86_32|CentOS|CentOS_7`.
 
 ### Changelog
+
+#### 1.2.7
+
+- mint 21.1
 
 #### 1.2.6
 
