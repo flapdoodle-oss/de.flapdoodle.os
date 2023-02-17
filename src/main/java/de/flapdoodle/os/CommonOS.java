@@ -32,21 +32,24 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CommonOS implements OS {
-	Linux(CommonArchitecture.class, LinuxDistribution.class, osNameMatches("Linux")),
-	Windows(CommonArchitecture.class, WindowsDistribution.class, osNameMatches("Windows.*")),
-	OS_X(CommonArchitecture.class, OS_X_Distribution.class, osNameMatches("Mac CommonOS X")),
-	Solaris(CommonArchitecture.class, SolarisDistribution.class, osNameMatches(".*SunOS.*")),
-	FreeBSD(CommonArchitecture.class, FreeBSDDistribution.class, osNameMatches("FreeBSD"));
+	Linux(OSType.Linux, CommonArchitecture.class, LinuxDistribution.class, osNameMatches("Linux")),
+	Windows(OSType.Windows, CommonArchitecture.class, WindowsDistribution.class, osNameMatches("Windows.*")),
+	OS_X(OSType.OS_X, CommonArchitecture.class, OS_X_Distribution.class, osNameMatches("Mac CommonOS X")),
+	Solaris(OSType.Solaris, CommonArchitecture.class, SolarisDistribution.class, osNameMatches(".*SunOS.*")),
+	FreeBSD(OSType.FreeBSD, CommonArchitecture.class, FreeBSDDistribution.class, osNameMatches("FreeBSD"));
 
+	private OSType type;
 	private final List<Peculiarity> peculiarities;
 	private final List<? extends Distribution> distributions;
 	private final List<? extends Architecture> architectures;
 
 	<A extends Enum<A> & Architecture, T extends Enum<T> & Distribution> CommonOS(
+					OSType type,
 					Class<A> architecureClazz,
 					Class<T> clazz,
 					DistinctPeculiarity<?>... peculiarities
 	) {
+		this.type = type;
 		this.peculiarities  = HasPecularities.asList(peculiarities);
 		this.architectures = Enums.valuesAsList(architecureClazz);
 		this.distributions = Enums.valuesAsList(clazz);
@@ -60,6 +63,11 @@ public enum CommonOS implements OS {
 	@Override
 	public List<? extends Architecture> architectures() {
 		return  architectures;
+	}
+
+	@Override
+	public OSType type() {
+		return type;
 	}
 
 	@Override

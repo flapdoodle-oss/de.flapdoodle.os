@@ -33,30 +33,35 @@ class CommonOSTest {
   void detectLinuxIfOsNameIsLinux() {
 		CommonOS os = match(osNameIs("Linux"), MatcherLookup.systemDefault(), CommonOS.values());
     assertThat(os).isEqualTo(CommonOS.Linux);
+    assertThat(os.type()).isEqualTo(OSType.Linux);
   }
 
   @Test
   void detectWindowsIfOsNameStartsWithWindows() {
 		CommonOS os = match(osNameIs("WindowsFooBarBlub"), MatcherLookup.systemDefault(), CommonOS.values());
     assertThat(os).isEqualTo(CommonOS.Windows);
+    assertThat(os.type()).isEqualTo(OSType.Windows);
   }
 
   @Test
   void detectOSXIfOsNameIsMacOSX() {
 		CommonOS os = match(osNameIs("Mac CommonOS X"), MatcherLookup.systemDefault(), CommonOS.values());
     assertThat(os).isEqualTo(CommonOS.OS_X);
+    assertThat(os.type()).isEqualTo(OSType.OS_X);
   }
 
   @Test
   void detectFreeBSDIfOsNameIsFreeBSD() {
 		CommonOS os = match(osNameIs("FreeBSD"), MatcherLookup.systemDefault(), CommonOS.values());
     assertThat(os).isEqualTo(CommonOS.FreeBSD);
+    assertThat(os.type()).isEqualTo(OSType.FreeBSD);
   }
 
   @Test
   void detectSolarisIfOsNameContainsSunOS() {
 		CommonOS os = match(osNameIs("doesNotMatterSunOSIgnoreThisTooo"), MatcherLookup.systemDefault(), CommonOS.values());
     assertThat(os).isEqualTo(CommonOS.Solaris);
+    assertThat(os.type()).isEqualTo(OSType.Solaris);
   }
 
   @Test
