@@ -28,12 +28,13 @@ import de.flapdoodle.os.osx.OS_X_Distribution;
 import de.flapdoodle.os.solaris.SolarisDistribution;
 import de.flapdoodle.os.windows.WindowsDistribution;
 
+import java.util.Arrays;
 import java.util.List;
 
-public enum OS implements HasPecularities {
+public enum CommonOS implements OS {
 	Linux(CommonArchitecture.class, LinuxDistribution.class, osNameMatches("Linux")),
 	Windows(CommonArchitecture.class, WindowsDistribution.class, osNameMatches("Windows.*")),
-	OS_X(CommonArchitecture.class, OS_X_Distribution.class, osNameMatches("Mac OS X")),
+	OS_X(CommonArchitecture.class, OS_X_Distribution.class, osNameMatches("Mac CommonOS X")),
 	Solaris(CommonArchitecture.class, SolarisDistribution.class, osNameMatches(".*SunOS.*")),
 	FreeBSD(CommonArchitecture.class, FreeBSDDistribution.class, osNameMatches("FreeBSD"));
 
@@ -41,7 +42,7 @@ public enum OS implements HasPecularities {
 	private final List<? extends Distribution> distributions;
 	private final List<? extends Architecture> architectures;
 
-	<A extends Enum<A> & Architecture, T extends Enum<T> & Distribution> OS(
+	<A extends Enum<A> & Architecture, T extends Enum<T> & Distribution> CommonOS(
 					Class<A> architecureClazz,
 					Class<T> clazz,
 					DistinctPeculiarity<?>... peculiarities
@@ -51,10 +52,12 @@ public enum OS implements HasPecularities {
 		this.distributions = Enums.valuesAsList(clazz);
 	}
 
+	@Override
 	public List<? extends Distribution> distributions() {
 		return distributions;
 	}
 
+	@Override
 	public List<? extends Architecture> architectures() {
 		return  architectures;
 	}
@@ -66,5 +69,9 @@ public enum OS implements HasPecularities {
 
 	private static DistinctPeculiarity<String> osNameMatches(String pattern) {
 		return DistinctPeculiarity.of(Attributes.systemProperty("os.name"), Matchers.matchPattern(pattern));
+	}
+
+	public static List<? extends OS> list() {
+		return Arrays.asList(values());
 	}
 }

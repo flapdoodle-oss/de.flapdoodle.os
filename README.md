@@ -23,6 +23,16 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Run
 
+Detect system platform with this call:
+                
+```java
+Platform result = Platform.detect(CommonOS.list());
+```
+
+and inspect the result which may give 'Linux' for os, 'X86' for cpu type,
+'B64' for bit size, 'Ubuntu' for 
+distribution and 'Ubuntu_22_04' for version.
+
 You can set system property `de.flapdoodle.os.explain=true` and enable logging for
 package `de.flapdoodle.os.common.attributes` to get some debugging output.
 
@@ -31,6 +41,10 @@ You can override platform detection with system property `de.flapdoodle.os.overr
 Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `Linux|X86_32|CentOS|CentOS_7`.
 
 ### Changelog
+
+#### 1.3.0
+
+- api extracted to de.flapdoodle.os-api
 
 #### 1.2.7
 

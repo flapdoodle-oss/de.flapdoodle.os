@@ -27,48 +27,48 @@ import static de.flapdoodle.os.common.PeculiarityInspector.match;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class OSTest {
+class CommonOSTest {
 
   @Test
   void detectLinuxIfOsNameIsLinux() {
-		OS os = match(osNameIs("Linux"), MatcherLookup.systemDefault(), OS.values());
-    assertThat(os).isEqualTo(OS.Linux);
+		CommonOS os = match(osNameIs("Linux"), MatcherLookup.systemDefault(), CommonOS.values());
+    assertThat(os).isEqualTo(CommonOS.Linux);
   }
 
   @Test
   void detectWindowsIfOsNameStartsWithWindows() {
-		OS os = match(osNameIs("WindowsFooBarBlub"), MatcherLookup.systemDefault(), OS.values());
-    assertThat(os).isEqualTo(OS.Windows);
+		CommonOS os = match(osNameIs("WindowsFooBarBlub"), MatcherLookup.systemDefault(), CommonOS.values());
+    assertThat(os).isEqualTo(CommonOS.Windows);
   }
 
   @Test
   void detectOSXIfOsNameIsMacOSX() {
-		OS os = match(osNameIs("Mac OS X"), MatcherLookup.systemDefault(), OS.values());
-    assertThat(os).isEqualTo(OS.OS_X);
+		CommonOS os = match(osNameIs("Mac CommonOS X"), MatcherLookup.systemDefault(), CommonOS.values());
+    assertThat(os).isEqualTo(CommonOS.OS_X);
   }
 
   @Test
   void detectFreeBSDIfOsNameIsFreeBSD() {
-		OS os = match(osNameIs("FreeBSD"), MatcherLookup.systemDefault(), OS.values());
-    assertThat(os).isEqualTo(OS.FreeBSD);
+		CommonOS os = match(osNameIs("FreeBSD"), MatcherLookup.systemDefault(), CommonOS.values());
+    assertThat(os).isEqualTo(CommonOS.FreeBSD);
   }
 
   @Test
   void detectSolarisIfOsNameContainsSunOS() {
-		OS os = match(osNameIs("doesNotMatterSunOSIgnoreThisTooo"), MatcherLookup.systemDefault(), OS.values());
-    assertThat(os).isEqualTo(OS.Solaris);
+		CommonOS os = match(osNameIs("doesNotMatterSunOSIgnoreThisTooo"), MatcherLookup.systemDefault(), CommonOS.values());
+    assertThat(os).isEqualTo(CommonOS.Solaris);
   }
 
   @Test
   void detectionMustFailIfNothingMatches() {
-    assertThatThrownBy(() -> match(osNameIs("what"), MatcherLookup.systemDefault(), OS.values()))
+    assertThatThrownBy(() -> match(osNameIs("what"), MatcherLookup.systemDefault(), CommonOS.values()))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("no match out of [Linux, Windows, OS_X, Solaris, FreeBSD]");
   }
 
   @Test
   void detectionMustFailIfMoreThanOneMatch() {
-    assertThatThrownBy(() -> match(osNameIs("WindowsSunOS"), MatcherLookup.systemDefault(), OS.values()))
+    assertThatThrownBy(() -> match(osNameIs("WindowsSunOS"), MatcherLookup.systemDefault(), CommonOS.values()))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("more than one match: [Windows, Solaris]");
   }
