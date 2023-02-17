@@ -284,6 +284,9 @@
                     <excludedClasses>
                         <excludedClass>de.flapdoodle.types.Wrapper</excludedClass>
                     </excludedClasses>
+                    <excludedTestClasses>
+                        <excludedTestClass>de.flapdoodle.os.HowToTest</excludedTestClass>
+                    </excludedTestClasses>
                     <timestampedReports>false</timestampedReports>
                     <verbose>false</verbose>
                 </configuration>
