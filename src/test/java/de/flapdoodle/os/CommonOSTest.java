@@ -45,7 +45,7 @@ class CommonOSTest {
 
   @Test
   void detectOSXIfOsNameIsMacOSX() {
-		CommonOS os = match(osNameIs("Mac CommonOS X"), MatcherLookup.systemDefault(), CommonOS.values());
+		CommonOS os = match(osNameIs("Mac OS X"), MatcherLookup.systemDefault(), CommonOS.values());
     assertThat(os).isEqualTo(CommonOS.OS_X);
     assertThat(os.type()).isEqualTo(OSType.OS_X);
   }

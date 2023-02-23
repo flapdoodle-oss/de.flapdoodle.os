@@ -34,7 +34,7 @@ import java.util.List;
 public enum CommonOS implements OS {
 	Linux(OSType.Linux, CommonArchitecture.class, LinuxDistribution.class, osNameMatches("Linux")),
 	Windows(OSType.Windows, CommonArchitecture.class, WindowsDistribution.class, osNameMatches("Windows.*")),
-	OS_X(OSType.OS_X, CommonArchitecture.class, OS_X_Distribution.class, osNameMatches("Mac CommonOS X")),
+	OS_X(OSType.OS_X, CommonArchitecture.class, OS_X_Distribution.class, osNameMatches("Mac OS X")),
 	Solaris(OSType.Solaris, CommonArchitecture.class, SolarisDistribution.class, osNameMatches(".*SunOS.*")),
 	FreeBSD(OSType.FreeBSD, CommonArchitecture.class, FreeBSDDistribution.class, osNameMatches("FreeBSD"));
 
