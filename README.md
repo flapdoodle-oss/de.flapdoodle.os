@@ -40,6 +40,12 @@ Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `
 
 ### Changelog
 
+
+
+#### 1.4.0
+
+- amazon 2023 support
+
 #### 1.3.4
 
 - ubuntu 23.x support
