@@ -34,6 +34,7 @@ class AmazonVersionTest {
 	public void osVersionMustMatchAmazonVersion() {
 		assertVersion("4.9.76-3.78.amzn1.x86_64", AmazonVersion.AmazonLinux);
 		assertVersion("4.14.186-146.268.amzn2.x86_64", AmazonVersion.AmazonLinux2);
+		assertVersion("4.14.186-146.268.amzn2023.x86_64", AmazonVersion.AmazonLinux2023);
 	}
 
 	private static void assertVersion(String versionIdContent, AmazonVersion version) {

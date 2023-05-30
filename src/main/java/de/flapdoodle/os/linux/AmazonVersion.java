@@ -30,12 +30,15 @@ import java.util.List;
 public enum AmazonVersion implements VersionWithPriority {
 	// amzn2
 	// os.version=4.9.76-3.78.amzn1.x86_64
-	AmazonLinux(osVersionMatches(".*amzn1.*")),
-	AmazonLinux2(osVersionMatches(".*amzn2.*"));
+	AmazonLinux(-1, osVersionMatches(".*amzn1.*")),
+	AmazonLinux2(0, osVersionMatches(".*amzn2(?!023).*")),
+	AmazonLinux2023(1, osVersionMatches(".*amzn2023.*"));
 
+	private final int priority;
 	private final List<Peculiarity> peculiarities;
 
-	AmazonVersion(Peculiarity... peculiarities) {
+	AmazonVersion(int priority, Peculiarity... peculiarities) {
+		this.priority = priority;
 		this.peculiarities  = HasPecularities.asList(peculiarities);
 	}
 
@@ -50,7 +53,7 @@ public enum AmazonVersion implements VersionWithPriority {
 	 */
 	@Override
 	public int priority() {
-		return -1;
+		return priority;
 	}
 
 	static DistinctPeculiarity<String> osVersionMatches(String name) {
