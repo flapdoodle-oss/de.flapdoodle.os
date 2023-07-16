@@ -16,10 +16,12 @@
  */
 package de.flapdoodle.os.linux;
 
+import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
+import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -37,6 +39,15 @@ class AmazonVersionTest {
 		assertVersion("4.14.186-146.268.amzn2023.x86_64", AmazonVersion.AmazonLinux2023);
 	}
 
+	@Test
+	public void detectAmazon2IfNameAndVersionContainedInOsRelease() {
+		Optional<Version> detectedVersion = detectVersion(AttributeExtractorLookups.osReleaseFile(ImmutableOsReleaseFile.builder()
+			.putAttributes(OsReleaseFiles.NAME, "Amazon Linux")
+			.putAttributes(OsReleaseFiles.VERSION_ID, "2")
+			.build()), AmazonVersion.values());
+		assertThat(detectedVersion).contains(AmazonVersion.AmazonLinux2);
+	}
+
 	private static void assertVersion(String versionIdContent, AmazonVersion version) {
 		Optional<Version> detectedVersion = detectVersion(osVersion(versionIdContent), AmazonVersion.values());
 		assertThat(detectedVersion).contains(version);
@@ -49,8 +60,7 @@ class AmazonVersionTest {
 	static AttributeExtractorLookup osVersion(String content) {
 		return AttributeExtractorLookup.with(
 				SystemProperty.any(), attribute -> attribute.name().equals("os.version") ? Optional.of(content) : Optional.empty())
+			.join(AttributeExtractorLookups.osReleaseFileVersionIdIs("unused"))
 			.join(AttributeExtractorLookup.failing());
 	}
-
-
 }

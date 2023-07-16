@@ -19,6 +19,7 @@ package de.flapdoodle.os.linux;
 import de.flapdoodle.os.Distribution;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.HasPecularities;
+import de.flapdoodle.os.common.OneOf;
 import de.flapdoodle.os.common.Peculiarity;
 import de.flapdoodle.os.common.collections.Enums;
 
@@ -32,7 +33,7 @@ public enum LinuxDistribution implements Distribution {
   OpenSUSE(OpenSUSEVersion.class, OsReleaseFiles.osReleaseFileNameMatches("openSUSE")),
   LinuxMint(LinuxMintVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Linux Mint")),
   Debian(DebianVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Debian")),
-  Amazon(AmazonVersion.class, AmazonVersion.osVersionMatches(".*amzn.*"))
+  Amazon(AmazonVersion.class, OneOf.of(OsReleaseFiles.osReleaseFileNameMatches("Amazon Linux"), AmazonVersion.osVersionMatches(".*amzn.*")))
   ;
 
   private final List<Peculiarity> peculiarities;

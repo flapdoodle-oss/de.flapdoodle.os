@@ -116,6 +116,14 @@ class LinuxDistributionTest {
 			.containsExactlyInAnyOrder(AmazonVersion.values());
 	}
 
+	@Test
+	public void selectAmazonIfReleaseFileContainsNameWithAmazon() {
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Amazon Linux")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Amazon);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(AmazonVersion.values());
+	}
+
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
 		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
 	}

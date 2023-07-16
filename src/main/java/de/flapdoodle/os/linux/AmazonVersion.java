@@ -18,20 +18,26 @@ package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.VersionWithPriority;
-import de.flapdoodle.os.common.DistinctPeculiarity;
-import de.flapdoodle.os.common.HasPecularities;
-import de.flapdoodle.os.common.Peculiarity;
+import de.flapdoodle.os.common.*;
 import de.flapdoodle.os.common.attributes.Attribute;
 import de.flapdoodle.os.common.attributes.Attributes;
 import de.flapdoodle.os.common.matcher.Matchers;
 
 import java.util.List;
 
+import static de.flapdoodle.os.linux.OsReleaseFiles.versionMatches;
+
 public enum AmazonVersion implements VersionWithPriority {
 	// amzn2
 	// os.version=4.9.76-3.78.amzn1.x86_64
 	AmazonLinux(-1, osVersionMatches(".*amzn1.*")),
-	AmazonLinux2(0, osVersionMatches(".*amzn2(?!023).*")),
+	AmazonLinux2(0, OneOf.of(
+		AllOf.of(
+			OsReleaseFiles.osReleaseFileNameMatches("Amazon Linux"),
+			versionMatches(OsReleaseFiles.osReleaseFile(), "2")
+		),
+		osVersionMatches(".*amzn2(?!023).*"))
+	),
 	AmazonLinux2023(1, osVersionMatches(".*amzn2023.*"));
 
 	private final int priority;
@@ -39,7 +45,7 @@ public enum AmazonVersion implements VersionWithPriority {
 
 	AmazonVersion(int priority, Peculiarity... peculiarities) {
 		this.priority = priority;
-		this.peculiarities  = HasPecularities.asList(peculiarities);
+		this.peculiarities = HasPecularities.asList(peculiarities);
 	}
 
 	@Override
