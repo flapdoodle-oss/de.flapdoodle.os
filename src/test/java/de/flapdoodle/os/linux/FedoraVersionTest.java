@@ -29,23 +29,19 @@ import java.util.Optional;
 import static de.flapdoodle.os.common.PeculiarityInspector.find;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RedhatVersionTest {
+class FedoraVersionTest {
 
 	@Test
 	public void versionIdMustMatchVersion() {
-		assertVersion("6", RedhatVersion.Redhat_6);
-		assertVersion("7", RedhatVersion.Redhat_7);
-		assertVersion("7.x", RedhatVersion.Redhat_7);
-		assertVersion("8", RedhatVersion.Redhat_8);
-		assertVersion("9", RedhatVersion.Redhat_9);
+		assertVersion("38", FedoraVersion.Fedora_38);
 	}
 
-	private static void assertVersion(String versionIdContent, RedhatVersion version) {
+	private static void assertVersion(String versionIdContent, FedoraVersion version) {
 
 		Optional<Version> detectedOsReleaseVersion = detectVersion(
 			AttributeExtractorLookups.releaseFile(OsReleaseFiles.RELEASE_FILE_NAME, ImmutableOsReleaseFile.builder()
 				.putAttributes(OsReleaseFiles.VERSION_ID, versionIdContent)
-				.build()), RedhatVersion.values());
+				.build()), FedoraVersion.values());
 		assertThat(detectedOsReleaseVersion).contains(version);
 	}
 

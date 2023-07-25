@@ -29,6 +29,7 @@ public enum LinuxDistribution implements Distribution {
   Ubuntu(UbuntuVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Ubuntu")),
   CentOS(CentosVersion.class, CentosVersion.centosReleaseFileNameMatches("CentOS")),
   Redhat(RedhatVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Red Hat")),
+  Fedora(FedoraVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Fedora")),
   Oracle(OracleVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Oracle")),
   OpenSUSE(OpenSUSEVersion.class, OsReleaseFiles.osReleaseFileNameMatches("openSUSE")),
   LinuxMint(LinuxMintVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Linux Mint")),
