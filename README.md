@@ -16,7 +16,7 @@ Stable (Maven Central Repository, Released: 25.07.2023 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.4.3</version>
+		<version>1.4.4</version>
 	</dependency>
 
 ### Run
@@ -40,7 +40,7 @@ Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `
 
 ### Changelog
 
-#### 1.4.3
+#### 1.4.4
 
 - linux mint 21.2 and fedora 38
 
