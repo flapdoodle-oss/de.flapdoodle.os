@@ -109,6 +109,14 @@ class LinuxDistributionTest {
 	}
 
 	@Test
+	public void selectPopOsIfReleaseFileContainsNameWithPopOs() {
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Pop!_OS")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.PopOS);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(PopOSVersion.values());
+	}
+
+	@Test
 	public void selectAmazonIfOsVersionContainsAmzn() {
 		Optional<Distribution> dist = detectDistribution(osVersion_Is("4.9.76-3.78.amzn1.x86_64"), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.Amazon);
