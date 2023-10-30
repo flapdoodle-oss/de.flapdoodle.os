@@ -39,6 +39,7 @@ class DebianVersionTest {
     assertVersion("10", DebianVersion.DEBIAN_10);
     assertVersion("11", DebianVersion.DEBIAN_11);
     assertVersion("12", DebianVersion.DEBIAN_12);
+    assertVersion("13", DebianVersion.DEBIAN_13);
   }
 
   @Test
@@ -47,6 +48,14 @@ class DebianVersionTest {
       .putAttributes(OsReleaseFiles.VERSION_CODENAME, "bookworm")
       .build()), DebianVersion.values());
     assertThat(detectedVersion).contains(DebianVersion.DEBIAN_12);
+  }
+
+  @Test
+  public void debian13_testingMatchCodeName() {
+    Optional<Version> detectedVersion = detectVersion(osReleaseFile(ImmutableOsReleaseFile.builder()
+      .putAttributes(OsReleaseFiles.VERSION_CODENAME, "trixie")
+      .build()), DebianVersion.values());
+    assertThat(detectedVersion).contains(DebianVersion.DEBIAN_13);
   }
 
   private static void assertVersion(String versionIdContent, DebianVersion version) {

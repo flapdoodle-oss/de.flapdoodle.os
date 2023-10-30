@@ -30,6 +30,10 @@ public enum DebianVersion implements Version {
     DEBIAN_12(OneOf.of(
       OsReleaseFiles.osReleaseFileVersionMatches("12"),
       OsReleaseFiles.osReleaseFileVersionCodeNameIs("bookworm")
+    )),
+    DEBIAN_13(OneOf.of(
+      OsReleaseFiles.osReleaseFileVersionMatches("13"),
+      OsReleaseFiles.osReleaseFileVersionCodeNameIs("trixie")
     ));
 
     private final List<Peculiarity> peculiarities;
