@@ -11,12 +11,12 @@ We are now a github organisation. You are invited to participate.
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 04.08.2023 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 30.10.2023 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.5.0</version>
+		<version>1.5.1</version>
 	</dependency>
 
 ### Run
@@ -39,6 +39,10 @@ You can override platform detection with system property `de.flapdoodle.os.overr
 Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `Linux|X86_32|CentOS|CentOS_7`.
 
 ### Changelog
+
+#### 1.5.1
+
+- debian 12, 13
 
 #### 1.5.0
 
