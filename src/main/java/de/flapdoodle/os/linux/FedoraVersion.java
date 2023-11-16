@@ -26,7 +26,7 @@ import static de.flapdoodle.os.linux.OsReleaseFiles.versionMatches;
 
 public enum FedoraVersion implements Version {
 	Fedora_38(versionMatches(OsReleaseFiles.osReleaseFile(),"38")),
-	;
+    Fedora_39(versionMatches(OsReleaseFiles.osReleaseFile(),"39"));
 
 	private final List<Peculiarity> peculiarities;
 

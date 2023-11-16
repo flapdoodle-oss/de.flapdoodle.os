@@ -34,6 +34,7 @@ class FedoraVersionTest {
 	@Test
 	public void versionIdMustMatchVersion() {
 		assertVersion("38", FedoraVersion.Fedora_38);
+		assertVersion("39", FedoraVersion.Fedora_39);
 	}
 
 	private static void assertVersion(String versionIdContent, FedoraVersion version) {
