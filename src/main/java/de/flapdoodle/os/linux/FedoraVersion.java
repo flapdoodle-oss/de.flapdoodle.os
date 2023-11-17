@@ -25,13 +25,16 @@ import java.util.List;
 import static de.flapdoodle.os.linux.OsReleaseFiles.versionMatches;
 
 public enum FedoraVersion implements Version {
-	Fedora_38(versionMatches(OsReleaseFiles.osReleaseFile(),"38")),
-    Fedora_39(versionMatches(OsReleaseFiles.osReleaseFile(),"39"));
+	Fedora_38(versionMatches(OsReleaseFiles.osReleaseFile(), "38")),
+	Fedora_39(versionMatches(OsReleaseFiles.osReleaseFile(), "39")),
+	Fedora_40(versionMatches(OsReleaseFiles.osReleaseFile(), "40")),
+	Fedora_41(versionMatches(OsReleaseFiles.osReleaseFile(), "41")),
+	;
 
 	private final List<Peculiarity> peculiarities;
 
 	FedoraVersion(Peculiarity... peculiarities) {
-		this.peculiarities  = HasPecularities.asList(peculiarities);
+		this.peculiarities = HasPecularities.asList(peculiarities);
 	}
 
 	@Override
