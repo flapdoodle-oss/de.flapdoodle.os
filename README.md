@@ -40,9 +40,9 @@ Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `
 
 ### Changelog
 
-#### 1.5.2
+#### Unreleased
 
-- fedora 39
+- fedora 39, 40, 41
 
 #### 1.5.1
 
