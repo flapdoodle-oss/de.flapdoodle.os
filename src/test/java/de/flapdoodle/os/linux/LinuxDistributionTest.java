@@ -140,6 +140,14 @@ class LinuxDistributionTest {
 			.containsExactlyInAnyOrder(AmazonVersion.values());
 	}
 
+	@Test
+	public void selectAlmaIfReleaseFileContainsNameWithAlma() {
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("AlmaLinux")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Alma);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(AlmaVersion.values());
+	}
+
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
 		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
 	}
