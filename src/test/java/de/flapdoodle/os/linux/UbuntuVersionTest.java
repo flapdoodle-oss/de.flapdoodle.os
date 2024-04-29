@@ -46,6 +46,7 @@ class UbuntuVersionTest {
     assertVersion("22.10", UbuntuVersion.Ubuntu_22_10);
     assertVersion("23.04", UbuntuVersion.Ubuntu_23_04);
     assertVersion("23.10", UbuntuVersion.Ubuntu_23_10);
+    assertVersion("24.04", UbuntuVersion.Ubuntu_24_04);
   }
 
   private static void assertVersion(String versionIdContent, UbuntuVersion version) {
