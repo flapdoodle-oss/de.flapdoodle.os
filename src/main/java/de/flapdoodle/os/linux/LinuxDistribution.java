@@ -36,7 +36,8 @@ public enum LinuxDistribution implements Distribution {
   PopOS(PopOSVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Pop!_OS")),
   Debian(DebianVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Debian")),
   Amazon(AmazonVersion.class, OneOf.of(OsReleaseFiles.osReleaseFileNameMatches("Amazon Linux"), AmazonVersion.osVersionMatches(".*amzn.*"))),
-  Alma(AlmaVersion.class, AlmaVersion.almaReleaseFileNameMatches("AlmaLinux"))
+  Alma(AlmaVersion.class, AlmaVersion.almaReleaseFileNameMatches("AlmaLinux")),
+  Rocky(RockyVersion.class, RockyVersion.rockyReleaseFileNameMatches("Rocky Linux"))
   ;
 
   private final List<Peculiarity> peculiarities;
