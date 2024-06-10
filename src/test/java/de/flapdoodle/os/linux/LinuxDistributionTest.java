@@ -148,6 +148,14 @@ class LinuxDistributionTest {
 			.containsExactlyInAnyOrder(AlmaVersion.values());
 	}
 
+	@Test
+	public void selectRockyIfReleaseFileContainsNameWithRocky() {
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Rocky Linux")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Rocky);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(RockyVersion.values());
+	}
+
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
 		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
 	}
