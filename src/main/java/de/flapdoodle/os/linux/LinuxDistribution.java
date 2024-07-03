@@ -35,6 +35,7 @@ public enum LinuxDistribution implements Distribution {
   LinuxMint(LinuxMintVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Linux Mint")),
   PopOS(PopOSVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Pop!_OS")),
   Debian(DebianVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Debian")),
+  Alpine(AlpineVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Alpine")),
   Amazon(AmazonVersion.class, OneOf.of(
     OsReleaseFiles.osReleaseFileNameMatches("Amazon Linux"),
     AmazonVersion.osVersionMatches(".*amzn.*"))

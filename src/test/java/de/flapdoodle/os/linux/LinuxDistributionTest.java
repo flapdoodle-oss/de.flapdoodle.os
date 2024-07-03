@@ -156,6 +156,14 @@ class LinuxDistributionTest {
 			.containsExactlyInAnyOrder(RockyVersion.values());
 	}
 
+	@Test
+	public void selectAlpineIfReleaseFileContainsNameWithAlpine() {
+		Optional<Distribution> dist = detectDistribution(osReleaseFile_NameIs(wrapWithRandomString("Alpine")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Alpine);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(AlpineVersion.values());
+	}
+
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
 		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
 	}

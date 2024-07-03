@@ -42,6 +42,8 @@ Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `
 
 #### Unreleased
 
+- alpine linux detection                   
+
 #### 1.5.6
 
 - rocky linux support
