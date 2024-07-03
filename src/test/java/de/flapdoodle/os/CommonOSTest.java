@@ -17,8 +17,15 @@
 package de.flapdoodle.os;
 
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
+import de.flapdoodle.os.common.attributes.MappedTextFile;
 import de.flapdoodle.os.common.attributes.SystemProperty;
+import de.flapdoodle.os.common.attributes.TypeCheckPredicate;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
+import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
+import de.flapdoodle.os.common.types.OsReleaseFile;
+import de.flapdoodle.os.linux.LinuxDistribution;
+import de.flapdoodle.os.linux.OracleVersion;
+import de.flapdoodle.os.linux.OsReleaseFiles;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -74,8 +81,41 @@ class CommonOSTest {
   @Test
   void detectionMustFailIfMoreThanOneMatch() {
     assertThatThrownBy(() -> match(osNameIs("WindowsSunOS"), MatcherLookup.systemDefault(), CommonOS.values()))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("more than one match: [Windows, Solaris]");
+      .isInstanceOf(IllegalArgumentException.class)
+      .hasMessage("more than one match: [Windows, Solaris]");
+  }
+
+  @Test
+  void detectionMustUseFirstMatchIfMoreThanOneMatches() {
+    AttributeExtractorLookup releaseFile = AttributeExtractorLookup.with(MappedTextFile.any(), r -> {
+      switch (r.name()) {
+        case "/etc/os-release": return Optional.of(ImmutableOsReleaseFile.builder()
+          .putAttributes("NAME","Oracle")
+          .putAttributes("VERSION_ID","9")
+          .build());
+      }
+      return Optional.empty();
+    });
+
+    AttributeExtractorLookup extractorLookup = AttributeExtractorLookup.with(
+        SystemProperty.any(), attribute -> {
+					switch (attribute.name()) {
+            case "os.name": return Optional.of("Linux");
+            case "os.arch": return Optional.of("x86_64");
+            case "os.version": return Optional.of("foo.amzn.bar");
+            default: return Optional.empty();
+          }
+        })
+      .join(releaseFile)
+      .join(AttributeExtractorLookup.failing());
+//    CommonOS os = match(extractorLookup, MatcherLookup.systemDefault(), CommonOS.values());
+
+    Platform result = Platform.detect(CommonOS.list(), extractorLookup, MatcherLookup.systemDefault());
+
+    assertThat(result.operatingSystem()).isEqualTo(CommonOS.Linux);
+    assertThat(result.architecture()).isEqualTo(CommonArchitecture.X86_64);
+    assertThat(result.distribution()).contains(LinuxDistribution.Oracle);
+    assertThat(result.version()).contains(OracleVersion.Oracle_9);
   }
 
   private static AttributeExtractorLookup osNameIs(String osName) {

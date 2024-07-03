@@ -423,7 +423,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.25.3</version>
+            <version>3.26.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -448,7 +448,7 @@
         <dependency>
             <groupId>de.flapdoodle</groupId>
             <artifactId>de.flapdoodle.os-api</artifactId>
-            <version>1.4.1</version>
+            <version>1.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -462,4 +462,11 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
 </project>
