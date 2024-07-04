@@ -25,6 +25,7 @@ import de.flapdoodle.os.common.collections.Enums;
 
 import java.util.List;
 
+// see https://github.com/chef/os_release
 public enum LinuxDistribution implements Distribution {
   Ubuntu(UbuntuVersion.class, OsReleaseFiles.osReleaseFileNameMatches("Ubuntu")),
   CentOS(CentosVersion.class, CentosVersion.centosReleaseFileNameMatches("CentOS")),
