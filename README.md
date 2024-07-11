@@ -11,12 +11,12 @@ We are now a github organisation. You are invited to participate.
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 03.07.2024 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 11.07.2024 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.6.0</version>
+		<version>1.7.0</version>
 	</dependency>
 
 ### Run
@@ -42,9 +42,13 @@ Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `
 
 #### Unreleased
 
+#### 1.7.0
+
+- amazon detection fix
+
 #### 1.6.0
 
-- alpine linux detection                   
+- alpine linux detection
 
 #### 1.5.6
 
