@@ -18,6 +18,7 @@ package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Version;
+import de.flapdoodle.os.VersionWithPriority;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
@@ -25,7 +26,9 @@ import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static de.flapdoodle.os.common.PeculiarityInspector.find;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,13 +51,25 @@ class AmazonVersionTest {
 		assertThat(detectedVersion).contains(AmazonVersion.AmazonLinux2);
 	}
 
+	@Test
+	public void detectAmazon2023IfNameAndVersionContainedInOsRelease() {
+		Optional<Version> detectedVersion = detectVersion(AttributeExtractorLookups.osReleaseFile(ImmutableOsReleaseFile.builder()
+			.putAttributes(OsReleaseFiles.NAME, "Amazon Linux")
+			.putAttributes(OsReleaseFiles.VERSION_ID, "2023")
+			.build()), AmazonVersion.values());
+		assertThat(detectedVersion).contains(AmazonVersion.AmazonLinux2023);
+	}
+
 	private static void assertVersion(String versionIdContent, AmazonVersion version) {
 		Optional<Version> detectedVersion = detectVersion(osVersion(versionIdContent), AmazonVersion.values());
 		assertThat(detectedVersion).contains(version);
 	}
 
-	private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, Version... values) {
-		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.<Version>asList(values));
+	private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, VersionWithPriority... values) {
+		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values)
+			.stream()
+			.sorted(Comparator.comparing(VersionWithPriority::priority).reversed())
+			.collect(Collectors.toList()));
 	}
 
 	static AttributeExtractorLookup osVersion(String content) {

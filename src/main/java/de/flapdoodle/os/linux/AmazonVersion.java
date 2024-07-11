@@ -38,7 +38,14 @@ public enum AmazonVersion implements VersionWithPriority {
 		),
 		osVersionMatches(".*amzn2(?!023).*"))
 	),
-	AmazonLinux2023(1, osVersionMatches(".*amzn2023.*"));
+	AmazonLinux2023(1, OneOf.of(
+			AllOf.of(
+				OsReleaseFiles.osReleaseFileNameMatches("Amazon Linux"),
+				versionMatches(OsReleaseFiles.osReleaseFile(), "2023")
+			),
+			osVersionMatches(".*amzn2023.*")
+		)
+	);
 
 	private final int priority;
 	private final List<Peculiarity> peculiarities;
