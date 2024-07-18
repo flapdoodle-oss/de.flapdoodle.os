@@ -23,6 +23,7 @@ import de.flapdoodle.os.common.attributes.TypeCheckPredicate;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
+import de.flapdoodle.os.linux.AmazonVersion;
 import de.flapdoodle.os.linux.LinuxDistribution;
 import de.flapdoodle.os.linux.OracleVersion;
 import de.flapdoodle.os.linux.OsReleaseFiles;
@@ -116,6 +117,39 @@ class CommonOSTest {
     assertThat(result.architecture()).isEqualTo(CommonArchitecture.X86_64);
     assertThat(result.distribution()).contains(LinuxDistribution.Oracle);
     assertThat(result.version()).contains(OracleVersion.Oracle_9);
+  }
+
+  @Test
+  void detectionMustUseFirstMatchIfMoreThanOneMatchesEvenIfItsAmazonOnly() {
+    AttributeExtractorLookup releaseFile = AttributeExtractorLookup.with(MappedTextFile.any(), r -> {
+      switch (r.name()) {
+        case "/etc/os-release": return Optional.of(ImmutableOsReleaseFile.builder()
+          .putAttributes("NAME","Amazon Linux")
+          .putAttributes("VERSION_ID","2")
+          .build());
+      }
+      return Optional.empty();
+    });
+
+    AttributeExtractorLookup extractorLookup = AttributeExtractorLookup.with(
+        SystemProperty.any(), attribute -> {
+          switch (attribute.name()) {
+            case "os.name": return Optional.of("Linux");
+            case "os.arch": return Optional.of("x86_64");
+            case "os.version": return Optional.of("foo.amzn2023.bar");
+            default: return Optional.empty();
+          }
+        })
+      .join(releaseFile)
+      .join(AttributeExtractorLookup.failing());
+//    CommonOS os = match(extractorLookup, MatcherLookup.systemDefault(), CommonOS.values());
+
+    Platform result = Platform.detect(CommonOS.list(), extractorLookup, MatcherLookup.systemDefault());
+
+    assertThat(result.operatingSystem()).isEqualTo(CommonOS.Linux);
+    assertThat(result.architecture()).isEqualTo(CommonArchitecture.X86_64);
+    assertThat(result.distribution()).contains(LinuxDistribution.Amazon);
+    assertThat(result.version()).contains(AmazonVersion.AmazonLinux2023);
   }
 
   private static AttributeExtractorLookup osNameIs(String osName) {
