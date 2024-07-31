@@ -26,9 +26,10 @@ import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static de.flapdoodle.os.common.PeculiarityInspector.find;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +48,7 @@ class AmazonVersionTest {
 		Optional<Version> detectedVersion = detectVersion(AttributeExtractorLookups.osReleaseFile(ImmutableOsReleaseFile.builder()
 			.putAttributes(OsReleaseFiles.NAME, "Amazon Linux")
 			.putAttributes(OsReleaseFiles.VERSION_ID, "2")
-			.build()), AmazonVersion.values());
+			.build()), randomized(AmazonVersion.values()));
 		assertThat(detectedVersion).contains(AmazonVersion.AmazonLinux2);
 	}
 
@@ -56,8 +57,14 @@ class AmazonVersionTest {
 		Optional<Version> detectedVersion = detectVersion(AttributeExtractorLookups.osReleaseFile(ImmutableOsReleaseFile.builder()
 			.putAttributes(OsReleaseFiles.NAME, "Amazon Linux")
 			.putAttributes(OsReleaseFiles.VERSION_ID, "2023")
-			.build()), AmazonVersion.values());
+			.build()), randomized(AmazonVersion.values()));
 		assertThat(detectedVersion).contains(AmazonVersion.AmazonLinux2023);
+	}
+
+	private AmazonVersion[] randomized(AmazonVersion[] values) {
+		List<AmazonVersion> copy = Arrays.asList(values);
+		Collections.shuffle(copy, ThreadLocalRandom.current());
+		return copy.toArray(new AmazonVersion[0]);
 	}
 
 	private static void assertVersion(String versionIdContent, AmazonVersion version) {
@@ -66,10 +73,7 @@ class AmazonVersionTest {
 	}
 
 	private static Optional<Version> detectVersion(AttributeExtractorLookup attributeExtractorLookup, VersionWithPriority... values) {
-		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values)
-			.stream()
-			.sorted(Comparator.comparing(VersionWithPriority::priority).reversed())
-			.collect(Collectors.toList()));
+		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
 	}
 
 	static AttributeExtractorLookup osVersion(String content) {

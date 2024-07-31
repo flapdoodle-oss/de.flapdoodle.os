@@ -76,4 +76,9 @@ public enum AmazonVersion implements VersionWithPriority {
 	static Attribute<String> osVersion() {
 		return Attributes.systemProperty("os.version");
 	}
+
+	@Override
+	public String toString() {
+		return super.toString()+"(priority="+priority+")";
+	}
 }
