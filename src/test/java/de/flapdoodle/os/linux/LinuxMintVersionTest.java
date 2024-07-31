@@ -44,6 +44,7 @@ class LinuxMintVersionTest {
     assertVersion("21.1", LinuxMintVersion.LINUX_MINT_21_1, UbuntuVersion.Ubuntu_22_04);
     assertVersion("21.2", LinuxMintVersion.LINUX_MINT_21_2, UbuntuVersion.Ubuntu_22_04);
     assertVersion("21.3", LinuxMintVersion.LINUX_MINT_21_3, UbuntuVersion.Ubuntu_22_04);
+    assertVersion("22", LinuxMintVersion.LINUX_MINT_22_0, UbuntuVersion.Ubuntu_24_04);
   }
 
   private static void assertVersion(String versionIdContent, LinuxMintVersion version, UbuntuVersion matchingUbuntuVersion) {
