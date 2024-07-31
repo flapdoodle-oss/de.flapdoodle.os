@@ -16,7 +16,7 @@ Stable (Maven Central Repository, Released: 31.07.2024 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.7.1</version>
+		<version>1.7.2</version>
 	</dependency>
 
 ### Run
@@ -37,14 +37,16 @@ package `de.flapdoodle.os.common.attributes` to get some debugging output.
 You can override platform detection with system property `de.flapdoodle.os.override=<platform>` where
 `platform` contains the os, architecture, distribution and version (optional).
 Sample value for macOs on x86 with 64bit: `OS_X|X86_64`, Centos7 on 32bit x86: `Linux|X86_32|CentOS|CentOS_7`.
+You should **NOT** use quotes, so `de.flapdoodle.os.override=OS_X|X86__64`.
 
 ### Changelog
 
 #### Unreleased
 
-#### 1.7.1
+#### 1.7.2
 
 - linux mint 22.x support
+- check for amazon version priority
 
 #### 1.7.0
 
