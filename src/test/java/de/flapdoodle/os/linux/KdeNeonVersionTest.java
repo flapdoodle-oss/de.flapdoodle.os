@@ -16,7 +16,7 @@ class KdeNeonVersionTest {
 
 	@Test
 	public void ubuntuVersionIdMustMatchUbuntuVersion() {
-		assertVersion("22.04", KdeNeonVersion.KDE_NEON_6_1, UbuntuVersion.Ubuntu_22_04);
+		assertVersion("22.04", KdeNeonVersion.KDE_NEON_6_0, UbuntuVersion.Ubuntu_22_04);
 	}
 
 	private static void assertVersion(String versionIdContent, KdeNeonVersion version, UbuntuVersion matchingUbuntuVersion) {

@@ -8,7 +8,7 @@ import de.flapdoodle.os.common.Peculiarity;
 import java.util.List;
 
 public enum KdeNeonVersion implements Version {
-	KDE_NEON_6_1(UbuntuVersion.Ubuntu_22_04, OsReleaseFiles.osReleaseFileVersionIs("22.04"));
+	KDE_NEON_6_0(UbuntuVersion.Ubuntu_22_04, OsReleaseFiles.osReleaseFileVersionIs("22.04"));
 
 	private final UbuntuVersion matchingUbuntuVersion;
 	private final List<Peculiarity> peculiarities;
