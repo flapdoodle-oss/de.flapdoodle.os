@@ -43,7 +43,8 @@ public enum LinuxDistribution implements Distribution {
     AmazonVersion.osVersionMatches(".*amzn.*"))
   ),
   Alma(AlmaVersion.class, AlmaVersion.almaReleaseFileNameMatches("AlmaLinux")),
-  Rocky(RockyVersion.class, RockyVersion.rockyReleaseFileNameMatches("Rocky Linux"))
+  Rocky(RockyVersion.class, RockyVersion.rockyReleaseFileNameMatches("Rocky Linux")),
+  Manjaro(ManjaroVersion.class, LsbReleaseFiles.lsbReleaseFileNameMatches("Manjaro")),
   ;
 
   private final List<Peculiarity> peculiarities;

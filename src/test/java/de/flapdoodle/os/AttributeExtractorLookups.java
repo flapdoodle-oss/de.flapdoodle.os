@@ -21,6 +21,7 @@ import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
 import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
+import de.flapdoodle.os.common.types.LsbReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
 import de.flapdoodle.os.linux.OsReleaseFiles;
 
@@ -42,6 +43,16 @@ public class AttributeExtractorLookups {
 		return AttributeExtractorLookup.with(MappedTextFile.any(), (AttributeExtractor<OsReleaseFile, MappedTextFile<OsReleaseFile>>) attribute ->
 				attribute.name().equals(releaseFileName)
 					? Optional.of(osReleaseFile)
+					: Optional.empty())
+			.join(AttributeExtractorLookup.with(SystemProperty.any(), it -> Optional.empty()))
+			.join(AttributeExtractorLookup.failing());
+
+	}
+
+	public static AttributeExtractorLookup releaseFile(String releaseFileName, LsbReleaseFile lsbReleaseFile) {
+		return AttributeExtractorLookup.with(MappedTextFile.any(), (AttributeExtractor<LsbReleaseFile, MappedTextFile<LsbReleaseFile>>) attribute ->
+				attribute.name().equals(releaseFileName)
+					? Optional.of(lsbReleaseFile)
 					: Optional.empty())
 			.join(AttributeExtractorLookup.with(SystemProperty.any(), it -> Optional.empty()))
 			.join(AttributeExtractorLookup.failing());

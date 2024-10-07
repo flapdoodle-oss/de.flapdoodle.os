@@ -24,6 +24,7 @@ import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.attributes.MappedTextFile;
 import de.flapdoodle.os.common.attributes.SystemProperty;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
+import de.flapdoodle.os.common.types.ImmutableLsbReleaseFile;
 import de.flapdoodle.os.common.types.ImmutableOsReleaseFile;
 import de.flapdoodle.os.common.types.OsReleaseFile;
 import org.assertj.core.api.Assertions;
@@ -164,6 +165,14 @@ class LinuxDistributionTest {
 			.containsExactlyInAnyOrder(AlpineVersion.values());
 	}
 
+	@Test
+	public void selectManjaroIfReleaseFileContainsNameWithMajaroLinux() {
+		Optional<Distribution> dist = detectDistribution(lsbReleaseFile_NameIs(wrapWithRandomString("Manjaro")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Manjaro);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(ManjaroVersion.values());
+	}
+
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {
 		return find(attributeExtractorLookup, MatcherLookup.systemDefault(), Arrays.asList(values));
 	}
@@ -171,6 +180,12 @@ class LinuxDistributionTest {
 	private static AttributeExtractorLookup osReleaseFile_NameIs(String content) {
 		return AttributeExtractorLookups.releaseFile(OsReleaseFiles.RELEASE_FILE_NAME, ImmutableOsReleaseFile.builder()
 			.putAttributes(OsReleaseFiles.NAME, content)
+			.build());
+	}
+
+	private static AttributeExtractorLookup lsbReleaseFile_NameIs(String content) {
+		return AttributeExtractorLookups.releaseFile(LsbReleaseFiles.RELEASE_FILE_NAME, ImmutableLsbReleaseFile.builder()
+			.putAttributes(LsbReleaseFiles.NAME, content)
 			.build());
 	}
 
