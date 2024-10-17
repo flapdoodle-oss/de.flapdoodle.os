@@ -39,11 +39,14 @@ public enum UbuntuVersion implements Version {
   Ubuntu_23_04(OsReleaseFiles.osReleaseFileVersionMatches("23.04")),
   Ubuntu_23_10(OsReleaseFiles.osReleaseFileVersionMatches("23.10")),
   Ubuntu_24_04(OsReleaseFiles.osReleaseFileVersionMatches("24.04")),
+  Ubuntu_24_10(OsReleaseFiles.osReleaseFileVersionMatches("24.10")),
+  Ubuntu_25_04(OsReleaseFiles.osReleaseFileVersionMatches("25.04")),
+  Ubuntu_25_10(OsReleaseFiles.osReleaseFileVersionMatches("25.10")),
   ;
 
   private final List<Peculiarity> peculiarities;
 
-  UbuntuVersion(DistinctPeculiarity... peculiarities) {
+  UbuntuVersion(Peculiarity... peculiarities) {
     this.peculiarities  = HasPecularities.asList(peculiarities);
   }
 
