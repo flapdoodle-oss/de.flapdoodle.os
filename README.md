@@ -11,12 +11,12 @@ We are now a github organisation. You are invited to participate.
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 07.10.2024 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 26.11.2024 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.8.0</version>
+		<version>1.9.0</version>
 	</dependency>
 
 ### Run
@@ -42,6 +42,8 @@ You should **NOT** use quotes, so `de.flapdoodle.os.override=OS_X|X86__64`.
 ### Changelog
 
 #### Unreleased
+
+#### 1.9.0
 
 - ubuntu up to 25.10
 - manjaro linux 24.0, 24.1
