@@ -45,6 +45,7 @@ public enum LinuxDistribution implements Distribution {
   Alma(AlmaVersion.class, AlmaVersion.almaReleaseFileNameMatches("AlmaLinux")),
   Rocky(RockyVersion.class, RockyVersion.rockyReleaseFileNameMatches("Rocky Linux")),
   Manjaro(ManjaroVersion.class, LsbReleaseFiles.lsbReleaseFileNameMatches("Manjaro")),
+  Arch(ArchVersion.class, LsbReleaseFiles.lsbReleaseFileNameMatches("Arch")),
   ;
 
   private final List<Peculiarity> peculiarities;

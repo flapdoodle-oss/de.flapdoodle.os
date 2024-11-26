@@ -22,22 +22,18 @@ import de.flapdoodle.os.common.Peculiarity;
 
 import java.util.List;
 
-public enum ManjaroVersion implements Version {
-	MANJARO_24_0(LsbReleaseFiles.lsbReleaseFileVersionMatches("24.0")),
-	MANJARO_24_1(LsbReleaseFiles.lsbReleaseFileVersionMatches("24.1")),
-	MANJARO_24_2(LsbReleaseFiles.lsbReleaseFileVersionMatches("24.2")),
-	MANJARO_24_3(LsbReleaseFiles.lsbReleaseFileVersionMatches("24.3")),
-	;
+public enum ArchVersion implements Version {
+    ROLLING(LsbReleaseFiles.lsbReleaseFileVersionMatches("rolling"))
+    ;
 
-	private final List<Peculiarity> peculiarities;
+    private final List<Peculiarity> peculiarities;
 
-	ManjaroVersion(final Peculiarity... peculiarities) {
-		this.peculiarities = HasPecularities.asList(peculiarities);
-	}
+    ArchVersion(final Peculiarity... peculiarities) {
+        this.peculiarities = HasPecularities.asList(peculiarities);
+    }
 
-	@Override
-	public List<Peculiarity> pecularities() {
-		return peculiarities;
-	}
-
+    @Override
+    public List<Peculiarity> pecularities() {
+        return peculiarities;
+    }
 }

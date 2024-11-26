@@ -44,6 +44,8 @@ You should **NOT** use quotes, so `de.flapdoodle.os.override=OS_X|X86__64`.
 #### Unreleased
 
 - ubuntu up to 25.10
+- manjaro linux 24.0, 24.1
+- arch linux rolling
 
 #### 1.8.0
 

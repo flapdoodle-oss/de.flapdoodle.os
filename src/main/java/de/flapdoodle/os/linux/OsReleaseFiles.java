@@ -29,6 +29,7 @@ public class OsReleaseFiles {
 	public static String NAME="NAME";
 	public static String VERSION_ID="VERSION_ID";
 	public static String VERSION_CODENAME="VERSION_CODENAME";
+	public static String BUILD_ID="BUILD_ID";
 
 	static Attribute<OsReleaseFile> osReleaseFile() {
 		return releaseFile(RELEASE_FILE_NAME);
