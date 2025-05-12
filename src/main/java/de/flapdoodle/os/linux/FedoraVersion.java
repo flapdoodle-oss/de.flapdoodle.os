@@ -31,6 +31,8 @@ public enum FedoraVersion implements Version {
 	Fedora_41(versionMatches(OsReleaseFiles.osReleaseFile(), "41")),
 	Fedora_42(versionMatches(OsReleaseFiles.osReleaseFile(), "42")),
 	Fedora_43(versionMatches(OsReleaseFiles.osReleaseFile(), "43")),
+	Fedora_44(versionMatches(OsReleaseFiles.osReleaseFile(), "44")),
+	Fedora_45(versionMatches(OsReleaseFiles.osReleaseFile(), "45")),
 	;
 
 	private final List<Peculiarity> peculiarities;

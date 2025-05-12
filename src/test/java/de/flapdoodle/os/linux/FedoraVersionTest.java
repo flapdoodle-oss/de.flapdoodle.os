@@ -39,6 +39,8 @@ class FedoraVersionTest {
 		assertVersion("41", FedoraVersion.Fedora_41);
 		assertVersion("42", FedoraVersion.Fedora_42);
 		assertVersion("43", FedoraVersion.Fedora_43);
+		assertVersion("44", FedoraVersion.Fedora_44);
+		assertVersion("45", FedoraVersion.Fedora_45);
 	}
 
 	private static void assertVersion(String versionIdContent, FedoraVersion version) {
