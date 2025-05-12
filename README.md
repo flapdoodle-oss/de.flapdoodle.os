@@ -43,6 +43,10 @@ You should **NOT** use quotes, so `de.flapdoodle.os.override=OS_X|X86__64`.
 
 #### Unreleased
 
+#### 1.9.1
+
+- fedora up to version 45
+
 #### 1.9.0
 
 - ubuntu up to 25.10
