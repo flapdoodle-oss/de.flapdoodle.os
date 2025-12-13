@@ -29,6 +29,7 @@ public enum OracleVersion implements Version {
   Oracle_7(versionMatches(OsReleaseFiles.osReleaseFile(),"7")),
   Oracle_8(versionMatches(OsReleaseFiles.osReleaseFile(),"8")),
   Oracle_9(versionMatches(OsReleaseFiles.osReleaseFile(),"9")),
+  Oracle_10(versionMatches(OsReleaseFiles.osReleaseFile(),"10")),
   ;
 
   private final List<Peculiarity> peculiarities;

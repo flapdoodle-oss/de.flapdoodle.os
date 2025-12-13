@@ -38,6 +38,7 @@ class OracleVersionTest {
 		assertVersion("7.x", OracleVersion.Oracle_7);
 		assertVersion("8", OracleVersion.Oracle_8);
 		assertVersion("9", OracleVersion.Oracle_9);
+		assertVersion("10", OracleVersion.Oracle_10);
 	}
 
 	private static void assertVersion(String versionIdContent, OracleVersion version) {

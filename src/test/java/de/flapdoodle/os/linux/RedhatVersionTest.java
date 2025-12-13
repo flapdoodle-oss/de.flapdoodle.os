@@ -38,6 +38,7 @@ class RedhatVersionTest {
 		assertVersion("7.x", RedhatVersion.Redhat_7);
 		assertVersion("8", RedhatVersion.Redhat_8);
 		assertVersion("9", RedhatVersion.Redhat_9);
+		assertVersion("10", RedhatVersion.Redhat_10);
 	}
 
 	private static void assertVersion(String versionIdContent, RedhatVersion version) {

@@ -32,6 +32,7 @@ public enum CentosVersion implements Version {
   CentOS_7(OneOf.of(versionMatches(centosReleaseFile(),"7"), versionMatches(OsReleaseFiles.osReleaseFile(),"7"))),
   CentOS_8(OneOf.of(versionMatches(centosReleaseFile(),"8"), versionMatches(OsReleaseFiles.osReleaseFile(),"8"))),
   CentOS_9(OneOf.of(versionMatches(centosReleaseFile(),"9"), versionMatches(OsReleaseFiles.osReleaseFile(),"9"))),
+  CentOS_10(OneOf.of(versionMatches(centosReleaseFile(),"10"), versionMatches(OsReleaseFiles.osReleaseFile(),"10"))),
   ;
 
   public static final String RELEASE_FILE_NAME="/etc/centos-release";

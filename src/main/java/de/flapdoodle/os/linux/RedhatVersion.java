@@ -31,7 +31,8 @@ public enum RedhatVersion implements Version {
   Redhat_6(versionMatches(OsReleaseFiles.osReleaseFile(),"6")),
   Redhat_7(versionMatches(OsReleaseFiles.osReleaseFile(),"7")),
   Redhat_8(versionMatches(OsReleaseFiles.osReleaseFile(),"8")),
-  Redhat_9(versionMatches(OsReleaseFiles.osReleaseFile(),"9"))
+  Redhat_9(versionMatches(OsReleaseFiles.osReleaseFile(),"9")),
+  Redhat_10(versionMatches(OsReleaseFiles.osReleaseFile(),"10"))
   ;
 
   private final List<Peculiarity> peculiarities;

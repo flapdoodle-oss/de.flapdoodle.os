@@ -42,6 +42,7 @@ class CentosVersionTest {
 		assertVersion("7", CentosVersion.CentOS_7);
 		assertVersion("8", CentosVersion.CentOS_8);
 		assertVersion("9", CentosVersion.CentOS_9);
+		assertVersion("10", CentosVersion.CentOS_10);
 	}
 
 	private static void assertVersion(String versionIdContent, CentosVersion version) {
