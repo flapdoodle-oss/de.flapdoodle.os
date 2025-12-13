@@ -16,7 +16,6 @@
  */
 package de.flapdoodle.os.linux;
 
-import de.flapdoodle.os.AttributeExtractorLookups;
 import de.flapdoodle.os.Version;
 import de.flapdoodle.os.common.attributes.AttributeExtractorLookup;
 import de.flapdoodle.os.common.matcher.MatcherLookup;
@@ -40,6 +39,7 @@ class DebianVersionTest {
     assertVersion("11", DebianVersion.DEBIAN_11);
     assertVersion("12", DebianVersion.DEBIAN_12);
     assertVersion("13", DebianVersion.DEBIAN_13);
+    assertVersion("14", DebianVersion.DEBIAN_14);
   }
 
   @Test
@@ -56,6 +56,14 @@ class DebianVersionTest {
       .putAttributes(OsReleaseFiles.VERSION_CODENAME, "trixie")
       .build()), DebianVersion.values());
     assertThat(detectedVersion).contains(DebianVersion.DEBIAN_13);
+  }
+
+  @Test
+  public void debian14_testingMatchCodeName() {
+    Optional<Version> detectedVersion = detectVersion(osReleaseFile(ImmutableOsReleaseFile.builder()
+      .putAttributes(OsReleaseFiles.VERSION_CODENAME, "forky")
+      .build()), DebianVersion.values());
+    assertThat(detectedVersion).contains(DebianVersion.DEBIAN_14);
   }
 
   private static void assertVersion(String versionIdContent, DebianVersion version) {

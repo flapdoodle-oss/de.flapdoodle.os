@@ -34,7 +34,12 @@ public enum DebianVersion implements Version {
     DEBIAN_13(OneOf.of(
       OsReleaseFiles.osReleaseFileVersionMatches("13"),
       OsReleaseFiles.osReleaseFileVersionCodeNameIs("trixie")
+    )),
+    DEBIAN_14(OneOf.of(
+      OsReleaseFiles.osReleaseFileVersionMatches("14"),
+      OsReleaseFiles.osReleaseFileVersionCodeNameIs("forky")
     ));
+
 
     private final List<Peculiarity> peculiarities;
 
