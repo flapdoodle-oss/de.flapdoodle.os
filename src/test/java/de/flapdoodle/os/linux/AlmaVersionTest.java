@@ -40,6 +40,7 @@ class AlmaVersionTest {
 	public void almaVersionIdMustMatchVersion() {
 		assertVersion("8", AlmaVersion.Alma_8);
 		assertVersion("9", AlmaVersion.Alma_9);
+		assertVersion("10", AlmaVersion.Alma_10);
 	}
 
 	private static void assertVersion(String versionIdContent, AlmaVersion version) {

@@ -30,6 +30,7 @@ import static de.flapdoodle.os.linux.OsReleaseFiles.versionMatches;
 public enum AlmaVersion implements Version {
   Alma_8(OneOf.of(versionMatches(almaReleaseFile(),"8"), versionMatches(OsReleaseFiles.osReleaseFile(),"8"))),
   Alma_9(OneOf.of(versionMatches(almaReleaseFile(),"9"), versionMatches(OsReleaseFiles.osReleaseFile(),"9"))),
+  Alma_10(OneOf.of(versionMatches(almaReleaseFile(),"10"), versionMatches(OsReleaseFiles.osReleaseFile(),"10"))),
   ;
 
   public static final String RELEASE_FILE_NAME="/etc/almalinux-release";
