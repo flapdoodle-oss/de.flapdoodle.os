@@ -24,7 +24,9 @@ import de.flapdoodle.os.common.Peculiarity;
 import java.util.List;
 
 public enum PopOSVersion implements Version {
-	POP_OS_22_4(UbuntuVersion.Ubuntu_22_04, OsReleaseFiles.osReleaseFileVersionIs("22.04"));
+	POP_OS_22_4(UbuntuVersion.Ubuntu_22_04, OsReleaseFiles.osReleaseFileVersionIs("22.04")),
+	POP_OS_24_4(UbuntuVersion.Ubuntu_24_04, OsReleaseFiles.osReleaseFileVersionIs("24.04"))
+	;
 
 	private final UbuntuVersion matchingUbuntuVersion;
 	private final List<Peculiarity> peculiarities;

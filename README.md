@@ -43,6 +43,8 @@ You should **NOT** use quotes, so `de.flapdoodle.os.override=OS_X|X86__64`.
 
 #### Unreleased
 
+- pop os 24.4                                 
+
 #### 1.10.0
 
 - centos 10, redhat 10, oracle 10

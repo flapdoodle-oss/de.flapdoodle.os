@@ -33,6 +33,7 @@ class PopOSVersionTest {
   @Test
   public void popOsVersionIdMustMatchUbuntuVersion() {
     assertVersion("22.04", PopOSVersion.POP_OS_22_4, UbuntuVersion.Ubuntu_22_04);
+    assertVersion("24.04", PopOSVersion.POP_OS_24_4, UbuntuVersion.Ubuntu_24_04);
   }
 
   private static void assertVersion(String versionIdContent, PopOSVersion version, UbuntuVersion matchingUbuntuVersion) {
