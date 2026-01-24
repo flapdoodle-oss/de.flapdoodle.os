@@ -11,12 +11,12 @@ We are now a github organisation. You are invited to participate.
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 13.12.2025 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
+Stable ([maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodle.os/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.9.3</version>
+		<version>1.10.1</version>
 	</dependency>
 
 ### Run
@@ -43,7 +43,9 @@ You should **NOT** use quotes, so `de.flapdoodle.os.override=OS_X|X86__64`.
 
 #### Unreleased
 
-- pop os 24.4                                 
+#### 1.10.1
+
+- pop os 24.4
 
 #### 1.10.0
 
