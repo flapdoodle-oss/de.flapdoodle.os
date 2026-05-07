@@ -100,6 +100,34 @@ public class IssuesTest {
 		assertThat(result.version()).contains(UbuntuVersion.Ubuntu_24_10);
 	}
 
+	@Test
+	void ubuntu26_04_NotDetected() {
+		AttributeExtractorLookup releaseFile = AttributeExtractorLookup.with(MappedTextFile.any(), r -> {
+			switch (r.name()) {
+				case "/etc/os-release": return Optional.of(releaseFile("/samples/ubuntu/ubuntu26_04/etc/os-release"));
+			}
+			return Optional.empty();
+		});
+
+		AttributeExtractorLookup extractorLookup = AttributeExtractorLookup.with(
+				SystemProperty.any(), attribute -> {
+					switch (attribute.name()) {
+						case "os.name": return Optional.of("Linux");
+						case "os.arch": return Optional.of("x86_64");
+						default: return Optional.empty();
+					}
+				})
+			.join(releaseFile)
+			.join(AttributeExtractorLookup.failing());
+
+		Platform result = Platform.detect(CommonOS.list(), extractorLookup, MatcherLookup.systemDefault());
+
+		assertThat(result.operatingSystem()).isEqualTo(CommonOS.Linux);
+		assertThat(result.architecture()).isEqualTo(CommonArchitecture.X86_64);
+		assertThat(result.distribution()).contains(LinuxDistribution.Ubuntu);
+		assertThat(result.version()).contains(UbuntuVersion.Ubuntu_26_04);
+	}
+
 	private static OsReleaseFile releaseFile(String resourceName) {
 		try {
 			URI resourcePath = Objects.requireNonNull(IssuesTest.class.getResource(resourceName)).toURI();
