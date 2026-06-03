@@ -16,7 +16,7 @@ Stable ([maven central](http://repo1.maven.org/maven2/de/flapdoodle/de.flapdoodl
 	<dependency>
 		<groupId>de.flapdoodle</groupId>
 		<artifactId>de.flapdoodle.os</artifactId>
-		<version>1.10.1</version>
+		<version>1.11.0</version>
 	</dependency>
 
 ### Run
