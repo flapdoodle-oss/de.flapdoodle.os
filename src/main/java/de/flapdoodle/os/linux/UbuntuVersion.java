@@ -17,7 +17,6 @@
 package de.flapdoodle.os.linux;
 
 import de.flapdoodle.os.Version;
-import de.flapdoodle.os.common.DistinctPeculiarity;
 import de.flapdoodle.os.common.HasPecularities;
 import de.flapdoodle.os.common.Peculiarity;
 
@@ -42,6 +41,8 @@ public enum UbuntuVersion implements Version {
   Ubuntu_24_10(OsReleaseFiles.osReleaseFileVersionMatches("24.10")),
   Ubuntu_25_04(OsReleaseFiles.osReleaseFileVersionMatches("25.04")),
   Ubuntu_25_10(OsReleaseFiles.osReleaseFileVersionMatches("25.10")),
+  Ubuntu_26_04(OsReleaseFiles.osReleaseFileVersionMatches("26.04")),
+  Ubuntu_26_10(OsReleaseFiles.osReleaseFileVersionMatches("26.10")),
   ;
 
   private final List<Peculiarity> peculiarities;
