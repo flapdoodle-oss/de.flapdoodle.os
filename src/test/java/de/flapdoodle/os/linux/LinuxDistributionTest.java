@@ -174,11 +174,19 @@ class LinuxDistributionTest {
 	}
 
 	@Test
-	public void selectArchIfReleaseFileContainsNameWithManjaroLinux() {
+	public void selectArchIfReleaseFileContainsNameWithArchLinux() {
 		Optional<Distribution> dist = detectDistribution(lsbReleaseFile_NameIs(wrapWithRandomString("Arch")), LinuxDistribution.values());
 		assertThat(dist).contains(LinuxDistribution.Arch);
 		Assertions.<Version>assertThat(dist.get().versions())
 			.containsExactlyInAnyOrder(ArchVersion.values());
+	}
+
+	@Test
+	public void selectEndeavourIfReleaseFileContainsNameWithEndeavour() {
+		Optional<Distribution> dist = detectDistribution(lsbReleaseFile_NameIs(wrapWithRandomString("Endeavour")), LinuxDistribution.values());
+		assertThat(dist).contains(LinuxDistribution.Endeavour);
+		Assertions.<Version>assertThat(dist.get().versions())
+			.containsExactlyInAnyOrder(EndeavourOSVersion.values());
 	}
 
 	private static Optional<Distribution> detectDistribution(AttributeExtractorLookup attributeExtractorLookup, Distribution... values) {

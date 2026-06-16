@@ -46,6 +46,7 @@ public enum LinuxDistribution implements Distribution {
   Rocky(RockyVersion.class, RockyVersion.rockyReleaseFileNameMatches("Rocky Linux")),
   Manjaro(ManjaroVersion.class, LsbReleaseFiles.lsbReleaseFileNameMatches("Manjaro")),
   Arch(ArchVersion.class, LsbReleaseFiles.lsbReleaseFileNameMatches("Arch")),
+  Endeavour(EndeavourOSVersion.class, LsbReleaseFiles.lsbReleaseFileNameMatches("Endeavour")),
   ;
 
   private final List<Peculiarity> peculiarities;

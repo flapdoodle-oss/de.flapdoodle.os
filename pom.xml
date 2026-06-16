@@ -190,6 +190,8 @@
                         <exclude>**/*.properties</exclude>
                         <exclude>**/*.tgz</exclude>
                         <exclude>**/*.tbz2</exclude>
+                        <exclude>**/os-release</exclude>
+                        <exclude>**/lsb-release</exclude>
                     </excludes>
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <properties>
